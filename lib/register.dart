@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:todo_backend_flutter/register.dart';
+import 'package:todo_backend_flutter/login.dart';
 
-class LoginPage extends StatefulWidget {
-  static String tag = 'login-page';
+class RegisterPage extends StatefulWidget {
+  static String tag = 'register-page';
 
   @override
-  LoginState createState() => new LoginState();
+  RegisterState createState() => new RegisterState();
 }
 
-class LoginState extends State<LoginPage> {
+class RegisterState extends State<RegisterPage> {
 
   final _formKey = new GlobalKey<FormState>();
 
@@ -24,7 +24,7 @@ class LoginState extends State<LoginPage> {
         child: Image.asset('assets/logo.png'),
       ),
     );
-    
+
     final form = Form(
       key: _formKey,
       child: Column(children: <Widget>[
@@ -48,6 +48,40 @@ class LoginState extends State<LoginPage> {
         TextFormField(
           keyboardType: TextInputType.text,
           autofocus: false,
+          decoration: InputDecoration(
+            hintText: 'Enter name',
+            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+          ),
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'Please enter your name';
+            }
+            return null;
+          },
+        ),
+        SizedBox(height: 8.0),
+        TextFormField(
+          keyboardType: TextInputType.phone,
+          autofocus: false,
+          decoration: InputDecoration(
+            hintText: 'Enter phone',
+            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+          ),
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'Please enter your phone';
+            }
+            return null;
+          },
+        ),
+        SizedBox(height: 8.0),
+        TextFormField(
+          keyboardType: TextInputType.text,
+          autofocus: false,
           obscureText: true,
           decoration: InputDecoration(
             hintText: 'Enter password',
@@ -58,6 +92,24 @@ class LoginState extends State<LoginPage> {
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your password';
+            }
+            return null;
+          },
+        ),
+        SizedBox(height: 8.0),
+        TextFormField(
+          keyboardType: TextInputType.text,
+          autofocus: false,
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: 'Confirm password',
+            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+          ),
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'Please confirm your password';
             }
             return null;
           },
@@ -87,13 +139,13 @@ class LoginState extends State<LoginPage> {
       ]),
     );
 
-    final registerLabel = FlatButton(
+    final loginLabel = FlatButton(
       child: Text(
-        'Create a new account',
+        'Already have an account',
         style: TextStyle(color: Colors.blue),
       ),
       onPressed: () {
-        Navigator.of(context).pushNamed(RegisterPage.tag);
+        Navigator.of(context).pushNamed(LoginPage.tag);
       },
     );
 
@@ -103,13 +155,14 @@ class LoginState extends State<LoginPage> {
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               logo,
               SizedBox(height: 48.0),
               form,
               new Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [registerLabel])
+                  children: [loginLabel])
             ],
           ),
         ),
