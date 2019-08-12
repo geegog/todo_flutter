@@ -9,8 +9,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginState extends State<LoginPage> {
-
   final _formKey = new GlobalKey<FormState>();
+
+  Function decoration = (String text) => InputDecoration(
+    hintText: text,
+    contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +29,14 @@ class LoginState extends State<LoginPage> {
         child: Image.asset('assets/logo.png'),
       ),
     );
-    
+
     final form = Form(
       key: _formKey,
       child: Column(children: <Widget>[
         TextFormField(
           keyboardType: TextInputType.emailAddress,
           autofocus: true,
-          decoration: InputDecoration(
-            hintText: 'Enter email',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-          ),
+          decoration: decoration("Enter email"),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your email';
@@ -49,12 +49,7 @@ class LoginState extends State<LoginPage> {
           keyboardType: TextInputType.text,
           autofocus: false,
           obscureText: true,
-          decoration: InputDecoration(
-            hintText: 'Enter password',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-          ),
+          decoration: decoration('Enter password'),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your password';

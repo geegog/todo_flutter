@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_backend_flutter/login.dart';
+import 'package:http/http.dart';
 
 class RegisterPage extends StatefulWidget {
   static String tag = 'register-page';
@@ -11,6 +12,12 @@ class RegisterPage extends StatefulWidget {
 class RegisterState extends State<RegisterPage> {
 
   final _formKey = new GlobalKey<FormState>();
+
+  Function decoration = (String text) => InputDecoration(
+    hintText: text,
+    contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +38,7 @@ class RegisterState extends State<RegisterPage> {
         TextFormField(
           keyboardType: TextInputType.emailAddress,
           autofocus: true,
-          decoration: InputDecoration(
-            hintText: 'Enter email',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-          ),
+          decoration: decoration('Enter email'),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your email';
@@ -48,12 +50,7 @@ class RegisterState extends State<RegisterPage> {
         TextFormField(
           keyboardType: TextInputType.text,
           autofocus: false,
-          decoration: InputDecoration(
-            hintText: 'Enter name',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-          ),
+          decoration: decoration('Enter name'),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your name';
@@ -65,12 +62,7 @@ class RegisterState extends State<RegisterPage> {
         TextFormField(
           keyboardType: TextInputType.phone,
           autofocus: false,
-          decoration: InputDecoration(
-            hintText: 'Enter phone',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-          ),
+          decoration: decoration('Enter phone'),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your phone';
@@ -83,12 +75,7 @@ class RegisterState extends State<RegisterPage> {
           keyboardType: TextInputType.text,
           autofocus: false,
           obscureText: true,
-          decoration: InputDecoration(
-            hintText: 'Enter password',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-          ),
+          decoration: decoration('Enter password'),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your password';
@@ -101,12 +88,7 @@ class RegisterState extends State<RegisterPage> {
           keyboardType: TextInputType.text,
           autofocus: false,
           obscureText: true,
-          decoration: InputDecoration(
-            hintText: 'Confirm password',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-          ),
+          decoration: decoration('Confirm password'),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please confirm your password';
