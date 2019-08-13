@@ -19,6 +19,23 @@ class RegisterState extends State<RegisterPage> {
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
   );
 
+  final myControllerEmail = TextEditingController();
+  final myControllerPassword = TextEditingController();
+  final myControllerName = TextEditingController();
+  final myControllerPhone = TextEditingController();
+  final myControllerConfirmPassword = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myControllerEmail.dispose();
+    myControllerPassword.dispose();
+    myControllerName.dispose();
+    myControllerConfirmPassword.dispose();
+    myControllerPhone.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -36,6 +53,7 @@ class RegisterState extends State<RegisterPage> {
       key: _formKey,
       child: Column(children: <Widget>[
         TextFormField(
+          controller: myControllerEmail,
           keyboardType: TextInputType.emailAddress,
           autofocus: true,
           decoration: decoration('Enter email'),
@@ -48,6 +66,7 @@ class RegisterState extends State<RegisterPage> {
         ),
         SizedBox(height: 8.0),
         TextFormField(
+          controller: myControllerName,
           keyboardType: TextInputType.text,
           autofocus: false,
           decoration: decoration('Enter name'),
@@ -60,6 +79,7 @@ class RegisterState extends State<RegisterPage> {
         ),
         SizedBox(height: 8.0),
         TextFormField(
+          controller: myControllerPhone,
           keyboardType: TextInputType.phone,
           autofocus: false,
           decoration: decoration('Enter phone'),
@@ -72,6 +92,7 @@ class RegisterState extends State<RegisterPage> {
         ),
         SizedBox(height: 8.0),
         TextFormField(
+          controller: myControllerPassword,
           keyboardType: TextInputType.text,
           autofocus: false,
           obscureText: true,
@@ -85,6 +106,7 @@ class RegisterState extends State<RegisterPage> {
         ),
         SizedBox(height: 8.0),
         TextFormField(
+          controller: myControllerConfirmPassword,
           keyboardType: TextInputType.text,
           autofocus: false,
           obscureText: true,
@@ -108,7 +130,8 @@ class RegisterState extends State<RegisterPage> {
                 // Validate returns true if the form is valid, or false
                 // otherwise.
                 if (_formKey.currentState.validate()) {
-                  // If the form is valid, display a Snackbar.
+
+                } else {
 
                 }
               },

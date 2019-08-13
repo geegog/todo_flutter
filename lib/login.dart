@@ -17,6 +17,17 @@ class LoginState extends State<LoginPage> {
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
   );
 
+  final myControllerEmail = TextEditingController();
+  final myControllerPassword = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myControllerEmail.dispose();
+    myControllerPassword.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -34,6 +45,7 @@ class LoginState extends State<LoginPage> {
       key: _formKey,
       child: Column(children: <Widget>[
         TextFormField(
+          controller: myControllerEmail,
           keyboardType: TextInputType.emailAddress,
           autofocus: true,
           decoration: decoration("Enter email"),
@@ -46,6 +58,7 @@ class LoginState extends State<LoginPage> {
         ),
         SizedBox(height: 8.0),
         TextFormField(
+          controller: myControllerPassword,
           keyboardType: TextInputType.text,
           autofocus: false,
           obscureText: true,
@@ -70,7 +83,6 @@ class LoginState extends State<LoginPage> {
                 // otherwise.
                 if (_formKey.currentState.validate()) {
                   // If the form is valid, display a Snackbar.
-
                 }
               },
               padding: EdgeInsets.all(12),
