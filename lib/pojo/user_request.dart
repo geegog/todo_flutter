@@ -3,7 +3,7 @@ import 'user.dart';
 
 part 'user_request.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class UserRequest {
   UserRequest(this.user);
 

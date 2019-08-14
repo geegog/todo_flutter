@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:todo_backend_flutter/login.dart';
-import 'package:http/http.dart';
+import 'pojo/user.dart';
+import 'pojo/user_request.dart';
+import 'api.dart';
 
 class RegisterPage extends StatefulWidget {
   static String tag = 'register-page';
@@ -131,13 +135,23 @@ class RegisterState extends State<RegisterPage> {
                 // otherwise.
                 if (_formKey.currentState.validate()) {
 
+                  User user = User(myControllerName.text,
+                      myControllerEmail.text,
+                      myControllerPhone.text,
+                      myControllerPassword.text,
+                      myControllerConfirmPassword.text);
+
+                  String userRequest = jsonEncode(UserRequest(user));
+
+                  APIUtil().post('http://172.31.128.20:4000/api/v1/sign_up', userRequest);
+
                 } else {
 
                 }
               },
               padding: EdgeInsets.all(12),
               color: Colors.green,
-              child: Text('Log In', style: TextStyle(color: Colors.white)),
+              child: Text('Register', style: TextStyle(color: Colors.white)),
             ),
           ),
         ),

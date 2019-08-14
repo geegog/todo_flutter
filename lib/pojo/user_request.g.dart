@@ -13,4 +13,4 @@ UserRequest _$UserRequestFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$UserRequestToJson(UserRequest instance) =>
-    <String, dynamic>{'user': instance.user};
+    <String, dynamic>{'user': instance.user?.toJson()};
