@@ -14,14 +14,13 @@ class RegisterPage extends StatefulWidget {
 }
 
 class RegisterState extends State<RegisterPage> {
-
   final _formKey = new GlobalKey<FormState>();
 
   Function decoration = (String text) => InputDecoration(
-    hintText: text,
-    contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-  );
+        hintText: text,
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+      );
 
   final myControllerEmail = TextEditingController();
   final myControllerPassword = TextEditingController();
@@ -126,32 +125,59 @@ class RegisterState extends State<RegisterPage> {
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: ButtonTheme(
             minWidth: double.infinity,
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
+            child: Builder(
+              builder: (context) => RaisedButton(
+                elevation: 5.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                onPressed: () {
+                  // Validate returns true if the form is valid, or false
+                  // otherwise.
+                  if (_formKey.currentState.validate()) {
+                    User user = User(
+                        myControllerName.text,
+                        myControllerEmail.text,
+                        myControllerPhone.text,
+                        myControllerPassword.text,
+                        myControllerConfirmPassword.text);
+
+                    String userRequest = jsonEncode(UserRequest(user));
+
+                    Future<dynamic> response = APIUtil().post(
+                        'http://172.31.128.20:4000/api/v1/sign_up',
+                        userRequest);
+
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Container(
+                          child: FutureBuilder<dynamic>(
+                            future: response,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(snapshot.data);
+                              } else if (snapshot.hasError) {
+                                return Text("${snapshot.error}");
+                              }
+
+                              // By default, show a loading spinner.
+                              return new Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [CircularProgressIndicator()]);
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {}
+                },
+                padding: EdgeInsets.all(12),
+                color: Colors.green,
+                child: Text(
+                  'Register',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              onPressed: () {
-                // Validate returns true if the form is valid, or false
-                // otherwise.
-                if (_formKey.currentState.validate()) {
-
-                  User user = User(myControllerName.text,
-                      myControllerEmail.text,
-                      myControllerPhone.text,
-                      myControllerPassword.text,
-                      myControllerConfirmPassword.text);
-
-                  String userRequest = jsonEncode(UserRequest(user));
-
-                  APIUtil().post('http://172.31.128.20:4000/api/v1/sign_up', userRequest);
-
-                } else {
-
-                }
-              },
-              padding: EdgeInsets.all(12),
-              color: Colors.green,
-              child: Text('Register', style: TextStyle(color: Colors.white)),
             ),
           ),
         ),
@@ -181,11 +207,12 @@ class RegisterState extends State<RegisterPage> {
               form,
               new Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [loginLabel])
+                  children: [loginLabel]),
             ],
           ),
         ),
       ),
     );
   }
+
 }

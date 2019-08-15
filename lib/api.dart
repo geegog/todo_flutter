@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:http/http.dart' as http;
 
 class APIUtil {
@@ -21,7 +22,7 @@ class APIUtil {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       // If server returns an OK response, parse the JSON.
-      return response;
+      return response.body;
     } else {
       // If that response was not OK, throw an error.
       throw Exception(response.body);
