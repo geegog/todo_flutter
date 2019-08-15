@@ -11,7 +11,8 @@ class LoginPage extends StatefulWidget {
 class LoginState extends State<LoginPage> {
   final _formKey = new GlobalKey<FormState>();
 
-  Function decoration = (String text) => InputDecoration(
+  Function decoration = (String text, Icon icon) => InputDecoration(
+    prefixIcon: icon,
     hintText: text,
     contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
@@ -48,7 +49,7 @@ class LoginState extends State<LoginPage> {
           controller: myControllerEmail,
           keyboardType: TextInputType.emailAddress,
           autofocus: true,
-          decoration: decoration("Enter email"),
+          decoration: decoration("Enter email", new Icon(Icons.email, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your email';
@@ -62,7 +63,7 @@ class LoginState extends State<LoginPage> {
           keyboardType: TextInputType.text,
           autofocus: false,
           obscureText: true,
-          decoration: decoration('Enter password'),
+          decoration: decoration('Enter password', new Icon(Icons.lock, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your password';
