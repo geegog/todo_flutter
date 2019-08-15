@@ -16,7 +16,8 @@ class RegisterPage extends StatefulWidget {
 class RegisterState extends State<RegisterPage> {
   final _formKey = new GlobalKey<FormState>();
 
-  Function decoration = (String text) => InputDecoration(
+  Function decoration = (String text, Icon icon) => InputDecoration(
+        prefixIcon: icon,
         hintText: text,
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
@@ -59,7 +60,7 @@ class RegisterState extends State<RegisterPage> {
           controller: myControllerEmail,
           keyboardType: TextInputType.emailAddress,
           autofocus: true,
-          decoration: decoration('Enter email'),
+          decoration: decoration('Enter email', new Icon(Icons.email, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your email';
@@ -72,7 +73,7 @@ class RegisterState extends State<RegisterPage> {
           controller: myControllerName,
           keyboardType: TextInputType.text,
           autofocus: false,
-          decoration: decoration('Enter name'),
+          decoration: decoration('Enter name', new Icon(Icons.person, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your name';
@@ -85,7 +86,7 @@ class RegisterState extends State<RegisterPage> {
           controller: myControllerPhone,
           keyboardType: TextInputType.phone,
           autofocus: false,
-          decoration: decoration('Enter phone'),
+          decoration: decoration('Enter phone', new Icon(Icons.phone, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty && value.length < 11) {
               return 'Please enter a valid phone';
@@ -99,7 +100,7 @@ class RegisterState extends State<RegisterPage> {
           keyboardType: TextInputType.text,
           autofocus: false,
           obscureText: true,
-          decoration: decoration('Enter password'),
+          decoration: decoration('Enter password', new Icon(Icons.lock, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty || value.length < 8) {
               return 'Password must be at least 8 characters';
@@ -113,7 +114,7 @@ class RegisterState extends State<RegisterPage> {
           keyboardType: TextInputType.text,
           autofocus: false,
           obscureText: true,
-          decoration: decoration('Confirm password'),
+          decoration: decoration('Confirm password', new Icon(Icons.lock, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty || value != myControllerPassword.text) {
               return 'Confirmation password does not match';
