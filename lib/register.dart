@@ -87,8 +87,8 @@ class RegisterState extends State<RegisterPage> {
           autofocus: false,
           decoration: decoration('Enter phone'),
           validator: (value) {
-            if (value.isEmpty) {
-              return 'Please enter your phone';
+            if (value.isEmpty && value.length < 11) {
+              return 'Please enter a valid phone';
             }
             return null;
           },
@@ -101,8 +101,8 @@ class RegisterState extends State<RegisterPage> {
           obscureText: true,
           decoration: decoration('Enter password'),
           validator: (value) {
-            if (value.isEmpty) {
-              return 'Please enter your password';
+            if (value.isEmpty || value.length < 8) {
+              return 'Password must be at least 8 characters';
             }
             return null;
           },
@@ -115,8 +115,8 @@ class RegisterState extends State<RegisterPage> {
           obscureText: true,
           decoration: decoration('Confirm password'),
           validator: (value) {
-            if (value.isEmpty) {
-              return 'Please confirm your password';
+            if (value.isEmpty || value != myControllerPassword.text) {
+              return 'Confirmation password does not match';
             }
             return null;
           },
@@ -169,7 +169,7 @@ class RegisterState extends State<RegisterPage> {
                         ),
                       ),
                     );
-                  } else {}
+                  }
                 },
                 padding: EdgeInsets.all(12),
                 color: Colors.green,
@@ -214,5 +214,4 @@ class RegisterState extends State<RegisterPage> {
       ),
     );
   }
-
 }

@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class APIUtil {
 
-  Map<String, String> _headers = {'Content-Type': 'application/json'};
+  Map<String, String> _headers = {HttpHeaders.contentTypeHeader: 'application/json'};
 
   Future<dynamic> fetch(String uri) async {
     final response = await http.get(uri, headers: _headers);
