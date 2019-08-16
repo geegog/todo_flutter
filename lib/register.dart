@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:todo_flutter/login.dart';
-import 'pojo/user.dart';
-import 'pojo/user_request.dart';
+import 'dto/user.dart';
+import 'dto/user_request.dart';
 import 'api.dart';
 
 class RegisterPage extends StatefulWidget {
