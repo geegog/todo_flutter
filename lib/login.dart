@@ -26,6 +26,12 @@ class LoginState extends State<LoginPage> {
   final myControllerPassword = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+  }
+
+  @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     myControllerEmail.dispose();
@@ -95,7 +101,7 @@ class LoginState extends State<LoginPage> {
                       'password': myControllerPassword.text
                     });
 
-                    Future<dynamic> response = APIUtil().post(
+                    Future<dynamic> response = APIUtil.post(
                         'http://172.31.128.20:4000/api/v1/sign_in',
                         loginRequest);
 

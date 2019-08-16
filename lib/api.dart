@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 
 class APIUtil {
 
-  Map<String, String> _headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+  static Map<String, String> _headers = {HttpHeaders.contentTypeHeader: 'application/json'};
 
-  Future<dynamic> fetch(String uri) async {
+  static Future<dynamic> fetch(String uri) async {
     final response = await http.get(uri, headers: _headers);
 
     if (response.statusCode == 200) {
@@ -18,7 +18,7 @@ class APIUtil {
     }
   }
 
-  Future<dynamic> post(String uri, String body) async {
+  static Future<dynamic> post(String uri, String body) async {
     final response = await http.post(uri, headers: _headers, body: body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {

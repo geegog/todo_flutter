@@ -145,7 +145,7 @@ class RegisterState extends State<RegisterPage> {
 
                     String userRequest = jsonEncode(UserRequest(user));
 
-                    Future<dynamic> response = APIUtil().post(
+                    Future<dynamic> response = APIUtil.post(
                         'http://172.31.128.20:4000/api/v1/sign_up',
                         userRequest);
 
