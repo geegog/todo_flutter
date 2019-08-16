@@ -4,19 +4,16 @@ class Auth {
 
   static final String authTokenKey = 'token';
 
-  static void setToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
+  static void setToken(String token, SharedPreferences prefs) async {
     prefs.setString(authTokenKey, token);
   }
 
-  static Future<String> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
+  static String getToken(SharedPreferences prefs) {
     String token = prefs.getString(authTokenKey) ?? null;
     return token;
   }
 
-  static void removeToken() async {
-    final prefs = await SharedPreferences.getInstance();
+  static void removeToken(SharedPreferences prefs) {
     prefs.remove(authTokenKey);
   }
 }

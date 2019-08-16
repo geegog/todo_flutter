@@ -1,12 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_flutter/register.dart';
 
 import 'api.dart';
+import 'auth.dart';
+import 'home.dart';
 
 class LoginPage extends StatefulWidget {
-  static String tag = 'login-page';
+  static String tag = '/login-page';
 
   @override
   LoginState createState() => new LoginState();
@@ -14,6 +17,9 @@ class LoginPage extends StatefulWidget {
 
 class LoginState extends State<LoginPage> {
   final _formKey = new GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  SharedPreferences _sharedPreferences;
 
   Function decoration = (String text, Icon icon) => InputDecoration(
         prefixIcon: icon,
@@ -28,7 +34,18 @@ class LoginState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    _fetchSessionAndNavigate();
 
+  }
+
+  _fetchSessionAndNavigate() async  {
+    _sharedPreferences = await _prefs;
+    String authToken = Auth.getToken(_sharedPreferences);
+    if(authToken != null) {
+      //Navigator.of(_scaffoldKey.currentContext)
+      //    .pushReplacementNamed(HomePage.routeName);
+      Navigator.of(_scaffoldKey.currentContext).pushReplacementNamed(HomePage.tag);
+    }
   }
 
   @override
@@ -112,8 +129,11 @@ class LoginState extends State<LoginPage> {
                             future: response,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
+                                Map<String, dynamic> jwt = jsonDecode(snapshot.data);
+                                Auth.setToken(jwt['jwt'], _sharedPreferences);
                                 return Text(snapshot.data);
                               } else if (snapshot.hasError) {
+                                print('error');
                                 return Text("${snapshot.error}");
                               }
 
@@ -144,11 +164,12 @@ class LoginState extends State<LoginPage> {
         style: TextStyle(color: Colors.blue),
       ),
       onPressed: () {
-        Navigator.of(context).pushNamed(RegisterPage.tag);
+        Navigator.of(context).pushReplacementNamed(RegisterPage.tag);
       },
     );
 
     return Scaffold(
+      key: _scaffoldKey,
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.only(left: 24.0, right: 24.0),

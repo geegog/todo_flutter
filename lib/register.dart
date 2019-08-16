@@ -7,7 +7,7 @@ import 'dto/user_request.dart';
 import 'api.dart';
 
 class RegisterPage extends StatefulWidget {
-  static String tag = 'register-page';
+  static String tag = '/register-page';
 
   @override
   RegisterState createState() => new RegisterState();
@@ -191,7 +191,7 @@ class RegisterState extends State<RegisterPage> {
         style: TextStyle(color: Colors.blue),
       ),
       onPressed: () {
-        Navigator.of(context).pushNamed(LoginPage.tag);
+        Navigator.of(context).pushReplacementNamed(LoginPage.tag);
       },
     );
 
