@@ -42,8 +42,6 @@ class LoginState extends State<LoginPage> {
     _sharedPreferences = await _prefs;
     String authToken = Auth.getToken(_sharedPreferences);
     if(authToken != null) {
-      //Navigator.of(_scaffoldKey.currentContext)
-      //    .pushReplacementNamed(HomePage.routeName);
       Navigator.of(_scaffoldKey.currentContext).pushReplacementNamed(HomePage.tag);
     }
   }
