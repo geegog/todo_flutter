@@ -34,17 +34,17 @@ class LoginState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _fetchSessionAndNavigate();
-
+    //_fetchSessionAndNavigate();
   }
 
-  _fetchSessionAndNavigate() async  {
+  /*_fetchSessionAndNavigate() async {
     _sharedPreferences = await _prefs;
     String authToken = Auth.getToken(_sharedPreferences);
-    if(authToken != null) {
-      Navigator.of(_scaffoldKey.currentContext).pushReplacementNamed(HomePage.tag);
+    if (authToken != null) {
+      Navigator.of(_scaffoldKey.currentContext)
+          .pushReplacementNamed(HomePage.tag);
     }
-  }
+  }*/
 
   @override
   void dispose() {
@@ -127,11 +127,13 @@ class LoginState extends State<LoginPage> {
                             future: response,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                Map<String, dynamic> jwt = jsonDecode(snapshot.data);
-                                Auth.setToken(jwt['jwt'], _sharedPreferences);
-                                return Text(snapshot.data);
+                                Map<String, dynamic> jwt =
+                                    jsonDecode(snapshot.data);
+                                Auth.setToken(jwt['jwt']);
+                                Navigator.of(_scaffoldKey.currentContext)
+                                    .pushReplacementNamed(HomePage.tag);
+                                return Text('Welcome...');
                               } else if (snapshot.hasError) {
-                                print('error');
                                 return Text("${snapshot.error}");
                               }
 

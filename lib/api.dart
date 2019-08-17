@@ -2,9 +2,14 @@ import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
+import 'auth.dart';
+
 class APIUtil {
 
-  static Map<String, String> _headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+  static Map<String, String> _headers = {HttpHeaders.contentTypeHeader: 'application/json'}
+  //HttpHeaders.authorizationHeader: 'Bearer $jwt'};
+
+  //static get jwt => Auth.getToken();
 
   static Future<dynamic> fetch(String uri) async {
     final response = await http.get(uri, headers: _headers);
