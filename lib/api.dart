@@ -6,7 +6,7 @@ import 'auth.dart';
 
 class APIUtil {
 
-  static Map<String, String> _headers = {HttpHeaders.contentTypeHeader: 'application/json'}
+  static Map<String, String> _headers = {HttpHeaders.contentTypeHeader: 'application/json'};
   //HttpHeaders.authorizationHeader: 'Bearer $jwt'};
 
   //static get jwt => Auth.getToken();
