@@ -191,7 +191,7 @@ class RegisterState extends State<RegisterPage> {
         style: TextStyle(color: Colors.blue),
       ),
       onPressed: () {
-        Navigator.of(context).pushReplacementNamed(LoginPage.tag);
+        Navigator.of(context).pop();
       },
     );
 

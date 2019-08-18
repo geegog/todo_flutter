@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_flutter/register.dart';
 
 import 'api.dart';
@@ -16,10 +15,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginState extends State<LoginPage> {
+  bool _isSuccessful = false;
   final _formKey = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  SharedPreferences _sharedPreferences;
 
   Function decoration = (String text, Icon icon) => InputDecoration(
         prefixIcon: icon,
@@ -34,17 +32,12 @@ class LoginState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    //_fetchSessionAndNavigate();
   }
 
-  /*_fetchSessionAndNavigate() async {
-    _sharedPreferences = await _prefs;
-    String authToken = Auth.getToken(_sharedPreferences);
-    if (authToken != null) {
-      Navigator.of(_scaffoldKey.currentContext)
-          .pushReplacementNamed(HomePage.tag);
-    }
-  }*/
+  _navigateToHome() {
+    Navigator.of(_scaffoldKey.currentContext)
+        .pushReplacementNamed(HomePage.tag);
+  }
 
   @override
   void dispose() {
@@ -130,8 +123,10 @@ class LoginState extends State<LoginPage> {
                                 Map<String, dynamic> jwt =
                                     jsonDecode(snapshot.data);
                                 Auth.setToken(jwt['jwt']);
-                                Navigator.of(_scaffoldKey.currentContext)
-                                    .pushReplacementNamed(HomePage.tag);
+                                Auth.getToken().then((onValue) {
+                                  print(onValue);
+                                });
+                                //_isSuccessful = true;
                                 return Text('Welcome...');
                               } else if (snapshot.hasError) {
                                 return Text("${snapshot.error}");
@@ -164,7 +159,7 @@ class LoginState extends State<LoginPage> {
         style: TextStyle(color: Colors.blue),
       ),
       onPressed: () {
-        Navigator.of(context).pushReplacementNamed(RegisterPage.tag);
+        Navigator.of(context).pushNamed(RegisterPage.tag);
       },
     );
 

@@ -10,7 +10,7 @@ void main() {
 class MyApp extends StatelessWidget {
 
   final routes = <String, WidgetBuilder>{
-    '/': (context) => HomePage(),
+    '/': (context) => LoginPage(),
     RegisterPage.tag: (context) => RegisterPage(),
     LoginPage.tag: (context) => LoginPage(),
     HomePage.tag: (context) => HomePage(),
