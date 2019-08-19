@@ -20,8 +20,8 @@ class APIUtil {
           : response.body;
     } catch (exception) {
       return exception.toString().contains('SocketException')
-          ? {'error': 'NetworkError'}
-          : {'error': 'Something unexpected happened'};
+          ? '{"error": "Network Error"}'
+          : '{"error": "Something unexpected happened"}';
     }
   }
 
@@ -33,8 +33,8 @@ class APIUtil {
           : response.body;
     } catch (exception) {
       return exception.toString().contains('SocketException')
-          ? {'error': 'NetworkError'}
-          : {'error': 'Something unexpected happened'};
+          ? '{"error": "Network Error"}'
+          : '{"error": "Something unexpected happened"}';
     }
   }
 }

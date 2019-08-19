@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_flutter/register.dart';
 
 import 'api.dart';
+import 'auth.dart';
 import 'home.dart';
 
 class LoginPage extends StatefulWidget {
@@ -60,15 +62,24 @@ class LoginState extends State<LoginPage> {
       var response = await APIUtil.post(
           'http://172.31.128.20:4000/api/v1/sign_in', loginRequest);
 
+      print(response);
+
       Map<String, dynamic> responseObj = json.decode(response);
 
-      if (responseObj['error'] != null) {
+      if (responseObj['errors'] != null) {
+        _snack(responseObj['errors'].toString());
+        _hideLoading();
+      } else if (responseObj['error'] != null) {
         _snack(responseObj['error']);
+        _hideLoading();
       } else {
-        Navigator.of(_scaffoldKey.currentContext)
-            .pushReplacementNamed(HomePage.tag);
+        Auth.setToken(responseObj['jwt']);
+        Navigator.push(
+          context,
+          CupertinoPageRoute(builder: (context) => HomePage()),
+        );
+        _hideLoading();
       }
-      _hideLoading();
     } else {
       _hideLoading();
     }
@@ -100,7 +111,7 @@ class LoginState extends State<LoginPage> {
         TextFormField(
           controller: myControllerEmail,
           keyboardType: TextInputType.emailAddress,
-          autofocus: true,
+          autofocus: false,
           decoration: decoration(
               "Enter email", new Icon(Icons.email, color: Colors.green)),
           validator: (value) {
@@ -151,7 +162,10 @@ class LoginState extends State<LoginPage> {
         style: TextStyle(color: Colors.blue),
       ),
       onPressed: () {
-        Navigator.of(_scaffoldKey.currentContext).pushNamed(RegisterPage.tag);
+        Navigator.push(
+          context,
+          CupertinoPageRoute(builder: (context) => RegisterPage()),
+        );
       },
     );
   }
@@ -180,7 +194,9 @@ class LoginState extends State<LoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       body: _isLoading
-          ? CircularProgressIndicator()
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
           : _loginScreen(),
     );
   }

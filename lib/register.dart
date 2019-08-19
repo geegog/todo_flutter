@@ -14,7 +14,9 @@ class RegisterPage extends StatefulWidget {
 }
 
 class RegisterState extends State<RegisterPage> {
+  bool _isLoading = false;
   final _formKey = new GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   Function decoration = (String text, Icon icon) => InputDecoration(
         prefixIcon: icon,
@@ -40,11 +42,67 @@ class RegisterState extends State<RegisterPage> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
+  _showLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
 
-    final logo = Hero(
+  _hideLoading() {
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  _registerUser() async {
+    _showLoading();
+
+    if (_formKey.currentState.validate()) {
+      User user = User(
+          myControllerName.text,
+          myControllerEmail.text,
+          myControllerPhone.text,
+          myControllerPassword.text,
+          myControllerConfirmPassword.text);
+
+      String userRequest = jsonEncode(UserRequest(user));
+
+      var response = await APIUtil.post(
+          'http://172.31.128.20:4000/api/v1/sign_up', userRequest);
+      print(response);
+
+      Map<String, dynamic> responseObj = json.decode(response);
+
+      if (responseObj['errors'] != null) {
+        _snack(responseObj['errors'].toString());
+      } else if (responseObj['error'] != null) {
+        _snack(responseObj['error']);
+      } else {
+        setState(() {
+          myControllerName.clear();
+          myControllerEmail.clear();
+          myControllerPhone.clear();
+          myControllerPassword.clear();
+          myControllerConfirmPassword.clear();
+        });
+        _snack("Accout created successfully. Please login...");
+      }
+      _hideLoading();
+    } else {
+      _hideLoading();
+    }
+  }
+
+  _snack(String message) {
+    _scaffoldKey.currentState.showSnackBar(
+      new SnackBar(
+        content: new Text(message),
+      ),
+    );
+  }
+
+  Widget logo() {
+    return Hero(
       tag: 'hero',
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
@@ -52,15 +110,18 @@ class RegisterState extends State<RegisterPage> {
         child: Image.asset('assets/logo.png'),
       ),
     );
+  }
 
-    final form = Form(
+  Widget form() {
+    return Form(
       key: _formKey,
       child: Column(children: <Widget>[
         TextFormField(
           controller: myControllerEmail,
           keyboardType: TextInputType.emailAddress,
-          autofocus: true,
-          decoration: decoration('Enter email', new Icon(Icons.email, color: Colors.green)),
+          autofocus: false,
+          decoration: decoration(
+              'Enter email', new Icon(Icons.email, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your email';
@@ -73,7 +134,8 @@ class RegisterState extends State<RegisterPage> {
           controller: myControllerName,
           keyboardType: TextInputType.text,
           autofocus: false,
-          decoration: decoration('Enter name', new Icon(Icons.person, color: Colors.green)),
+          decoration: decoration(
+              'Enter name', new Icon(Icons.person, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your name';
@@ -86,7 +148,8 @@ class RegisterState extends State<RegisterPage> {
           controller: myControllerPhone,
           keyboardType: TextInputType.phone,
           autofocus: false,
-          decoration: decoration('Enter phone', new Icon(Icons.phone, color: Colors.green)),
+          decoration: decoration(
+              'Enter phone', new Icon(Icons.phone, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty && value.length < 11) {
               return 'Please enter a valid phone';
@@ -100,7 +163,8 @@ class RegisterState extends State<RegisterPage> {
           keyboardType: TextInputType.text,
           autofocus: false,
           obscureText: true,
-          decoration: decoration('Enter password', new Icon(Icons.lock, color: Colors.green)),
+          decoration: decoration(
+              'Enter password', new Icon(Icons.lock, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty || value.length < 8) {
               return 'Password must be at least 8 characters';
@@ -114,7 +178,8 @@ class RegisterState extends State<RegisterPage> {
           keyboardType: TextInputType.text,
           autofocus: false,
           obscureText: true,
-          decoration: decoration('Confirm password', new Icon(Icons.lock, color: Colors.green)),
+          decoration: decoration(
+              'Confirm password', new Icon(Icons.lock, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty || value != myControllerPassword.text) {
               return 'Confirmation password does not match';
@@ -132,46 +197,7 @@ class RegisterState extends State<RegisterPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),
                 ),
-                onPressed: () {
-                  // Validate returns true if the form is valid, or false
-                  // otherwise.
-                  if (_formKey.currentState.validate()) {
-                    User user = User(
-                        myControllerName.text,
-                        myControllerEmail.text,
-                        myControllerPhone.text,
-                        myControllerPassword.text,
-                        myControllerConfirmPassword.text);
-
-                    String userRequest = jsonEncode(UserRequest(user));
-
-                    Future<dynamic> response = APIUtil.post(
-                        'http://172.31.128.20:4000/api/v1/sign_up',
-                        userRequest);
-
-                    Scaffold.of(context).showSnackBar(
-                      SnackBar(
-                        content: Container(
-                          child: FutureBuilder<dynamic>(
-                            future: response,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return Text(snapshot.data);
-                              } else if (snapshot.hasError) {
-                                return Text("${snapshot.error}");
-                              }
-
-                              // By default, show a loading spinner.
-                              return new Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [CircularProgressIndicator()]);
-                            },
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                },
+                onPressed: _registerUser,
                 padding: EdgeInsets.all(12),
                 color: Colors.green,
                 child: Text(
@@ -184,35 +210,51 @@ class RegisterState extends State<RegisterPage> {
         ),
       ]),
     );
+  }
 
-    final loginLabel = FlatButton(
+  Widget loginLabel() {
+    return FlatButton(
       child: Text(
         'Already have an account',
         style: TextStyle(color: Colors.blue),
       ),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.pop(context);
       },
     );
+  }
 
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              logo,
-              SizedBox(height: 48.0),
-              form,
-              new Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [loginLabel]),
-            ],
-          ),
+  Widget _registerScreen() {
+    return Center(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(left: 24.0, right: 24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            logo(),
+            SizedBox(height: 48.0),
+            form(),
+            new Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [loginLabel()]),
+          ],
         ),
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+
+    return Scaffold(
+      key: _scaffoldKey,
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : _registerScreen(),
     );
   }
 }
