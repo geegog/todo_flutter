@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:todo_flutter/register.dart';
 
 import 'api.dart';
-import 'auth.dart';
 import 'home.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,11 +14,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginState extends State<LoginPage> {
-  bool _isSuccessful = false;
+  bool _isLoading = false;
   final _formKey = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  Function decoration = (String text, Icon icon) => InputDecoration(
+  final Function decoration = (String text, Icon icon) => InputDecoration(
         prefixIcon: icon,
         hintText: text,
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -30,16 +29,6 @@ class LoginState extends State<LoginPage> {
   final myControllerPassword = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  _navigateToHome() {
-    Navigator.of(_scaffoldKey.currentContext)
-        .pushReplacementNamed(HomePage.tag);
-  }
-
-  @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     myControllerEmail.dispose();
@@ -47,11 +36,54 @@ class LoginState extends State<LoginPage> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
+  _showLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
 
-    final logo = Hero(
+  _hideLoading() {
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  _authenticateUser() async {
+    _showLoading();
+
+    if (_formKey.currentState.validate()) {
+      String loginRequest = jsonEncode({
+        'email': myControllerEmail.text,
+        'password': myControllerPassword.text
+      });
+
+      var response = await APIUtil.post(
+          'http://172.31.128.20:4000/api/v1/sign_in', loginRequest);
+
+      Map<String, dynamic> responseObj = json.decode(response);
+
+      if (responseObj['error'] != null) {
+        _snack(responseObj['error']);
+      } else {
+        Navigator.of(_scaffoldKey.currentContext)
+            .pushReplacementNamed(HomePage.tag);
+      }
+      _hideLoading();
+    } else {
+      _hideLoading();
+    }
+  }
+
+  _snack(String message) {
+    _scaffoldKey.currentState.showSnackBar(
+      new SnackBar(
+        content: new Text(message),
+      ),
+    );
+  }
+
+  Widget logo() {
+    return Hero(
       tag: 'hero',
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
@@ -59,8 +91,10 @@ class LoginState extends State<LoginPage> {
         child: Image.asset('assets/logo.png'),
       ),
     );
+  }
 
-    final form = Form(
+  Widget form() {
+    return Form(
       key: _formKey,
       child: Column(children: <Widget>[
         TextFormField(
@@ -95,92 +129,59 @@ class LoginState extends State<LoginPage> {
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: ButtonTheme(
             minWidth: double.infinity,
-            child: Builder(
-              builder: (context) => RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                onPressed: () {
-                  // Validate returns true if the form is valid, or false
-                  // otherwise.
-                  if (_formKey.currentState.validate()) {
-                    String loginRequest = jsonEncode({
-                      'email': myControllerEmail.text,
-                      'password': myControllerPassword.text
-                    });
-
-                    Future<dynamic> response = APIUtil.post(
-                        'http://172.31.128.20:4000/api/v1/sign_in',
-                        loginRequest);
-
-                    Scaffold.of(context).showSnackBar(
-                      SnackBar(
-                        content: Container(
-                          child: FutureBuilder<dynamic>(
-                            future: response,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                Map<String, dynamic> jwt =
-                                    jsonDecode(snapshot.data);
-                                Auth.setToken(jwt['jwt']);
-                                Auth.getToken().then((onValue) {
-                                  print(onValue);
-                                });
-                                //_isSuccessful = true;
-                                return Text('Welcome...');
-                              } else if (snapshot.hasError) {
-                                return Text("${snapshot.error}");
-                              }
-
-                              // By default, show a loading spinner.
-                              return new Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [CircularProgressIndicator()]);
-                            },
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                },
-                padding: EdgeInsets.all(12),
-                color: Colors.green,
-                child: Text('Log In', style: TextStyle(color: Colors.white)),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
               ),
+              onPressed: _authenticateUser,
+              padding: EdgeInsets.all(12),
+              color: Colors.green,
+              child: Text('Log In', style: TextStyle(color: Colors.white)),
             ),
           ),
         ),
       ]),
     );
+  }
 
-    final registerLabel = FlatButton(
+  Widget registerLabel() {
+    return FlatButton(
       child: Text(
         'Create a new account',
         style: TextStyle(color: Colors.blue),
       ),
       onPressed: () {
-        Navigator.of(context).pushNamed(RegisterPage.tag);
+        Navigator.of(_scaffoldKey.currentContext).pushNamed(RegisterPage.tag);
       },
     );
+  }
 
-    return Scaffold(
-      key: _scaffoldKey,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              logo,
-              SizedBox(height: 48.0),
-              form,
-              new Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [registerLabel])
-            ],
-          ),
+  Widget _loginScreen() {
+    return Center(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(left: 24.0, right: 24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            logo(),
+            SizedBox(height: 48.0),
+            form(),
+            new Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [registerLabel()])
+          ],
         ),
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _scaffoldKey,
+      body: _isLoading
+          ? CircularProgressIndicator()
+          : _loginScreen(),
     );
   }
 }
