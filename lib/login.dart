@@ -60,7 +60,7 @@ class LoginState extends State<LoginPage> {
       });
 
       var response = await APIUtil.post(
-          'http://172.31.128.20:4000/api/v1/sign_in', loginRequest);
+          'sign_in', loginRequest);
 
       print(response);
 

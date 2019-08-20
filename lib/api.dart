@@ -5,6 +5,9 @@ import 'package:http/http.dart' as http;
 import 'auth.dart';
 
 class APIUtil {
+
+  static final String developmentHost = 'https://gentle-bayou-12059.herokua/api/v1/';
+
   static Map<String, String> _headers = {
     HttpHeaders.contentTypeHeader: 'application/json'
   };
@@ -14,7 +17,7 @@ class APIUtil {
 
   static Future<dynamic> fetch(String uri) async {
     try {
-      final response = await http.get(uri, headers: _headers);
+      final response = await http.get(developmentHost + uri, headers: _headers);
       return (response.statusCode == 200)
           ? response.body
           : response.body;
@@ -27,7 +30,7 @@ class APIUtil {
 
   static Future<dynamic> post(String uri, String body) async {
     try {
-      final response = await http.post(uri, headers: _headers, body: body);
+      final response = await http.post(developmentHost + uri, headers: _headers, body: body);
       return (response.statusCode == 200 || response.statusCode == 201)
           ? response.body
           : response.body;
