@@ -28,6 +28,19 @@ class TodoState extends State<Todo> {
       appBar: AppBar(
         title: Text('Todos'),
       ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              title: Text('Logout'),
+              trailing: Icon(Icons.power_settings_new),
+              onTap: (){
+                
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 }

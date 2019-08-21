@@ -7,7 +7,6 @@ import 'auth.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   final routes = <String, WidgetBuilder>{
     '/': (context) => LoginPage(),
     RegisterPage.tag: (context) => RegisterPage(),
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-        initialRoute: (Auth.getToken() != null) ? HomePage.tag : '/',
+      initialRoute: (Auth.getToken() != null) ? HomePage.tag : '/',
       routes: routes,
     );
   }
