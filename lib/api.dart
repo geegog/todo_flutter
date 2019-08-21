@@ -8,12 +8,11 @@ class APIUtil {
 
   static final String developmentHost = 'https://gentle-bayou-12059.herokuapp.com/api/v1/';
 
-  static Map<String, String> _headers = {
-    HttpHeaders.contentTypeHeader: 'application/json'
-  };
-  //HttpHeaders.authorizationHeader: 'Bearer $jwt'};
+  static get jwt => Auth.getToken();
 
-  //static get jwt => Auth.getToken();
+  static Map<String, String> _headers = {
+    HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'Bearer $jwt'
+  };
 
   static Future<dynamic> fetch(String uri) async {
     try {

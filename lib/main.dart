@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 import 'register.dart';
 import 'home.dart';
+import 'auth.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
 
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-        initialRoute: '/',
+        initialRoute: (Auth.getToken() != null) ? HomePage.tag : '/',
       routes: routes,
     );
   }

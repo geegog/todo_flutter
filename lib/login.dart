@@ -68,18 +68,16 @@ class LoginState extends State<LoginPage> {
 
       if (responseObj['errors'] != null) {
         _snack(responseObj['errors'].toString());
-        _hideLoading();
       } else if (responseObj['error'] != null) {
         _snack(responseObj['error']);
-        _hideLoading();
       } else {
         Auth.setToken(responseObj['jwt']);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           CupertinoPageRoute(builder: (context) => HomePage()),
         );
-        _hideLoading();
       }
+      _hideLoading();
     } else {
       _hideLoading();
     }
