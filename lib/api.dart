@@ -6,7 +6,7 @@ import 'auth.dart';
 
 class APIUtil {
 
-  static final String developmentHost = 'https://gentle-bayou-12059.herokua/api/v1/';
+  static final String developmentHost = 'https://gentle-bayou-12059.herokuapp.com/api/v1/';
 
   static Map<String, String> _headers = {
     HttpHeaders.contentTypeHeader: 'application/json'
@@ -35,6 +35,7 @@ class APIUtil {
           ? response.body
           : response.body;
     } catch (exception) {
+      print(exception);
       return exception.toString().contains('SocketException')
           ? '{"error": "Network Error"}'
           : '{"error": "Something unexpected happened"}';
