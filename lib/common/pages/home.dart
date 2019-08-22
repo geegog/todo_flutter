@@ -25,7 +25,8 @@ class Todo extends StatefulWidget {
 }
 
 class TodoState extends State<Todo> {
-  static var name = services.get<Auth>().getName();
+  static var name = services.get<Auth>().getUser()[0];
+  static var email = services.get<Auth>().getUser()[1];
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +52,20 @@ class TodoState extends State<Todo> {
               padding: EdgeInsets.all(0.0),
               child: ListView(children: [
                 ListTile(
-                  title: Container(
-                    child: Row(children: [
-                      Text('Welcome, '),
-                      Text(name),
-                    ]),
+                  title: UserAccountsDrawerHeader(
+                    decoration: BoxDecoration(color: Colors.transparent),
+                    accountName: Text(
+                      name,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    accountEmail: Text(
+                      email,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    currentAccountPicture: new CircleAvatar(
+                      backgroundColor: Colors.pink,
+                      child: Text(name.substring(0, 1).toUpperCase()),
+                    ),
                   ),
                   trailing: IconButton(
                       icon: Icon(Icons.close),

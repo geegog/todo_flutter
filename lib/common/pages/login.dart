@@ -70,7 +70,7 @@ class LoginState extends State<LoginPage> {
         _snack(responseObj['error']);
       } else {
         services.get<Auth>().setToken(responseObj['jwt']);
-        services.get<Auth>().saveName();
+        services.get<Auth>().saveUser();
         Navigator.pushReplacement(
           context,
           CupertinoPageRoute(builder: (context) => HomePage()),

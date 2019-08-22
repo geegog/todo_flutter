@@ -5,7 +5,7 @@ import 'package:todo_flutter/common/utils/api.dart';
 
 class Auth {
   static final String authTokenKey = 'token';
-  static final String userTokenKey = 'user';
+  static final String userKey = 'user';
   static Auth _instance;
   static SharedPreferences _preferences;
 
@@ -29,7 +29,7 @@ class Auth {
 
   void removeUser() {
     _preferences.remove(authTokenKey);
-    _preferences.remove(userTokenKey);
+    _preferences.remove(userKey);
   }
 
   Map<String, dynamic> parseJwt(String token) {
@@ -74,16 +74,16 @@ class Auth {
     return DateTime.now().isAfter(exp);
   }
 
-  saveName() async {
+  saveUser() async {
     var response = await APIUtil().fetch('my_user');
-
     Map<String, dynamic> responseObj = json.decode(response);
     String name = responseObj['data']['name'];
-    _preferences.setString(userTokenKey, name);
+    String email = responseObj['data']['email'];
+    _preferences.setStringList(userKey, <String>[name, email]);
   }
 
-  String getName() {
-    return _preferences.getString(userTokenKey);
+  List<String> getUser() {
+    return _preferences.getStringList(userKey);
   }
 
 }
