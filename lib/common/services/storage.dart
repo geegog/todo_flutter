@@ -1,7 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Storage {
-
   static final String authTokenKey = 'token';
   static Storage _instance;
   static SharedPreferences _preferences;

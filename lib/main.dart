@@ -26,7 +26,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      initialRoute: (services.get<Storage>().getToken() != null) ? HomePage.tag : '/',
+      initialRoute:
+          (services.get<Storage>().getToken() != null) ? HomePage.tag : '/',
       routes: routes,
     );
   }

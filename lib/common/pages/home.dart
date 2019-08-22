@@ -32,7 +32,14 @@ class TodoState extends State<Todo> {
       appBar: AppBar(
         title: Text('Todos'),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.today, color: Colors.white, semanticLabel: 'add todo',)),
+          IconButton(
+            icon: Icon(
+              Icons.today,
+              color: Colors.white,
+              semanticLabel: 'add todo',
+            ),
+            onPressed: () {},
+          ),
         ],
       ),
       drawer: Drawer(

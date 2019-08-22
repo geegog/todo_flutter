@@ -60,8 +60,7 @@ class LoginState extends State<LoginPage> {
         'password': myControllerPassword.text
       });
 
-      var response = await APIUtil.post(
-          'sign_in', loginRequest);
+      var response = await APIUtil.post('sign_in', loginRequest);
 
       Map<String, dynamic> responseObj = json.decode(response);
 

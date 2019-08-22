@@ -9,7 +9,8 @@ class UserRequest {
 
   User user;
 
-  factory UserRequest.fromJson(Map<String, dynamic> json) => _$UserRequestFromJson(json);
+  factory UserRequest.fromJson(Map<String, dynamic> json) =>
+      _$UserRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserRequestToJson(this);
 }
