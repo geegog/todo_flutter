@@ -48,8 +48,21 @@ class TodoState extends State<Todo> {
         child: ListView(
           children: <Widget>[
             DrawerHeader(
+              padding: EdgeInsets.all(0.0),
               child: ListView(children: [
-                Row(children: [Text('Welcome, '), Text(name)])
+                ListTile(
+                  title: Container(
+                    child: Row(children: [
+                      Text('Welcome, '),
+                      Text(name),
+                    ]),
+                  ),
+                  trailing: IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                ),
               ]),
             ),
             ListTile(
