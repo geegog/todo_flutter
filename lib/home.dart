@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_flutter/auth.dart';
+import 'package:todo_flutter/login.dart';
+import 'package:todo_flutter/services/service_locator.dart';
 
 class HomePage extends StatelessWidget {
   static String tag = '/home-page';
@@ -31,11 +35,16 @@ class TodoState extends State<Todo> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
+            DrawerHeader(child: Container()),
             ListTile(
               title: Text('Logout'),
               trailing: Icon(Icons.power_settings_new),
               onTap: (){
-                
+                services.get<Auth>().removeToken();
+                Navigator.pushReplacement(
+                  context,
+                  CupertinoPageRoute(builder: (context) => LoginPage()),
+                );
               },
             )
           ],

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:todo_flutter/services/service_locator.dart';
 
 import 'auth.dart';
 
@@ -8,7 +9,7 @@ class APIUtil {
 
   static final String developmentHost = 'https://gentle-bayou-12059.herokuapp.com/api/v1/';
 
-  static get jwt => Auth.getToken();
+  static get jwt => services.get<Auth>().getToken();
 
   static Map<String, String> _headers = {
     HttpHeaders.contentTypeHeader: 'application/json', HttpHeaders.authorizationHeader: 'Bearer $jwt'

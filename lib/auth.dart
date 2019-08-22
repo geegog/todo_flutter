@@ -3,20 +3,28 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Auth {
 
   static final String authTokenKey = 'token';
+  static Auth _instance;
+  static SharedPreferences _preferences;
 
-  static void setToken(String token) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(authTokenKey, token);
+  static Future<Auth> getInstance() async {
+    if (_instance == null) {
+      _instance = Auth();
+    }
+    if (_preferences == null) {
+      _preferences = await SharedPreferences.getInstance();
+    }
+    return _instance;
   }
 
-  static Future<String> getToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token = prefs.getString(authTokenKey) ?? null;
-    return token;
+  void setToken(String token) {
+    _preferences.setString(authTokenKey, token);
   }
 
-  static void removeToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(authTokenKey);
+  String getToken() {
+    return _preferences.getString(authTokenKey);
+  }
+
+  void removeToken() {
+    _preferences.remove(authTokenKey);
   }
 }

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:todo_flutter/services/service_locator.dart';
 import 'login.dart';
 import 'register.dart';
 import 'home.dart';
 import 'auth.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  await setupLocator();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
@@ -22,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      initialRoute: (Auth.getToken() != null) ? HomePage.tag : '/',
+      initialRoute: (services.get<Auth>().getToken() != null) ? HomePage.tag : '/',
       routes: routes,
     );
   }

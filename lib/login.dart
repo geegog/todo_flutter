@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_flutter/register.dart';
+import 'package:todo_flutter/services/service_locator.dart';
 
 import 'api.dart';
 import 'auth.dart';
@@ -62,8 +63,6 @@ class LoginState extends State<LoginPage> {
       var response = await APIUtil.post(
           'sign_in', loginRequest);
 
-      print(response);
-
       Map<String, dynamic> responseObj = json.decode(response);
 
       if (responseObj['errors'] != null) {
@@ -71,7 +70,7 @@ class LoginState extends State<LoginPage> {
       } else if (responseObj['error'] != null) {
         _snack(responseObj['error']);
       } else {
-        Auth.setToken(responseObj['jwt']);
+        services.get<Auth>().setToken(responseObj['jwt']);
         Navigator.pushReplacement(
           context,
           CupertinoPageRoute(builder: (context) => HomePage()),
