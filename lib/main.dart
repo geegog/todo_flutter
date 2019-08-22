@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'common/pages/login.dart';
 import 'common/pages/register.dart';
 import 'common/pages/home.dart';
-import 'common/services/storage.dart';
+import 'common/services/auth.dart';
 import 'common/services/service_locator.dart';
 
 void main() async {
@@ -26,8 +26,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      initialRoute:
-          (services.get<Storage>().getToken() != null) ? HomePage.tag : '/',
+      initialRoute: (services.get<Auth>().getToken() == null ||
+              services.get<Auth>().isTokenExpired())
+          ? '/'
+          : HomePage.tag,
       routes: routes,
     );
   }

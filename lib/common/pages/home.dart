@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_flutter/common/services/storage.dart';
+import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/pages/login.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
 
@@ -25,6 +25,8 @@ class Todo extends StatefulWidget {
 }
 
 class TodoState extends State<Todo> {
+  static var name = services.get<Auth>().getName();
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -45,12 +47,16 @@ class TodoState extends State<Todo> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            DrawerHeader(child: Container()),
+            DrawerHeader(
+              child: ListView(children: [
+                Row(children: [Text('Welcome, '), Text(name)])
+              ]),
+            ),
             ListTile(
               title: Text('Logout'),
               trailing: Icon(Icons.power_settings_new),
               onTap: () {
-                services.get<Storage>().removeToken();
+                services.get<Auth>().removeUser();
                 Navigator.pushReplacement(
                   context,
                   CupertinoPageRoute(builder: (context) => LoginPage()),

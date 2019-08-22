@@ -66,7 +66,7 @@ class RegisterState extends State<RegisterPage> {
 
       String userRequest = jsonEncode(UserRequest(user));
 
-      var response = await APIUtil.post('sign_up', userRequest);
+      var response = await APIUtil().post('sign_up', userRequest);
       print(response);
 
       Map<String, dynamic> responseObj = json.decode(response);

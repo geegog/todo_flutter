@@ -6,7 +6,7 @@ import 'package:todo_flutter/common/pages/register.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
 
 import '../utils/api.dart';
-import '../services/storage.dart';
+import '../services/auth.dart';
 import 'home.dart';
 
 class LoginPage extends StatefulWidget {
@@ -60,7 +60,7 @@ class LoginState extends State<LoginPage> {
         'password': myControllerPassword.text
       });
 
-      var response = await APIUtil.post('sign_in', loginRequest);
+      var response = await APIUtil().post('sign_in', loginRequest);
 
       Map<String, dynamic> responseObj = json.decode(response);
 
@@ -69,7 +69,8 @@ class LoginState extends State<LoginPage> {
       } else if (responseObj['error'] != null) {
         _snack(responseObj['error']);
       } else {
-        services.get<Storage>().setToken(responseObj['jwt']);
+        services.get<Auth>().setToken(responseObj['jwt']);
+        services.get<Auth>().saveName();
         Navigator.pushReplacement(
           context,
           CupertinoPageRoute(builder: (context) => HomePage()),
