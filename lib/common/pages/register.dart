@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'dto/user.dart';
-import 'dto/user_request.dart';
-import 'api.dart';
+import '../../user/dto/user.dart';
+import '../../user/dto/user_request.dart';
+import '../utils/api.dart';
 
 class RegisterPage extends StatefulWidget {
   static String tag = '/register-page';

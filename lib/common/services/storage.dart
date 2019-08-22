@@ -1,14 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Auth {
+class Storage {
 
   static final String authTokenKey = 'token';
-  static Auth _instance;
+  static Storage _instance;
   static SharedPreferences _preferences;
 
-  static Future<Auth> getInstance() async {
+  static Future<Storage> getInstance() async {
     if (_instance == null) {
-      _instance = Auth();
+      _instance = Storage();
     }
     if (_preferences == null) {
       _preferences = await SharedPreferences.getInstance();

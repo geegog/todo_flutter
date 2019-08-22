@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_flutter/register.dart';
-import 'package:todo_flutter/services/service_locator.dart';
+import 'package:todo_flutter/common/pages/register.dart';
+import 'package:todo_flutter/common/services/service_locator.dart';
 
-import 'api.dart';
-import 'auth.dart';
+import '../utils/api.dart';
+import '../services/storage.dart';
 import 'home.dart';
 
 class LoginPage extends StatefulWidget {
@@ -70,7 +70,7 @@ class LoginState extends State<LoginPage> {
       } else if (responseObj['error'] != null) {
         _snack(responseObj['error']);
       } else {
-        services.get<Auth>().setToken(responseObj['jwt']);
+        services.get<Storage>().setToken(responseObj['jwt']);
         Navigator.pushReplacement(
           context,
           CupertinoPageRoute(builder: (context) => HomePage()),
