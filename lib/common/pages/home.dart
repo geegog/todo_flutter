@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/pages/login.dart';
+import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
+import 'package:todo_flutter/common/components/router.dart' as router;
 
 class HomePage extends StatelessWidget {
-  static String tag = '/home-page';
+  static const String tag = '/home-page';
+  final argument;
+  const HomePage({Key key, this.argument}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +18,7 @@ class HomePage extends StatelessWidget {
       title: 'Todo Home',
       theme: ThemeData(primaryColor: Colors.green),
       home: Todo(),
+      onGenerateRoute: router.privateRoute,
     );
   }
 }
@@ -25,12 +29,14 @@ class Todo extends StatefulWidget {
 }
 
 class TodoState extends State<Todo> {
-  static var name = services.get<Auth>().getUser()[0];
-  static var email = services.get<Auth>().getUser()[1];
+
+  static String name = services.get<Auth>().getUser()[0];
+  static String email = services.get<Auth>().getUser()[1];
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    print('home');
     return Scaffold(
       appBar: AppBar(
         title: Text('Todos'),
@@ -80,10 +86,8 @@ class TodoState extends State<Todo> {
               trailing: Icon(Icons.power_settings_new),
               onTap: () {
                 services.get<Auth>().removeUser();
-                Navigator.pushReplacement(
-                  context,
-                  CupertinoPageRoute(builder: (context) => LoginPage()),
-                );
+                print('kkkkk');
+                Navigator.pushReplacementNamed(context, LoginPage.tag);
               },
             )
           ],

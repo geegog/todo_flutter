@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_flutter/common/pages/register.dart';
+import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
+import 'package:todo_flutter/common/utils/api.dart';
 
-import '../utils/api.dart';
-import '../services/auth.dart';
 import 'home.dart';
 
 class LoginPage extends StatefulWidget {
-  static String tag = '/login-page';
+  static const String tag = '/';
 
   @override
   LoginState createState() => new LoginState();
@@ -70,11 +70,8 @@ class LoginState extends State<LoginPage> {
         _snack(responseObj['error']);
       } else {
         services.get<Auth>().setToken(responseObj['jwt']);
-        services.get<Auth>().saveUser();
-        Navigator.pushReplacement(
-          context,
-          CupertinoPageRoute(builder: (context) => HomePage()),
-        );
+        await services.get<Auth>().saveUser();
+        Navigator.pushReplacementNamed(context, HomePage.tag);
       }
       _hideLoading();
     } else {
@@ -159,10 +156,7 @@ class LoginState extends State<LoginPage> {
         style: TextStyle(color: Colors.blue),
       ),
       onPressed: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(builder: (context) => RegisterPage()),
-        );
+        Navigator.pushNamed(context, RegisterPage.tag);
       },
     );
   }
@@ -188,13 +182,18 @@ class LoginState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : _loginScreen(),
-    );
+    if (services.get<Auth>().getToken() != null ||
+        !services.get<Auth>().isTokenExpired()) {
+      return HomePage();
+    } else {
+      return Scaffold(
+        key: _scaffoldKey,
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : _loginScreen(),
+      );
+    }
   }
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'common/pages/login.dart';
-import 'common/pages/register.dart';
-import 'common/pages/home.dart';
-import 'common/services/auth.dart';
 import 'common/services/service_locator.dart';
+import 'package:todo_flutter/common/components/router.dart' as router;
 
 void main() async {
   await setupLocator();
@@ -11,13 +9,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final routes = <String, WidgetBuilder>{
-    '/': (context) => LoginPage(),
-    RegisterPage.tag: (context) => RegisterPage(),
-    LoginPage.tag: (context) => LoginPage(),
-    HomePage.tag: (context) => HomePage(),
-  };
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,11 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      initialRoute: (services.get<Auth>().getToken() == null ||
-              services.get<Auth>().isTokenExpired())
-          ? '/'
-          : HomePage.tag,
-      routes: routes,
+      initialRoute: LoginPage.tag,
+      onGenerateRoute: router.generateRoute,
     );
   }
 }

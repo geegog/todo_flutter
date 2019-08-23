@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import '../../user/dto/user.dart';
-import '../../user/dto/user_request.dart';
-import '../utils/api.dart';
+import 'package:todo_flutter/common/utils/api.dart';
+import 'package:todo_flutter/user/dto/user.dart';
+import 'package:todo_flutter/user/dto/user_request.dart';
 
 class RegisterPage extends StatefulWidget {
-  static String tag = '/register-page';
+  static const String tag = '/register-page';
 
   @override
   RegisterState createState() => new RegisterState();
@@ -67,7 +67,6 @@ class RegisterState extends State<RegisterPage> {
       String userRequest = jsonEncode(UserRequest(user));
 
       var response = await APIUtil().post('sign_up', userRequest);
-      print(response);
 
       Map<String, dynamic> responseObj = json.decode(response);
 
