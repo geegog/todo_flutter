@@ -1,16 +1,16 @@
-
 import 'package:flutter/material.dart';
 import 'package:todo_flutter/common/components/date_time_picker.dart';
 
 class AddTodoPage extends StatefulWidget {
-  static const String tag = '/';
+  static const String tag = '/add-todo';
+
+  const AddTodoPage({Key key}) : super(key: key);
 
   @override
   AddTodoState createState() => new AddTodoState();
 }
 
 class AddTodoState extends State<AddTodoPage> {
-
   final _formKey = new GlobalKey<FormState>();
   final selectedDate = DateTime.now();
 
@@ -29,11 +29,11 @@ class AddTodoState extends State<AddTodoPage> {
   }
 
   final Function decoration = (String text, Icon icon) => InputDecoration(
-    prefixIcon: icon,
-    hintText: text,
-    contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-  );
+        prefixIcon: icon,
+        hintText: text,
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+      );
 
   Widget form() {
     return Form(
@@ -57,8 +57,8 @@ class AddTodoState extends State<AddTodoPage> {
           controller: myControllerDesc,
           keyboardType: TextInputType.multiline,
           autofocus: false,
-          decoration: decoration(
-              'Enter description', new Icon(Icons.description, color: Colors.green)),
+          decoration: decoration('Enter description',
+              new Icon(Icons.description, color: Colors.green)),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter description';
@@ -109,13 +109,15 @@ class AddTodoState extends State<AddTodoPage> {
 
   Widget _addTodoScreen() {
     return Center(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: EdgeInsets.only(left: 24.0, right: 24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            SizedBox(height: 48.0),
             form(),
+            SizedBox(height: 48.0),
           ],
         ),
       ),
@@ -128,14 +130,16 @@ class AddTodoState extends State<AddTodoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add new Todo'),
-        actions: <Widget>[
-        ],
+        actions: <Widget>[],
       ),
       body: _addTodoScreen(),
     );
   }
-  
 
   void _addTodo() {
+    if (_formKey.currentState.validate()) {
+      print(_endDate.toIso8601String());
+      print(_endTime.toString());
+    }
   }
 }

@@ -174,12 +174,14 @@ class LoginState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(height: 48.0),
             logo(),
             SizedBox(height: 48.0),
             form(),
             new Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [registerLabel()])
+                children: [registerLabel()]),
+            SizedBox(height: 48.0),
           ],
         ),
       ),

@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 
 class AllTodoPage extends StatefulWidget {
-  static const String tag = '/';
+  static const String tag = '/all-todos';
+
+  const AllTodoPage({Key key}) : super(key: key);
 
   @override
   AllTodoState createState() => new AllTodoState();

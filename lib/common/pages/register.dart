@@ -229,12 +229,14 @@ class RegisterState extends State<RegisterPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            SizedBox(height: 48.0),
             logo(),
             SizedBox(height: 48.0),
             form(),
             new Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [loginLabel()]),
+            SizedBox(height: 48.0),
           ],
         ),
       ),
