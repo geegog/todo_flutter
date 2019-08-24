@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:todo_flutter/common/pages/login.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
-import 'package:todo_flutter/common/components/router.dart' as router;
 
 class HomePage extends StatelessWidget {
   static const String tag = '/home-page';
-  final argument;
-  const HomePage({Key key, this.argument}) : super(key: key);
+
+  const HomePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,6 @@ class HomePage extends StatelessWidget {
       title: 'Todo Home',
       theme: ThemeData(primaryColor: Colors.green),
       home: Todo(),
-      onGenerateRoute: router.privateRoute,
     );
   }
 }
@@ -86,8 +84,10 @@ class TodoState extends State<Todo> {
               trailing: Icon(Icons.power_settings_new),
               onTap: () {
                 services.get<Auth>().removeUser();
-                print('kkkkk');
-                Navigator.pushReplacementNamed(context, LoginPage.tag);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
               },
             )
           ],

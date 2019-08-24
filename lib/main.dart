@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:todo_flutter/common/pages/home.dart';
+import 'package:todo_flutter/common/pages/register.dart';
+import 'package:todo_flutter/common/services/auth.dart';
 import 'common/pages/login.dart';
 import 'common/services/service_locator.dart';
-import 'package:todo_flutter/common/components/router.dart' as router;
 
 void main() async {
   await setupLocator();
@@ -17,8 +19,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      initialRoute: LoginPage.tag,
-      onGenerateRoute: router.generateRoute,
+      home: (services.get<Auth>().getToken() != null ||
+              !services.get<Auth>().isTokenExpired())
+          ? HomePage()
+          : LoginPage(),
     );
   }
 }

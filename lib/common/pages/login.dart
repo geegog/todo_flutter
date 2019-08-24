@@ -71,7 +71,10 @@ class LoginState extends State<LoginPage> {
       } else {
         services.get<Auth>().setToken(responseObj['jwt']);
         await services.get<Auth>().saveUser();
-        Navigator.pushReplacementNamed(context, HomePage.tag);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
       }
       _hideLoading();
     } else {
@@ -156,7 +159,10 @@ class LoginState extends State<LoginPage> {
         style: TextStyle(color: Colors.blue),
       ),
       onPressed: () {
-        Navigator.pushNamed(context, RegisterPage.tag);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => RegisterPage()),
+        );
       },
     );
   }
@@ -182,18 +188,13 @@ class LoginState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (services.get<Auth>().getToken() != null ||
-        !services.get<Auth>().isTokenExpired()) {
-      return HomePage();
-    } else {
-      return Scaffold(
-        key: _scaffoldKey,
-        body: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : _loginScreen(),
-      );
-    }
+    return Scaffold(
+      key: _scaffoldKey,
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : _loginScreen(),
+    );
   }
 }
