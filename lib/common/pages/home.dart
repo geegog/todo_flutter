@@ -33,6 +33,13 @@ class TodoState extends State<Todo> {
   static String email = services.get<Auth>().getUser()[1];
   static final _controller = PageController();
 
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _controller.dispose();
+    super.dispose();
+  }
+
   bool _onWillPop() {
     _controller.previousPage(
       duration: Duration(milliseconds: 200),

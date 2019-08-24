@@ -17,7 +17,7 @@ class RegisterState extends State<RegisterPage> {
   final _formKey = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  Function decoration = (String text, Icon icon) => InputDecoration(
+  final Function decoration = (String text, Icon icon) => InputDecoration(
         prefixIcon: icon,
         hintText: text,
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
