@@ -61,7 +61,7 @@ class Auth {
         output += '=';
         break;
       default:
-        throw Exception('Illegal base64url string!"');
+        throw Exception('Illegal base64url string!');
     }
 
     return utf8.decode(base64Url.decode(output));
@@ -72,6 +72,12 @@ class Auth {
     DateTime exp =
         DateTime.fromMillisecondsSinceEpoch(parseJwt(getToken())['exp'] * 1000);
     return DateTime.now().isAfter(exp);
+  }
+
+  String getUserId() {
+    if (parseJwt(getToken()) == null) throw Exception('Null token!');
+    if (isTokenExpired()) throw Exception('Token expired!');
+    return parseJwt(getToken())['sub'].toString();
   }
 
   saveUser() async {

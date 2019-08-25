@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todo_flutter/common/pages/home.dart';
-import 'package:todo_flutter/common/pages/register.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'common/pages/login.dart';
 import 'common/services/service_locator.dart';
@@ -17,11 +16,11 @@ class MyApp extends StatelessWidget {
       title: 'Todo App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
+        primarySwatch: Colors.green,
       ),
       home: (services.get<Auth>().getToken() != null ||
               !services.get<Auth>().isTokenExpired())
-          ? HomePage()
+          ? TodoHomePage()
           : LoginPage(),
     );
   }

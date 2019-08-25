@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_flutter/common/utils/api.dart';
 import 'package:todo_flutter/user/dto/user.dart';
 import 'package:todo_flutter/user/dto/user_request.dart';
+import 'package:todo_flutter/common/components/snackbar.dart';
 
 class RegisterPage extends StatefulWidget {
   static const String tag = '/register-page';
@@ -71,9 +72,9 @@ class RegisterState extends State<RegisterPage> {
       Map<String, dynamic> responseObj = json.decode(response);
 
       if (responseObj['errors'] != null) {
-        _snack(responseObj['errors'].toString());
+        Snack.snack(responseObj['errors'].toString(), _scaffoldKey);
       } else if (responseObj['error'] != null) {
-        _snack(responseObj['error']);
+        Snack.snack(responseObj['error'], _scaffoldKey);
       } else {
         setState(() {
           myControllerName.clear();
@@ -82,20 +83,12 @@ class RegisterState extends State<RegisterPage> {
           myControllerPassword.clear();
           myControllerConfirmPassword.clear();
         });
-        _snack("Accout created successfully. Please login...");
+        Snack.snack("Accout created successfully. Please login...", _scaffoldKey);
       }
       _hideLoading();
     } else {
       _hideLoading();
     }
-  }
-
-  _snack(String message) {
-    _scaffoldKey.currentState.showSnackBar(
-      new SnackBar(
-        content: new Text(message),
-      ),
-    );
   }
 
   Widget logo() {

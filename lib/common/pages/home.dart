@@ -6,39 +6,20 @@ import 'package:todo_flutter/common/services/service_locator.dart';
 import 'package:todo_flutter/task/pages/add_todo.dart';
 import 'package:todo_flutter/task/pages/all_todo.dart';
 
-class HomePage extends StatelessWidget {
+class TodoHomePage extends StatefulWidget {
+
   static const String tag = '/home-page';
 
-  const HomePage({Key key}) : super(key: key);
+  const TodoHomePage({Key key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Todo Home',
-      theme: ThemeData(primaryColor: Colors.green),
-      home: Todo(),
-    );
-  }
-}
-
-class Todo extends StatefulWidget {
   @override
   TodoState createState() => TodoState();
 }
 
-class TodoState extends State<Todo> {
+class TodoState extends State<TodoHomePage> {
   static String name = services.get<Auth>().getUser()[0];
   static String email = services.get<Auth>().getUser()[1];
   static final _controller = PageController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    _controller.dispose();
-    super.dispose();
-  }
 
   bool _onWillPop() {
     _controller.previousPage(

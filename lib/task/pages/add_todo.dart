@@ -1,5 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:todo_flutter/common/components/date_time_picker.dart';
+import 'package:todo_flutter/common/pages/home.dart';
+import 'package:todo_flutter/common/services/auth.dart';
+import 'package:todo_flutter/common/services/service_locator.dart';
+import 'package:todo_flutter/task/dto/todo.dart';
+import 'package:todo_flutter/task/dto/todo_request.dart';
 
 class AddTodoPage extends StatefulWidget {
   static const String tag = '/add-todo';
@@ -40,6 +47,7 @@ class AddTodoState extends State<AddTodoPage> {
       key: _formKey,
       child: Column(children: <Widget>[
         TextFormField(
+          maxLength: 25,
           controller: myControllerTitle,
           keyboardType: TextInputType.text,
           autofocus: false,
@@ -54,6 +62,9 @@ class AddTodoState extends State<AddTodoPage> {
         ),
         SizedBox(height: 8.0),
         TextFormField(
+          maxLength: 150,
+          minLines: 5,
+          maxLines: 6,
           controller: myControllerDesc,
           keyboardType: TextInputType.multiline,
           autofocus: false,
@@ -136,10 +147,34 @@ class AddTodoState extends State<AddTodoPage> {
     );
   }
 
-  void _addTodo() {
+  void _addTodo() async {
     if (_formKey.currentState.validate()) {
       print(_endDate.toIso8601String());
       print(_endTime.toString());
+
+      String datetime = _endDate.toIso8601String().split('T')[0] +
+          ' ' +
+          _endTime.hour.toString() +
+          ':' +
+          _endTime.minute.toString() +
+          ':00';
+      print(datetime);
+      print('todo/user/' + services.get<Auth>().getUserId() + '/create');
+
+      Todo todo = Todo(datetime, myControllerDesc.text, myControllerTitle.text);
+
+      String todoRequest = jsonEncode(TodoRequest(todo));
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => TodoHomePage()),
+      );
+
+      /*var response = await APIUtil().post(
+          'todo/user/' + services.get<Auth>().getUserId() + '/create',
+          todoRequest);
+
+      Map<String, dynamic> responseObj = json.decode(response);*/
     }
   }
 }

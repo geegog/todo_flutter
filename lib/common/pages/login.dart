@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_flutter/common/components/snackbar.dart';
 import 'package:todo_flutter/common/pages/register.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
@@ -65,29 +66,21 @@ class LoginState extends State<LoginPage> {
       Map<String, dynamic> responseObj = json.decode(response);
 
       if (responseObj['errors'] != null) {
-        _snack(responseObj['errors'].toString());
+        Snack.snack(responseObj['errors'].toString(), _scaffoldKey);
       } else if (responseObj['error'] != null) {
-        _snack(responseObj['error']);
+        Snack.snack(responseObj['error'], _scaffoldKey);
       } else {
         services.get<Auth>().setToken(responseObj['jwt']);
         await services.get<Auth>().saveUser();
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => TodoHomePage()),
         );
       }
       _hideLoading();
     } else {
       _hideLoading();
     }
-  }
-
-  _snack(String message) {
-    _scaffoldKey.currentState.showSnackBar(
-      new SnackBar(
-        content: new Text(message),
-      ),
-    );
   }
 
   Widget logo() {
