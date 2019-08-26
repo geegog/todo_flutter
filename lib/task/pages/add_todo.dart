@@ -11,7 +11,7 @@ import 'package:todo_flutter/task/dto/todo_request.dart';
 class AddTodoPage extends StatefulWidget {
   static const String tag = '/add-todo';
 
-  const AddTodoPage({Key key}) : super(key: key);
+  AddTodoPage({Key key}) : super(key: key);
 
   @override
   AddTodoState createState() => new AddTodoState();
@@ -167,7 +167,7 @@ class AddTodoState extends State<AddTodoPage> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => TodoHomePage()),
+        MaterialPageRoute(builder: (context) => TodoHomePage(state: todoRequest, isTodoHome: false,)),
       );
 
       /*var response = await APIUtil().post(

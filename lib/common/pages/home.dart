@@ -7,37 +7,47 @@ import 'package:todo_flutter/task/pages/add_todo.dart';
 import 'package:todo_flutter/task/pages/all_todo.dart';
 
 class TodoHomePage extends StatefulWidget {
-
   static const String tag = '/home-page';
 
-  const TodoHomePage({Key key}) : super(key: key);
+  const TodoHomePage({Key key, this.state, this.isTodoHome = true}) : super(key: key);
+
+  final String state;
+  final bool isTodoHome;
 
   @override
   TodoState createState() => TodoState();
 }
 
 class TodoState extends State<TodoHomePage> {
+
   static String name = services.get<Auth>().getUser()[0];
   static String email = services.get<Auth>().getUser()[1];
   static final _controller = PageController();
 
   bool _onWillPop() {
-    _controller.previousPage(
-      duration: Duration(milliseconds: 200),
-      curve: Curves.linear,
-    );
-    return (_controller.page.round() == _controller.initialPage) ? true : false;
+    if (_controller.page.round() == _controller.initialPage) {
+      return true;
+    } else {
+      _controller.previousPage(
+        duration: Duration(milliseconds: 200),
+        curve: Curves.linear,
+      );
+      return false;
+    }
   }
 
-  final pageView = PageView(
-    controller: _controller,
-    children: <Widget>[AllTodoPage(), AddTodoPage()],
-  );
+  Widget pageView() {
+    return PageView(
+      controller: _controller,
+      children: <Widget>[AllTodoPage(), AddTodoPage()],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print('home');
+    print(widget.state);
+    print(widget.isTodoHome);
     return WillPopScope(
       onWillPop: () => Future.sync(_onWillPop),
       child: Scaffold(
@@ -85,7 +95,7 @@ class TodoState extends State<TodoHomePage> {
             ],
           ),
         ),
-        body: pageView,
+        body: pageView(),
       ),
     );
   }
