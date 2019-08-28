@@ -2,16 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:todo_flutter/common/components/date_time_picker.dart';
+import 'package:todo_flutter/common/components/snackbar.dart';
 import 'package:todo_flutter/common/pages/home.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
+import 'package:todo_flutter/common/utils/api.dart';
 import 'package:todo_flutter/task/dto/todo.dart';
 import 'package:todo_flutter/task/dto/todo_request.dart';
 
 class AddTodoPage extends StatefulWidget {
   static const String tag = '/add-todo';
 
-  AddTodoPage({Key key}) : super(key: key);
+  const AddTodoPage({Key key}) : super(key: key);
 
   @override
   AddTodoState createState() => new AddTodoState();
@@ -19,7 +21,9 @@ class AddTodoPage extends StatefulWidget {
 
 class AddTodoState extends State<AddTodoPage> {
   final _formKey = new GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final selectedDate = DateTime.now();
+  bool _isLoading = false;
 
   final myControllerTitle = TextEditingController();
   final myControllerDesc = TextEditingController();
@@ -139,15 +143,33 @@ class AddTodoState extends State<AddTodoPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Add new Todo'),
         actions: <Widget>[],
       ),
-      body: _addTodoScreen(),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : _addTodoScreen(),
     );
   }
 
+  _showLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  _hideLoading() {
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   void _addTodo() async {
+    _showLoading();
     if (_formKey.currentState.validate()) {
       print(_endDate.toIso8601String());
       print(_endTime.toString());
@@ -165,16 +187,31 @@ class AddTodoState extends State<AddTodoPage> {
 
       String todoRequest = jsonEncode(TodoRequest(todo));
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => TodoHomePage(state: todoRequest, isTodoHome: false,)),
-      );
-
-      /*var response = await APIUtil().post(
+      var response = await APIUtil().post(
           'todo/user/' + services.get<Auth>().getUserId() + '/create',
           todoRequest);
 
-      Map<String, dynamic> responseObj = json.decode(response);*/
+      Map<String, dynamic> responseObj = json.decode(response);
+
+      if (responseObj['errors'] != null) {
+        Snack.snack(responseObj['errors'].toString(), _scaffoldKey);
+      } else if (responseObj['error'] != null) {
+        Snack.snack(responseObj['error'], _scaffoldKey);
+      } else {
+        services.get<Auth>().setToken(responseObj['jwt']);
+        await services.get<Auth>().saveUser();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TodoHomePage(
+              newTodo: responseObj,
+            ),
+          ),
+        );
+      }
+      _hideLoading();
+    } else {
+      _hideLoading();
     }
   }
 }

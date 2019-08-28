@@ -9,10 +9,9 @@ import 'package:todo_flutter/task/pages/all_todo.dart';
 class TodoHomePage extends StatefulWidget {
   static const String tag = '/home-page';
 
-  const TodoHomePage({Key key, this.state, this.isTodoHome = true}) : super(key: key);
+  TodoHomePage({Key key, this.newTodo}) : super(key: key);
 
-  final String state;
-  final bool isTodoHome;
+  final newTodo;
 
   @override
   TodoState createState() => TodoState();
@@ -36,18 +35,16 @@ class TodoState extends State<TodoHomePage> {
     }
   }
 
-  Widget pageView() {
+  Widget pages() {
     return PageView(
       controller: _controller,
-      children: <Widget>[AllTodoPage(), AddTodoPage()],
+      children: <Widget>[AllTodoPage(addTodoToList: widget.newTodo ?? false,), AddTodoPage()],
     );
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print(widget.state);
-    print(widget.isTodoHome);
     return WillPopScope(
       onWillPop: () => Future.sync(_onWillPop),
       child: Scaffold(
@@ -95,7 +92,7 @@ class TodoState extends State<TodoHomePage> {
             ],
           ),
         ),
-        body: pageView(),
+        body: pages(),
       ),
     );
   }

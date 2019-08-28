@@ -1,16 +1,27 @@
-
 import 'package:flutter/material.dart';
 
 class AllTodoPage extends StatefulWidget {
   static const String tag = '/all-todos';
 
-  AllTodoPage({Key key}) : super(key: key);
+  AllTodoPage({Key key, this.addTodoToList, this.isNewRequest = false})
+      : super(key: key);
+
+  final addTodoToList;
+  final bool isNewRequest;
 
   @override
   AllTodoState createState() => new AllTodoState();
 }
 
 class AllTodoState extends State<AllTodoPage> {
+  List todos;
+
+  @override
+  void didUpdateWidget(AllTodoPage oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -28,7 +39,11 @@ class AllTodoState extends State<AllTodoPage> {
           ),
         ],
       ),
+      body: ListView.builder(
+          itemCount: todos.length,
+          itemBuilder: (context, index) {
+            return ListTile();
+          }),
     );
   }
-  
 }
