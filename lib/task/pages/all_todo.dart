@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:todo_flutter/common/utils/api.dart';
 
@@ -47,10 +49,12 @@ class AllTodoState extends State<AllTodoPage> {
       });
 
       final response = await APIUtil().fetch(nextPage);
+      Map<String, dynamic> responseObj = json.decode(response);
+      print(response);
       List tempList = new List();
-      //nextPage = response.data['next'];
-      for (int i = 0; i < response['data'].length; i++) {
-        tempList.add(response['data'][i]);
+      //nextPage = response['next'];
+      for (int i = 0; i < responseObj['data'].length; i++) {
+        tempList.add(responseObj['data'][i]);
       }
 
       setState(() {
@@ -81,7 +85,7 @@ class AllTodoState extends State<AllTodoPage> {
           return _buildProgressIndicator();
         } else {
           return new ListTile(
-            title: Text((todos[index]['name'])),
+            title: Text((todos[index]['title'])),
             onTap: () {
               print(todos[index]);
             },
@@ -109,11 +113,7 @@ class AllTodoState extends State<AllTodoPage> {
           ),
         ],
       ),
-      body: ListView.builder(
-          itemCount: todos.length,
-          itemBuilder: (context, index) {
-            return ListTile();
-          }),
+      body: _buildList(),
     );
   }
 }

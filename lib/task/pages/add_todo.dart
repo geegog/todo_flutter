@@ -7,6 +7,7 @@ import 'package:todo_flutter/common/pages/home.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
 import 'package:todo_flutter/common/utils/api.dart';
+import 'package:todo_flutter/common/utils/date_time.dart';
 import 'package:todo_flutter/task/dto/todo.dart';
 import 'package:todo_flutter/task/dto/todo_request.dart';
 
@@ -29,7 +30,7 @@ class AddTodoState extends State<AddTodoPage> {
   final myControllerDesc = TextEditingController();
 
   DateTime _endDate = DateTime.now();
-  TimeOfDay _endTime = const TimeOfDay(hour: 7, minute: 28);
+  TimeOfDay _endTime = const TimeOfDay(hour: 07, minute: 28);
 
   @override
   void dispose() {
@@ -172,13 +173,13 @@ class AddTodoState extends State<AddTodoPage> {
     _showLoading();
     if (_formKey.currentState.validate()) {
       print(_endDate.toIso8601String());
-      print(_endTime.toString());
+      print(_endTime.format(context).toString());
 
       String datetime = _endDate.toIso8601String().split('T')[0] +
           ' ' +
-          _endTime.hour.toString() +
+          formatTimeNumber(_endTime.hour) +
           ':' +
-          _endTime.minute.toString() +
+          formatTimeNumber(_endTime.minute) +
           ':00';
       print(datetime);
       print('todo/user/' + services.get<Auth>().getUserId() + '/create');
@@ -198,8 +199,6 @@ class AddTodoState extends State<AddTodoPage> {
       } else if (responseObj['error'] != null) {
         Snack.snack(responseObj['error'], _scaffoldKey);
       } else {
-        services.get<Auth>().setToken(responseObj['jwt']);
-        await services.get<Auth>().saveUser();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
