@@ -43,16 +43,22 @@ class AllTodoState extends State<AllTodoPage> {
   }
 
   _getTodos() async {
-    if (!isLoading) {
+    if (!isLoading && nextPage != null) {
       setState(() {
         isLoading = true;
       });
 
       final response = await APIUtil().fetch(nextPage);
       Map<String, dynamic> responseObj = json.decode(response);
-      print(response);
       List tempList = new List();
-      //nextPage = response['next'];
+      print(responseObj['metadata']);
+      if (responseObj['metadata']['after'] != null) {
+        String after = responseObj['metadata']['after'];
+        nextPage = "todo/all?after=$after";
+      } else {
+        nextPage = null;
+      }
+
       for (int i = 0; i < responseObj['data'].length; i++) {
         tempList.add(responseObj['data'][i]);
       }
@@ -61,6 +67,7 @@ class AllTodoState extends State<AllTodoPage> {
         isLoading = false;
         todos.addAll(tempList);
       });
+
     }
   }
 
@@ -79,7 +86,7 @@ class AllTodoState extends State<AllTodoPage> {
   Widget _buildList() {
     return ListView.builder(
       //+1 for progressbar
-      itemCount: todos.length + 1,
+      itemCount: nextPage != null ? todos.length + 1 : todos.length,
       itemBuilder: (BuildContext context, int index) {
         if (index == todos.length) {
           return _buildProgressIndicator();
