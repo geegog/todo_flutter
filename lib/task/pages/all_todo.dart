@@ -17,7 +17,6 @@ class AllTodoPage extends StatefulWidget {
 }
 
 class AllTodoState extends State<AllTodoPage> {
-
   String nextPage = "todo/all";
   ScrollController _scrollController = new ScrollController();
   bool isLoading = false;
@@ -67,7 +66,6 @@ class AllTodoState extends State<AllTodoPage> {
         isLoading = false;
         todos.addAll(tempList);
       });
-
     }
   }
 
@@ -92,7 +90,13 @@ class AllTodoState extends State<AllTodoPage> {
           return _buildProgressIndicator();
         } else {
           return new ListTile(
-            title: Text((todos[index]['title'])),
+            title: ListBody(
+              children: <Widget>[
+                Row(children: <Widget>[Icon(Icons.person), Text(todos[index]['user']['name'])]),
+                Row(children: <Widget>[Icon(Icons.title), Text(todos[index]['title'])]),
+                Row(children: <Widget>[Icon(Icons.description), Text(todos[index]['description'])]),
+              ],
+            ),
             onTap: () {
               print(todos[index]);
             },
