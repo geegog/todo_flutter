@@ -38,7 +38,7 @@ class TodoState extends State<TodoHomePage> {
   Widget pages() {
     return PageView(
       controller: _controller,
-      children: <Widget>[AllTodoPage(addTodoToList: widget.newTodo ?? false,), AddTodoPage()],
+      children: <Widget>[AllTodoPage(addTodoToList: widget.newTodo ?? false, pageController: _controller,), AddTodoPage()],
     );
   }
 

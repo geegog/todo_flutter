@@ -6,11 +6,12 @@ import 'package:todo_flutter/common/utils/api.dart';
 class AllTodoPage extends StatefulWidget {
   static const String tag = '/all-todos';
 
-  AllTodoPage({Key key, this.addTodoToList, this.isNewRequest = false})
+  AllTodoPage({Key key, this.addTodoToList, this.isNewRequest = false, this.pageController})
       : super(key: key);
 
   final addTodoToList;
   final bool isNewRequest;
+  final PageController pageController;
 
   @override
   AllTodoState createState() => new AllTodoState();
@@ -150,6 +151,11 @@ class AllTodoState extends State<AllTodoPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Center(child: Icon(Icons.add),),
+        onPressed: () {
+        widget.pageController.nextPage(duration:  Duration(milliseconds: 200), curve: Curves.linear);
+      },),
       appBar: AppBar(
         title: Text('Todos'),
         actions: <Widget>[
