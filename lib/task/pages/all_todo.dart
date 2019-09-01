@@ -6,7 +6,11 @@ import 'package:todo_flutter/common/utils/api.dart';
 class AllTodoPage extends StatefulWidget {
   static const String tag = '/all-todos';
 
-  AllTodoPage({Key key, this.addTodoToList, this.isNewRequest = false, this.pageController})
+  AllTodoPage(
+      {Key key,
+      this.addTodoToList,
+      this.isNewRequest = false,
+      this.pageController})
       : super(key: key);
 
   final addTodoToList;
@@ -128,12 +132,18 @@ class AllTodoState extends State<AllTodoPage> {
                     SizedBox(
                       width: 40.0,
                     ),
-                      Icon(Icons.comment, size: 15.0,), Text(
-                        '0',
-                        style: TextStyle(color: Colors.grey, fontSize: 15.0),
-                      ),
+                    Icon(
+                      Icons.comment,
+                      size: 15.0,
+                    ),
+                    Text(
+                      '0',
+                      style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                    ),
                   ]),
-                  Divider(color: Colors.grey,),
+                  Divider(
+                    color: Colors.grey,
+                  ),
                 ],
               ),
               onTap: () {
@@ -151,11 +161,18 @@ class AllTodoState extends State<AllTodoPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Center(child: Icon(Icons.add),),
-        onPressed: () {
-        widget.pageController.nextPage(duration:  Duration(milliseconds: 200), curve: Curves.linear);
-      },),
+      floatingActionButton: Opacity(
+        opacity: 0.8,
+        child: FloatingActionButton(
+          child: Center(
+            child: Icon(Icons.add),
+          ),
+          onPressed: () {
+            widget.pageController.nextPage(
+                duration: Duration(milliseconds: 200), curve: Curves.linear);
+          },
+        ),
+      ),
       appBar: AppBar(
         title: Text('Todos'),
         actions: <Widget>[

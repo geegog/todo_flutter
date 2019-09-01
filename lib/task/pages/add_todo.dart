@@ -14,7 +14,9 @@ import 'package:todo_flutter/task/dto/todo_request.dart';
 class AddTodoPage extends StatefulWidget {
   static const String tag = '/add-todo';
 
-  const AddTodoPage({Key key}) : super(key: key);
+  const AddTodoPage({Key key, this.pageController}) : super(key: key);
+
+  final PageController pageController;
 
   @override
   AddTodoState createState() => new AddTodoState();
@@ -146,6 +148,13 @@ class AddTodoState extends State<AddTodoPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            widget.pageController.previousPage(
+                duration: Duration(milliseconds: 200), curve: Curves.linear);
+          },
+        ),
         title: Text('Add new Todo'),
         actions: <Widget>[],
       ),
