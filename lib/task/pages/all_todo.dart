@@ -89,17 +89,56 @@ class AllTodoState extends State<AllTodoPage> {
         if (index == todos.length) {
           return _buildProgressIndicator();
         } else {
-          return new ListTile(
-            title: ListBody(
-              children: <Widget>[
-                Row(children: <Widget>[Icon(Icons.person), Text(todos[index]['user']['name'])]),
-                Row(children: <Widget>[Icon(Icons.title), Text(todos[index]['title'])]),
-                Row(children: <Widget>[Icon(Icons.description), Text(todos[index]['description'])]),
-              ],
+          return Container(
+            child: ListTile(
+              trailing: Text(
+                todos[index]['deadline'],
+                style: TextStyle(color: Colors.grey, fontSize: 10.0),
+              ),
+              title: ListBody(
+                children: <Widget>[
+                  Row(children: <Widget>[
+                    Icon(Icons.title),
+                    SizedBox(
+                      width: 8.0,
+                    ),
+                    Expanded(
+                      child: Text(
+                        todos[index]['title'],
+                        style: TextStyle(color: Colors.black, fontSize: 20.0),
+                      ),
+                    ),
+                  ]),
+                  SizedBox(
+                    height: 8.0,
+                  ),
+                  Row(children: <Widget>[
+                    SizedBox(
+                      width: 40.0,
+                    ),
+                    Expanded(
+                      child: Text(
+                        todos[index]['description'],
+                        style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                      ),
+                    ),
+                  ]),
+                  Row(children: <Widget>[
+                    SizedBox(
+                      width: 40.0,
+                    ),
+                      Icon(Icons.comment, size: 15.0,), Text(
+                        '0',
+                        style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                      ),
+                  ]),
+                  Divider(color: Colors.grey,),
+                ],
+              ),
+              onTap: () {
+                print(todos[index]);
+              },
             ),
-            onTap: () {
-              print(todos[index]);
-            },
           );
         }
       },
