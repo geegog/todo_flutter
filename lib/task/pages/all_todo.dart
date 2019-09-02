@@ -96,21 +96,35 @@ class AllTodoState extends State<AllTodoPage> {
         } else {
           return Container(
             child: ListTile(
-              trailing: Text(
-                todos[index]['deadline'],
-                style: TextStyle(color: Colors.grey, fontSize: 10.0),
-              ),
               title: ListBody(
                 children: <Widget>[
                   Row(children: <Widget>[
-                    Icon(Icons.title),
-                    SizedBox(
-                      width: 8.0,
+                    LimitedBox(
+                      maxWidth: 200.0,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.title),
+                          SizedBox(
+                            width: 8.0,
+                          ),
+                          Expanded(
+                            child: Text(
+                              todos[index]['title'],
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 20.0),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Expanded(
-                      child: Text(
-                        todos[index]['title'],
-                        style: TextStyle(color: Colors.black, fontSize: 20.0),
+                    LimitedBox(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          todos[index]['deadline'],
+                          textAlign: TextAlign.end,
+                          style: TextStyle(color: Colors.grey, fontSize: 10.0),
+                        ),
                       ),
                     ),
                   ]),
