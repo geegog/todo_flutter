@@ -94,76 +94,76 @@ class AllTodoState extends State<AllTodoPage> {
         if (index == todos.length) {
           return _buildProgressIndicator();
         } else {
-          return Container(
-            child: ListTile(
-              title: ListBody(
-                children: <Widget>[
-                  Row(children: <Widget>[
-                    LimitedBox(
-                      maxWidth: 200.0,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.title),
-                          SizedBox(
-                            width: 8.0,
-                          ),
-                          Expanded(
-                            child: Text(
-                              todos[index]['title'],
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 20.0),
+          return Column(
+            children: <Widget>[
+              ListTile(
+                title: ListBody(
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      LimitedBox(
+                        maxWidth: 200.0,
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.title),
+                            SizedBox(
+                              width: 8.0,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    LimitedBox(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          todos[index]['deadline'],
-                          textAlign: TextAlign.end,
-                          style: TextStyle(color: Colors.grey, fontSize: 10.0),
+                            Expanded(
+                              child: Text(
+                                todos[index]['title'],
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 20.0),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ]),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Row(children: <Widget>[
+                      LimitedBox(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            todos[index]['deadline'],
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 10.0),
+                          ),
+                        ),
+                      ),
+                    ]),
                     SizedBox(
-                      width: 40.0,
+                      height: 8.0,
                     ),
-                    Expanded(
-                      child: Text(
-                        todos[index]['description'],
+                    Row(children: <Widget>[
+                      SizedBox(
+                        width: 40.0,
+                      ),
+                      Expanded(
+                        child: Text(
+                          todos[index]['description'],
+                          style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                        ),
+                      ),
+                    ]),
+                    Row(children: <Widget>[
+                      SizedBox(
+                        width: 40.0,
+                      ),
+                      Icon(
+                        Icons.comment,
+                        size: 15.0,
+                      ),
+                      Text(
+                        '0',
                         style: TextStyle(color: Colors.grey, fontSize: 15.0),
                       ),
-                    ),
-                  ]),
-                  Row(children: <Widget>[
-                    SizedBox(
-                      width: 40.0,
-                    ),
-                    Icon(
-                      Icons.comment,
-                      size: 15.0,
-                    ),
-                    Text(
-                      '0',
-                      style: TextStyle(color: Colors.grey, fontSize: 15.0),
-                    ),
-                  ]),
-                  Divider(
-                    color: Colors.grey,
-                  ),
-                ],
+                    ]),
+                  ],
+                ),
+                onTap: () {
+                  print(todos[index]);
+                },
               ),
-              onTap: () {
-                print(todos[index]);
-              },
-            ),
+              Divider(color: Colors.grey,),
+            ],
           );
         }
       },
