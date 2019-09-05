@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:todo_flutter/common/utils/api.dart';
+import 'package:async/async.dart';
 
 class AllTodoPage extends StatefulWidget {
   static const String tag = '/all-todos';
@@ -26,6 +27,7 @@ class AllTodoState extends State<AllTodoPage> {
   ScrollController _scrollController = new ScrollController();
   bool isLoading = false;
   List todos = new List();
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
 
   @override
   void initState() {
@@ -79,7 +81,7 @@ class AllTodoState extends State<AllTodoPage> {
       padding: const EdgeInsets.all(8.0),
       child: new Center(
         child: new Opacity(
-          opacity: isLoading ? 1.0 : 00,
+          opacity: isLoading ? 1.0 : 0.0,
           child: new CircularProgressIndicator(),
         ),
       ),
@@ -174,6 +176,7 @@ class AllTodoState extends State<AllTodoPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    print(todos.length);
     return Scaffold(
       floatingActionButton: Opacity(
         opacity: 0.8,
