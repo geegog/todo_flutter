@@ -27,7 +27,6 @@ class AllTodoState extends State<AllTodoPage> {
   ScrollController _scrollController = new ScrollController();
   bool isLoading = false;
   List todos = new List();
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
 
   @override
   void initState() {
