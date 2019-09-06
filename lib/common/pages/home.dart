@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/common/pages/login.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
+import 'package:todo_flutter/task/bloc/bloc.dart';
 import 'package:todo_flutter/task/pages/add_todo.dart';
 import 'package:todo_flutter/task/pages/all_todo.dart';
 
@@ -18,10 +20,32 @@ class TodoHomePage extends StatefulWidget {
 }
 
 class TodoState extends State<TodoHomePage> {
-
   static String name = services.get<Auth>().getUser()[0];
   static String email = services.get<Auth>().getUser()[1];
   static final _controller = PageController();
+
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+  TodoBloc _todoBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.position.pixels;
+      if (maxScroll - currentScroll <= _scrollThreshold) {
+        _todoBloc.dispatch(Fetch());
+      }
+    });
+    _todoBloc = BlocProvider.of<TodoBloc>(context);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   bool _onWillPop() {
     if (_controller.page.round() == _controller.initialPage) {
@@ -38,13 +62,22 @@ class TodoState extends State<TodoHomePage> {
   Widget pages() {
     return PageView(
       controller: _controller,
-      children: <Widget>[AllTodoPage(addTodoToList: widget.newTodo ?? false, pageController: _controller,), AddTodoPage(pageController: _controller,)],
+      children: <Widget>[
+         AllTodoPage(
+          pageController: _controller,
+          scrollController: _scrollController,
+        ),
+        AddTodoPage(
+          pageController: _controller,
+        )
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    print('here');
     return WillPopScope(
       onWillPop: () => Future.sync(_onWillPop),
       child: Scaffold(

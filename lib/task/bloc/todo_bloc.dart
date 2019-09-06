@@ -24,8 +24,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   @override
-  // TODO: implement initialState
-  TodoState get initialState => null;
+  get initialState => TodoUninitialized();
 
   @override
   Stream<TodoState> mapEventToState(TodoEvent event) async* {
@@ -33,6 +32,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       try {
         if (currentState is TodoUninitialized) {
           final todos = await _todoRepository.fetchData(nextPage);
+          print(todos);
           String after = todos.metadata.after;
           nextPage = "todo/all?after=$after";
           yield TodoLoaded(todos: todos.data, hasReachedMax: false);
@@ -49,8 +49,9 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
                   hasReachedMax: false,
                 );
         }
-      } catch (_) {
-        yield TodoError();
+      } catch (e) {
+        throw e;
+        //yield TodoError();
       }
     }
   }

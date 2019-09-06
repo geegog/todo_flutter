@@ -1,181 +1,102 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:todo_flutter/common/utils/api.dart';
-import 'package:async/async.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_flutter/task/bloc/bloc.dart';
+import 'package:todo_flutter/task/domain/model/todo.dart';
 
 class AllTodoPage extends StatefulWidget {
   static const String tag = '/all-todos';
 
   AllTodoPage(
       {Key key,
-      this.addTodoToList,
-      this.isNewRequest = false,
-      this.pageController})
+      this.pageController, this.scrollController})
       : super(key: key);
 
-  final addTodoToList;
-  final bool isNewRequest;
   final PageController pageController;
+  final ScrollController scrollController;
 
   @override
   AllTodoState createState() => new AllTodoState();
 }
 
 class AllTodoState extends State<AllTodoPage> {
-  String nextPage = "todo/all";
-  ScrollController _scrollController = new ScrollController();
-  bool isLoading = false;
-  List todos = new List();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    this._getTodos();
-    super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        _getTodos();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  _getTodos() async {
-    if (!isLoading && nextPage != null) {
-      setState(() {
-        isLoading = true;
-      });
-
-      final response = await APIUtil().fetch(nextPage);
-      Map<String, dynamic> responseObj = json.decode(response);
-      List tempList = new List();
-      print(responseObj['metadata']);
-      if (responseObj['metadata']['after'] != null) {
-        String after = responseObj['metadata']['after'];
-        nextPage = "todo/all?after=$after";
-      } else {
-        nextPage = null;
-      }
-
-      for (int i = 0; i < responseObj['data'].length; i++) {
-        tempList.add(responseObj['data'][i]);
-      }
-
-      setState(() {
-        isLoading = false;
-        todos.addAll(tempList);
-      });
-    }
-  }
-
-  Widget _buildProgressIndicator() {
-    return new Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: new Center(
-        child: new Opacity(
-          opacity: isLoading ? 1.0 : 0.0,
-          child: new CircularProgressIndicator(),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildList() {
-    return ListView.builder(
-      //+1 for progressbar
-      itemCount: nextPage != null ? todos.length + 1 : todos.length,
-      itemBuilder: (BuildContext context, int index) {
-        if (index == todos.length) {
-          return _buildProgressIndicator();
-        } else {
-          return Column(
+  Widget _buildList(Todo todo) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          title: ListBody(
             children: <Widget>[
-              ListTile(
-                title: ListBody(
-                  children: <Widget>[
-                    Row(children: <Widget>[
-                      LimitedBox(
-                        maxWidth: 200.0,
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.title),
-                            SizedBox(
-                              width: 8.0,
-                            ),
-                            Expanded(
-                              child: Text(
-                                todos[index]['title'],
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 20.0),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      LimitedBox(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 10.0),
-                          child: Text(
-                            todos[index]['deadline'],
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 10.0),
-                          ),
-                        ),
-                      ),
-                    ]),
-                    SizedBox(
-                      height: 8.0,
-                    ),
-                    Row(children: <Widget>[
+              Row(children: <Widget>[
+                LimitedBox(
+                  maxWidth: 200.0,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.title),
                       SizedBox(
-                        width: 40.0,
+                        width: 8.0,
                       ),
                       Expanded(
                         child: Text(
-                          todos[index]['description'],
-                          style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                          todo.title,
+                          style: TextStyle(
+                              color: Colors.black, fontSize: 20.0),
                         ),
                       ),
-                    ]),
-                    Row(children: <Widget>[
-                      SizedBox(
-                        width: 40.0,
-                      ),
-                      Icon(
-                        Icons.comment,
-                        size: 15.0,
-                      ),
-                      Text(
-                        '0',
-                        style: TextStyle(color: Colors.grey, fontSize: 15.0),
-                      ),
-                    ]),
-                  ],
+                    ],
+                  ),
                 ),
-                onTap: () {
-                  print(todos[index]);
-                },
+                LimitedBox(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      todo.deadline,
+                      style:
+                      TextStyle(color: Colors.grey, fontSize: 10.0),
+                    ),
+                  ),
+                ),
+              ]),
+              SizedBox(
+                height: 8.0,
               ),
-              Divider(color: Colors.grey,),
+              Row(children: <Widget>[
+                SizedBox(
+                  width: 40.0,
+                ),
+                Expanded(
+                  child: Text(
+                    todo.description,
+                    style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                  ),
+                ),
+              ]),
+              Row(children: <Widget>[
+                SizedBox(
+                  width: 40.0,
+                ),
+                Icon(
+                  Icons.comment,
+                  size: 15.0,
+                ),
+                Text(
+                  '0',
+                  style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                ),
+              ]),
             ],
-          );
-        }
-      },
-      controller: _scrollController,
+          ),
+          onTap: () {
+            print(todo.description);
+          },
+        ),
+        Divider(color: Colors.grey,),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print(todos.length);
     return Scaffold(
       floatingActionButton: Opacity(
         opacity: 0.8,
@@ -202,7 +123,57 @@ class AllTodoState extends State<AllTodoPage> {
           ),
         ],
       ),
-      body: _buildList(),
+      body: BlocBuilder<TodoBloc, TodoState>(
+        builder: (context, state) {
+          print(context);
+          if (state is TodoError) {
+            return Center(
+              child: Text('failed to fetch todos'),
+            );
+          }
+          if (state is TodoLoaded) {
+            if (state.todos.isEmpty) {
+              return Center(
+                child: Text('no todos'),
+              );
+            }
+            return ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return index >= state.todos.length
+                    ? BottomLoader()
+                    : _buildList(state.todos[index]);
+              },
+              itemCount: state.hasReachedMax
+                  ? state.todos.length
+                  : state.todos.length + 1,
+              controller: widget.scrollController,
+            );
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
     );
   }
 }
+
+class BottomLoader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: Center(
+        child: SizedBox(
+          width: 33,
+          height: 33,
+          child: CircularProgressIndicator(
+            strokeWidth: 1.5,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
