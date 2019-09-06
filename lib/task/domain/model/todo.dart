@@ -1,16 +1,19 @@
 
+import 'package:equatable/equatable.dart';
 import 'package:todo_flutter/user/domain/model/user.dart';
 
-class Todo {
+class Todo extends Equatable  {
 
-  String deadline;
+  final String deadline;
 
-  String description;
+  final String description;
 
-  String title;
+  final String title;
 
-  int id;
+  final int id;
 
-  User user;
+  final User user;
+
+  Todo(this.title, this.description, this.deadline, this.id, this.user) : super([deadline, description, title, id, user]);
 
 }
