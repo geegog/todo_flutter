@@ -32,7 +32,6 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       try {
         if (currentState is TodoUninitialized) {
           final todos = await _todoRepository.fetchData(nextPage);
-          print(todos);
           String after = todos.metadata.after;
           nextPage = "todo/all?after=$after";
           yield TodoLoaded(todos: todos.data, hasReachedMax: false);
@@ -42,11 +41,12 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
           final todos = await _todoRepository.fetchData(nextPage);
           String after = todos.metadata.after;
           nextPage = "todo/all?after=$after";
-          yield todos.data.isEmpty
-              ? (currentState as TodoLoaded).copyWith(hasReachedMax: true)
-              : TodoLoaded(
+          yield
+          //todos.data.isEmpty
+              //? (currentState as TodoLoaded).copyWith(hasReachedMax: true)
+              TodoLoaded(
                   todos: (currentState as TodoLoaded).todos + todos.data,
-                  hasReachedMax: false,
+                  hasReachedMax: after != null ? false :true,
                 );
         }
       } catch (e) {

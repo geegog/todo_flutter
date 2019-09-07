@@ -6,9 +6,7 @@ import 'package:todo_flutter/task/domain/model/todo.dart';
 class AllTodoPage extends StatefulWidget {
   static const String tag = '/all-todos';
 
-  AllTodoPage(
-      {Key key,
-      this.pageController, this.scrollController})
+  AllTodoPage({Key key, this.pageController, this.scrollController})
       : super(key: key);
 
   final PageController pageController;
@@ -19,7 +17,6 @@ class AllTodoPage extends StatefulWidget {
 }
 
 class AllTodoState extends State<AllTodoPage> {
-
   Widget _buildList(Todo todo) {
     return Column(
       children: <Widget>[
@@ -38,8 +35,7 @@ class AllTodoState extends State<AllTodoPage> {
                       Expanded(
                         child: Text(
                           todo.title,
-                          style: TextStyle(
-                              color: Colors.black, fontSize: 20.0),
+                          style: TextStyle(color: Colors.black, fontSize: 20.0),
                         ),
                       ),
                     ],
@@ -50,8 +46,7 @@ class AllTodoState extends State<AllTodoPage> {
                     padding: EdgeInsets.only(left: 10.0),
                     child: Text(
                       todo.deadline,
-                      style:
-                      TextStyle(color: Colors.grey, fontSize: 10.0),
+                      style: TextStyle(color: Colors.grey, fontSize: 10.0),
                     ),
                   ),
                 ),
@@ -89,7 +84,9 @@ class AllTodoState extends State<AllTodoPage> {
             print(todo.description);
           },
         ),
-        Divider(color: Colors.grey,),
+        Divider(
+          color: Colors.grey,
+        ),
       ],
     );
   }
@@ -126,6 +123,7 @@ class AllTodoState extends State<AllTodoPage> {
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
           print(context);
+          print(state);
           if (state is TodoError) {
             return Center(
               child: Text('failed to fetch todos'),
@@ -175,5 +173,3 @@ class BottomLoader extends StatelessWidget {
     );
   }
 }
-
-
