@@ -11,11 +11,10 @@ class TodoList {
   TodoList.fromJson(Map<String, dynamic> parsedJson) {
     print(parsedJson['data'].length);
     metadata = MetaData(
-        parsedJson['metadata']['limit'],
-        parsedJson['metadata']['before'],
-        parsedJson['metadata']['after'],
-        parsedJson['metadata']['totalCount'],
-        parsedJson['metadata']['totalCountCapExceeded']);
+        parsedJson['metadata']['page_number'],
+        parsedJson['metadata']['page_size'],
+        parsedJson['metadata']['total_entries'],
+        parsedJson['metadata']['total_pages']);
     List<Todo> temp = [];
     for (int i = 0; i < parsedJson['data'].length; i++) {
       Map<String, dynamic> jsonData = parsedJson['data'][i];
@@ -27,4 +26,7 @@ class TodoList {
     }
     data = temp;
   }
+
+  @override
+  String toString() => 'TodoList { metadata: $metadata }';
 }

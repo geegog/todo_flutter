@@ -208,14 +208,16 @@ class AddTodoState extends State<AddTodoPage> {
       } else if (responseObj['error'] != null) {
         Snack.snack(responseObj['error'], _scaffoldKey);
       } else {
-        Navigator.pushReplacement(
+        widget.pageController.previousPage(
+            duration: Duration(milliseconds: 200), curve: Curves.linear);
+        /*Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => TodoHomePage(
               newTodo: responseObj,
             ),
           ),
-        );
+        );*/
       }
       _hideLoading();
     } else {

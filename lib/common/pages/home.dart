@@ -39,12 +39,14 @@ class TodoState extends State<TodoHomePage> {
       }
     });
     _todoBloc = BlocProvider.of<TodoBloc>(context);
+    print(_todoBloc);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+    _todoBloc.dispose();
   }
 
   bool _onWillPop() {

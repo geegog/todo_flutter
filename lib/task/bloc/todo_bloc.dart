@@ -12,9 +12,9 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
   @override
   Stream<TodoState> transformEvents(
-      Stream<TodoEvent> events,
-      Stream<TodoState> Function(TodoEvent event) next,
-      ) {
+    Stream<TodoEvent> events,
+    Stream<TodoState> Function(TodoEvent event) next,
+  ) {
     return super.transformEvents(
       (events as Observable<TodoEvent>).debounceTime(
         Duration(milliseconds: 500),
@@ -32,26 +32,24 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       try {
         if (currentState is TodoUninitialized) {
           final todos = await _todoRepository.fetchData(nextPage);
-          String after = todos.metadata.after;
-          nextPage = "todo/all?after=$after";
+          int pageNumber = todos.metadata.pageNumber + 1;
+          nextPage = "todo/all?page=$pageNumber";
+          print(nextPage);
           yield TodoLoaded(todos: todos.data, hasReachedMax: false);
           return;
         }
         if (currentState is TodoLoaded) {
           final todos = await _todoRepository.fetchData(nextPage);
-          String after = todos.metadata.after;
-          nextPage = "todo/all?after=$after";
-          yield
-          //todos.data.isEmpty
-              //? (currentState as TodoLoaded).copyWith(hasReachedMax: true)
-              TodoLoaded(
-                  todos: (currentState as TodoLoaded).todos + todos.data,
-                  hasReachedMax: after != null ? false :true,
-                );
+          int pageNumber = todos.metadata.pageNumber + 1;
+          nextPage = "todo/all?page=$pageNumber";
+          yield TodoLoaded(
+            todos: (currentState as TodoLoaded).todos + todos.data,
+            hasReachedMax: pageNumber > todos.metadata.totalPages ? true : false,
+          );
         }
       } catch (e) {
-        throw e;
-        //yield TodoError();
+        //throw e;
+        yield TodoError();
       }
     }
   }

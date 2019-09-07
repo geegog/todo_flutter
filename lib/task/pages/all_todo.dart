@@ -122,8 +122,6 @@ class AllTodoState extends State<AllTodoPage> {
       ),
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
-          print(context);
-          print(state);
           if (state is TodoError) {
             return Center(
               child: Text('failed to fetch todos'),
