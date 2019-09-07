@@ -23,6 +23,7 @@ class TodoState extends State<TodoHomePage> {
   static String name = services.get<Auth>().getUser()[0];
   static String email = services.get<Auth>().getUser()[1];
   static final _controller = PageController();
+  final PageStorageBucket bucket = PageStorageBucket();
 
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
@@ -39,7 +40,6 @@ class TodoState extends State<TodoHomePage> {
       }
     });
     _todoBloc = BlocProvider.of<TodoBloc>(context);
-    print(_todoBloc);
   }
 
   @override
@@ -47,6 +47,7 @@ class TodoState extends State<TodoHomePage> {
     _scrollController.dispose();
     super.dispose();
     _todoBloc.dispose();
+    _controller.dispose();
   }
 
   bool _onWillPop() {
@@ -65,11 +66,13 @@ class TodoState extends State<TodoHomePage> {
     return PageView(
       controller: _controller,
       children: <Widget>[
-         AllTodoPage(
+        AllTodoPage(
+          key: PageStorageKey('all-todos'),
           pageController: _controller,
           scrollController: _scrollController,
         ),
         AddTodoPage(
+          key: PageStorageKey('add-todo'),
           pageController: _controller,
         )
       ],
@@ -127,7 +130,10 @@ class TodoState extends State<TodoHomePage> {
             ],
           ),
         ),
-        body: pages(),
+        body: PageStorage(
+          child: pages(),
+          bucket: bucket,
+        ),
       ),
     );
   }
