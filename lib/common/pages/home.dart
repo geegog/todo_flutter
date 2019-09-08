@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/common/pages/login.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
-import 'package:todo_flutter/task/bloc/bloc.dart';
+import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 import 'package:todo_flutter/task/pages/add_todo.dart';
 import 'package:todo_flutter/task/pages/all_todo.dart';
 

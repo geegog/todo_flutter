@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:todo_flutter/task/bloc/bloc.dart';
+import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:todo_flutter/task/bloc/todo_event.dart';
-import 'package:todo_flutter/task/bloc/todo_state.dart';
+import 'package:todo_flutter/task/bloc/alltodo/todo_event.dart';
+import 'package:todo_flutter/task/bloc/alltodo/todo_state.dart';
 import 'package:todo_flutter/task/domain/repository/todo_repository.dart';
 
 class TodoBloc extends Bloc<TodoEvent, TodoState> {

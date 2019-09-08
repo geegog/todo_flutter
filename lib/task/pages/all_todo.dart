@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_flutter/task/bloc/bloc.dart';
+import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 import 'package:todo_flutter/task/domain/model/todo.dart';
 
 class AllTodoPage extends StatefulWidget {
