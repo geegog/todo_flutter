@@ -1,13 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:todo_flutter/common/components/date_time_picker.dart';
-import 'package:todo_flutter/common/components/snackbar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_flutter/common/widgets/date_time_picker.dart';
+import 'package:todo_flutter/common/widgets/snackbar.dart';
 import 'package:todo_flutter/common/pages/home.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
 import 'package:todo_flutter/common/utils/api.dart';
 import 'package:todo_flutter/common/utils/date_time.dart';
+import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 import 'package:todo_flutter/task/dto/todo.dart';
 import 'package:todo_flutter/task/dto/todo_request.dart';
 
@@ -208,16 +210,19 @@ class AddTodoState extends State<AddTodoPage> {
       } else if (responseObj['error'] != null) {
         Snack.snack(responseObj['error'], _scaffoldKey);
       } else {
-        widget.pageController.previousPage(
-            duration: Duration(milliseconds: 200), curve: Curves.linear);
-        /*Navigator.pushReplacement(
+        Snack.snack('Todo added successfully!', _scaffoldKey);
+
+        await Future.delayed(Duration(seconds: 2));
+
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => TodoHomePage(
-              newTodo: responseObj,
+            builder: (context) => BlocProvider(
+              builder: (context) => TodoBloc()..dispatch(Fetch()),
+              child: TodoHomePage(),
             ),
           ),
-        );*/
+        );
       }
       _hideLoading();
     } else {

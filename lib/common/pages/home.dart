@@ -20,6 +20,7 @@ class TodoHomePage extends StatefulWidget {
 }
 
 class TodoState extends State<TodoHomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   String name = services.get<Auth>().getUser()[0];
   String email = services.get<Auth>().getUser()[1];
   static final _controller = PageController();
@@ -73,7 +74,7 @@ class TodoState extends State<TodoHomePage> {
         AddTodoPage(
           key: PageStorageKey('add-todo'),
           pageController: _controller,
-        )
+        ),
       ],
     );
   }
@@ -84,6 +85,7 @@ class TodoState extends State<TodoHomePage> {
     return WillPopScope(
       onWillPop: () => Future.sync(_onWillPop),
       child: Scaffold(
+        key: _scaffoldKey,
         drawer: Drawer(
           child: ListView(
             children: <Widget>[

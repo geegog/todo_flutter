@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_flutter/common/utils/api.dart';
 import 'package:todo_flutter/user/dto/user.dart';
 import 'package:todo_flutter/user/dto/user_request.dart';
-import 'package:todo_flutter/common/components/snackbar.dart';
+import 'package:todo_flutter/common/widgets/snackbar.dart';
 
 class RegisterPage extends StatefulWidget {
   static const String tag = '/register-page';
