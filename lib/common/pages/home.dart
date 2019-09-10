@@ -25,13 +25,6 @@ class TodoState extends State<TodoHomePage> {
   static final _controller = PageController();
   final PageStorageBucket bucket = PageStorageBucket();
 
-//  @override
-//  void dispose() {
-//    super.dispose();
-//    _controller.dispose();
-//    //BlocProvider.of<TodoBloc>(context).dispose();
-//  }
-
   bool _onWillPop() {
     if (_controller.page.round() == _controller.initialPage) {
       return true;
