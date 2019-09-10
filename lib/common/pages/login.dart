@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/common/components/snackbar.dart';
 import 'package:todo_flutter/common/pages/register.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
 import 'package:todo_flutter/common/utils/api.dart';
+import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 
 import 'home.dart';
 
@@ -74,7 +76,12 @@ class LoginState extends State<LoginPage> {
         await services.get<Auth>().saveUser();
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => TodoHomePage()),
+          MaterialPageRoute(
+            builder: (context) => BlocProvider(
+              builder: (context) => TodoBloc()..dispatch(Fetch()),
+              child: TodoHomePage(),
+            ),
+          ),
         );
       }
       _hideLoading();
