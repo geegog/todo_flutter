@@ -25,29 +25,11 @@ class TodoState extends State<TodoHomePage> {
   static final _controller = PageController();
   final PageStorageBucket bucket = PageStorageBucket();
 
-  final _scrollController = ScrollController();
-  final _scrollThreshold = 200.0;
-  TodoBloc _todoBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      final maxScroll = _scrollController.position.maxScrollExtent;
-      final currentScroll = _scrollController.position.pixels;
-      if (maxScroll - currentScroll <= _scrollThreshold) {
-        _todoBloc.dispatch(Fetch());
-      }
-    });
-    _todoBloc = BlocProvider.of<TodoBloc>(context);
-  }
-
   @override
   void dispose() {
-    _scrollController.dispose();
     super.dispose();
-    _todoBloc.dispose();
     _controller.dispose();
+    BlocProvider.of<TodoBloc>(context).dispose();
   }
 
   bool _onWillPop() {
@@ -69,7 +51,6 @@ class TodoState extends State<TodoHomePage> {
         AllTodoPage(
           key: PageStorageKey('all-todos'),
           pageController: _controller,
-          scrollController: _scrollController,
         ),
         AddTodoPage(
           key: PageStorageKey('add-todo'),
@@ -82,7 +63,6 @@ class TodoState extends State<TodoHomePage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print('here');
     return WillPopScope(
       onWillPop: () => Future.sync(_onWillPop),
       child: Scaffold(

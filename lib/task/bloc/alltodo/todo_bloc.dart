@@ -34,7 +34,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
           final todos = await _todoRepository.fetchData(nextPage);
           int pageNumber = todos.metadata.pageNumber + 1;
           nextPage = "todo/all?page=$pageNumber";
-          print(nextPage);
+          //print(nextPage);
           yield TodoLoaded(todos: todos.data, hasReachedMax: false);
           return;
         }
@@ -44,12 +44,23 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
           nextPage = "todo/all?page=$pageNumber";
           yield TodoLoaded(
             todos: (currentState as TodoLoaded).todos + todos.data,
-            hasReachedMax: pageNumber > todos.metadata.totalPages ? true : false,
+            hasReachedMax:
+                pageNumber > todos.metadata.totalPages ? true : false,
           );
         }
-      } catch (e) {
-        //throw e;
+      } catch (_) {
         yield TodoError();
+      }
+    }
+    if (event is Refresh) {
+      try {
+        final todos = await _todoRepository.fetchData("todo/all");
+        int pageNumber = todos.metadata.pageNumber + 1;
+        nextPage = "todo/all?page=$pageNumber";
+        print(nextPage);
+        yield TodoLoaded(todos: todos.data, hasReachedMax: false);
+      } catch (_) {
+        yield currentState;
       }
     }
   }
