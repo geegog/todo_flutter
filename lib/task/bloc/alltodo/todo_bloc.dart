@@ -57,7 +57,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         final todos = await _todoRepository.fetchData("todo/all");
         int pageNumber = todos.metadata.pageNumber + 1;
         nextPage = "todo/all?page=$pageNumber";
-        yield TodoLoaded(todos: todos.data, hasReachedMax: false);
+        yield TodoLoaded(todos: todos.data, hasReachedMax: false, dateTime: DateTime.now());
       } catch (_) {
         yield currentState;
       }

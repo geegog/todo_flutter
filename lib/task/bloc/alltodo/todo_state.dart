@@ -18,19 +18,23 @@ class TodoError extends TodoState {
 class TodoLoaded extends TodoState {
   final List<Todo> todos;
   final bool hasReachedMax;
+  final DateTime dateTime;
 
   TodoLoaded({
     this.todos,
     this.hasReachedMax,
-  }) : super([todos, hasReachedMax]);
+    this.dateTime,
+  }) : super([todos, hasReachedMax, dateTime]);
 
   TodoLoaded copyWith({
     List<Todo> todos,
     bool hasReachedMax,
+    DateTime dateTime,
   }) {
     return TodoLoaded(
       todos: todos ?? this.todos,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      dateTime: dateTime,
     );
   }
 
