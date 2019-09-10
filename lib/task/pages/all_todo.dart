@@ -8,9 +8,16 @@ import 'package:todo_flutter/task/domain/model/todo.dart';
 class AllTodoPage extends StatefulWidget {
   static const String tag = '/all-todos';
 
-  AllTodoPage({Key key, this.pageController}) : super(key: key);
+  AllTodoPage(
+      {Key key,
+      this.pageController,
+      @required this.todoBloc,
+      @required this.scrollController})
+      : super(key: key);
 
   final PageController pageController;
+  final ScrollController scrollController;
+  final todoBloc;
 
   @override
   AllTodoState createState() => new AllTodoState();
@@ -18,9 +25,6 @@ class AllTodoPage extends StatefulWidget {
 
 class AllTodoState extends State<AllTodoPage> {
   Completer<void> _refreshCompleter;
-  final _scrollController = ScrollController();
-  final _scrollThreshold = 200.0;
-  TodoBloc _todoBloc;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
@@ -28,19 +32,10 @@ class AllTodoState extends State<AllTodoPage> {
   void initState() {
     super.initState();
     _refreshCompleter = Completer<void>();
-    _scrollController.addListener(() {
-      final maxScroll = _scrollController.position.maxScrollExtent;
-      final currentScroll = _scrollController.position.pixels;
-      if (maxScroll - currentScroll <= _scrollThreshold) {
-        _todoBloc.dispatch(Fetch());
-      }
-    });
-    _todoBloc = BlocProvider.of<TodoBloc>(context);
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -182,10 +177,10 @@ class AllTodoState extends State<AllTodoPage> {
                   itemCount: state.hasReachedMax
                       ? state.todos.length
                       : state.todos.length + 1,
-                  controller: _scrollController,
+                  controller: widget.scrollController,
                 ),
                 onRefresh: () {
-                  _todoBloc.dispatch(Refresh());
+                  widget.todoBloc.dispatch(Refresh());
                   return _refreshCompleter.future;
                 },
               );

@@ -20,10 +20,33 @@ class TodoHomePage extends StatefulWidget {
 }
 
 class TodoState extends State<TodoHomePage> {
-  static String name = services.get<Auth>().getUser()[0];
-  static String email = services.get<Auth>().getUser()[1];
+  String name = services.get<Auth>().getUser()[0];
+  String email = services.get<Auth>().getUser()[1];
   static final _controller = PageController();
   final PageStorageBucket bucket = PageStorageBucket();
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+  TodoBloc _todoBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.position.pixels;
+      if (maxScroll - currentScroll <= _scrollThreshold) {
+        _todoBloc.dispatch(Fetch());
+      }
+    });
+    _todoBloc = BlocProvider.of<TodoBloc>(context);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _todoBloc.dispose();
+    super.dispose();
+  }
 
   bool _onWillPop() {
     if (_controller.page.round() == _controller.initialPage) {
@@ -44,6 +67,8 @@ class TodoState extends State<TodoHomePage> {
         AllTodoPage(
           key: PageStorageKey('all-todos'),
           pageController: _controller,
+          scrollController: _scrollController,
+          todoBloc: _todoBloc,
         ),
         AddTodoPage(
           key: PageStorageKey('add-todo'),
