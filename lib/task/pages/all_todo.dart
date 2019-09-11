@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 import 'package:todo_flutter/task/domain/model/todo.dart';
 import 'package:todo_flutter/common/utils/date_time.dart' as dateTimeUtil;
+import 'package:todo_flutter/task/widget/side_line.dart' as line;
 
 class AllTodoPage extends StatefulWidget {
   static const String tag = '/all-todos';
@@ -44,66 +45,69 @@ class AllTodoState extends State<AllTodoPage> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: ListBody(
+          title: Row(
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  LimitedBox(
-                    maxWidth: 200.0,
-                    child: Row(
-                      children: <Widget>[
-                        Icon(Icons.title),
-                        SizedBox(
-                          width: 8.0,
-                        ),
-                        Expanded(
-                          child: Text(
-                            todo.title,
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20.0),
+              SizedBox(width: 3.0, child: Container(color: line.color(todo.deadline), height: 60.0,),),
+              Expanded(child: Column(children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    LimitedBox(
+                      maxWidth: 200.0,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.title, size: 15.0, color: line.color(todo.deadline)),
+                          SizedBox(
+                            width: 8.0,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: Text(
-                        dateTimeUtil.formatDateTime(todo.deadline),
-                        style: TextStyle(color: Colors.grey, fontSize: 10.0),
+                          Expanded(
+                            child: Text(
+                              todo.title,
+                              style:
+                              TextStyle(color: Colors.black, fontSize: 20.0),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              Row(children: <Widget>[
-                SizedBox(
-                  width: 40.0,
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          dateTimeUtil.formatDateTime(todo.deadline),
+                          style: TextStyle(color: Colors.grey, fontSize: 10.0),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: Text(
-                    todo.description,
+                SizedBox(
+                  height: 8.0,
+                ),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 40.0,
+                  ),
+                  Expanded(
+                    child: Text(
+                      todo.description,
+                      style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                    ),
+                  ),
+                ]),
+                Row(children: <Widget>[
+                  SizedBox(
+                    width: 40.0,
+                  ),
+                  Icon(
+                    Icons.comment,
+                    size: 15.0,
+                  ),
+                  Text(
+                    '0',
                     style: TextStyle(color: Colors.grey, fontSize: 15.0),
                   ),
-                ),
-              ]),
-              Row(children: <Widget>[
-                SizedBox(
-                  width: 40.0,
-                ),
-                Icon(
-                  Icons.comment,
-                  size: 15.0,
-                ),
-                Text(
-                  '0',
-                  style: TextStyle(color: Colors.grey, fontSize: 15.0),
-                ),
-              ],),
+                ],),
+              ],),),
             ],
           ),
           onTap: () {
