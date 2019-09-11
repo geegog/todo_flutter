@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 import 'package:todo_flutter/task/domain/model/todo.dart';
+import 'package:todo_flutter/common/utils/date_time.dart' as dateTimeUtil;
 
 class AllTodoPage extends StatefulWidget {
   static const String tag = '/all-todos';
@@ -45,34 +46,37 @@ class AllTodoState extends State<AllTodoPage> {
         ListTile(
           title: ListBody(
             children: <Widget>[
-              Row(children: <Widget>[
-                LimitedBox(
-                  maxWidth: 200.0,
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.title),
-                      SizedBox(
-                        width: 8.0,
-                      ),
-                      Expanded(
-                        child: Text(
-                          todo.title,
-                          style: TextStyle(color: Colors.black, fontSize: 20.0),
+              Row(
+                children: <Widget>[
+                  LimitedBox(
+                    maxWidth: 200.0,
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.title),
+                        SizedBox(
+                          width: 8.0,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                LimitedBox(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: Text(
-                      todo.deadline,
-                      style: TextStyle(color: Colors.grey, fontSize: 10.0),
+                        Expanded(
+                          child: Text(
+                            todo.title,
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 20.0),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ]),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        dateTimeUtil.formatDateTime(todo.deadline),
+                        style: TextStyle(color: Colors.grey, fontSize: 10.0),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(
                 height: 8.0,
               ),
@@ -99,7 +103,7 @@ class AllTodoState extends State<AllTodoPage> {
                   '0',
                   style: TextStyle(color: Colors.grey, fontSize: 15.0),
                 ),
-              ]),
+              ],),
             ],
           ),
           onTap: () {
