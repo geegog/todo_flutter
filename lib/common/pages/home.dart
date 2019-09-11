@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_flutter/category/pages/all_categories.dart';
 import 'package:todo_flutter/common/pages/login.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
@@ -124,6 +125,17 @@ class TodoState extends State<TodoHomePage> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text('Categories'),
+                trailing: Icon(Icons.category),
+                onTap: () {
+                  services.get<Auth>().removeUser();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CategoryPage()),
                   );
                 },
               )
