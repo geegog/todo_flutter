@@ -132,7 +132,6 @@ class TodoState extends State<TodoHomePage> {
                 title: Text('Categories'),
                 trailing: Icon(Icons.category),
                 onTap: () {
-                  services.get<Auth>().removeUser();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CategoryPage()),

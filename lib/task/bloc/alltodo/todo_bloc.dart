@@ -49,6 +49,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
           );
         }
       } catch (_) {
+        //print(_);
         yield TodoError();
       }
     }
@@ -59,6 +60,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         nextPage = "todo/all?page=$pageNumber";
         yield TodoLoaded(todos: todos.data, hasReachedMax: false, dateTime: DateTime.now());
       } catch (_) {
+        //print(_);
         yield currentState;
       }
     }

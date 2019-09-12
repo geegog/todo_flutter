@@ -166,9 +166,6 @@ class AllTodoState extends State<AllTodoPage> {
       ),
       body: BlocListener<TodoBloc, TodoState>(
         listener: (context, state) {
-          print('***********');
-          print(state.toString());
-          print('***********');
           if (state is TodoLoaded) {
             _refreshCompleter?.complete();
             _refreshCompleter = Completer();
