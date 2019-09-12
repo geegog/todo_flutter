@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 Color color(String dateTime) {
   DateTime parsedDate = DateTime.parse(dateTime);
 
-  Duration duration = DateTime.now().difference(parsedDate);
+  Duration duration = parsedDate.difference(DateTime.now());
 
   if (duration.isNegative) {
     return Colors.red;

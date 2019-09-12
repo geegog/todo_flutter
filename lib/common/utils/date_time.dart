@@ -6,7 +6,7 @@ String formatTimeNumber(int number) {
 String formatDateTime(String dateTime) {
   DateTime parsedDate = DateTime.parse(dateTime);
 
-  Duration duration = DateTime.now().difference(parsedDate);
+  Duration duration = parsedDate.difference(DateTime.now());
 
   if(duration.isNegative) {
     return dateTime.replaceAll('T', ' ');
