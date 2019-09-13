@@ -43,7 +43,7 @@ class AuthenticationBloc
   }
 
   Stream<AuthenticationState> _mapLoggedInToState() async* {
-    yield Authenticated(await _userRepository.getUser());
+    yield Authenticated(_userRepository.getUser());
   }
 
   Stream<AuthenticationState> _mapLoggedOutToState() async* {

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/authentication/bloc.dart';
 
-
 class SettingsPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -15,14 +13,12 @@ class SettingsPage extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           ListTile(
-            title: Text('Logout'),
-            leading: Icon(Icons.power_settings_new),
-            onTap: () {
-              BlocProvider.of<AuthenticationBloc>(context).dispatch(
-                LoggedOut(),
-              );
-            },
-          ),
+              title: Text('Logout'),
+              leading: Icon(Icons.power_settings_new),
+              onTap: () => WidgetsBinding.instance.addPostFrameCallback(
+                  (_) => BlocProvider.of<AuthenticationBloc>(context).dispatch(
+                        LoggedOut(),
+                      ))),
         ],
       ),
     );

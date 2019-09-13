@@ -44,11 +44,9 @@ class MyApp extends StatelessWidget {
               builder: (context) => TodoBloc()..dispatch(Fetch()),
               child: TodoHomePage(),
             );
-          }
-          if (state is Unauthenticated) {
+          } else  {
             return LoginPage(userRepository: userRepository);
           }
-          return Text('Loading');
         },
       ),
     );
