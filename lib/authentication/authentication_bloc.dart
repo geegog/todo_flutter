@@ -1,16 +1,11 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:todo_flutter/authentication/bloc.dart';
 import 'package:todo_flutter/common/domain/repository/user_repository.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final UserRepository _userRepository;
-
-  AuthenticationBloc({@required UserRepository userRepository})
-      : assert(userRepository != null),
-        _userRepository = userRepository;
+  final _userRepository = new UserRepository();
 
   @override
   AuthenticationState get initialState => Uninitialized();

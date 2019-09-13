@@ -13,12 +13,12 @@ class SettingsPage extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           ListTile(
-              title: Text('Logout'),
-              leading: Icon(Icons.power_settings_new),
-              onTap: () => WidgetsBinding.instance.addPostFrameCallback(
-                  (_) => BlocProvider.of<AuthenticationBloc>(context).dispatch(
-                        LoggedOut(),
-                      ))),
+            title: Text('Logout'),
+            leading: Icon(Icons.power_settings_new),
+            onTap: () => BlocProvider.of<AuthenticationBloc>(context).dispatch(
+              LoggedOut(),
+            ),
+          ),
         ],
       ),
     );

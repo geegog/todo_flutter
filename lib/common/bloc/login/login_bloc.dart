@@ -1,24 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:todo_flutter/common/bloc/login/login_event.dart';
 import 'package:todo_flutter/common/bloc/login/login_state.dart';
 import 'package:todo_flutter/common/domain/repository/user_repository.dart';
-import 'package:todo_flutter/common/services/auth.dart';
-import 'package:todo_flutter/common/services/service_locator.dart';
 import 'package:todo_flutter/common/utils/validators.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
-  UserRepository _userRepository;
-
-  LoginBloc({
-    @required UserRepository userRepository,
-  })  : assert(userRepository != null),
-        _userRepository = userRepository;
+  final _userRepository = UserRepository();
 
   @override
   LoginState get initialState => LoginState.empty();

@@ -3,32 +3,26 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/authentication/bloc.dart';
 import 'package:todo_flutter/common/bloc/simple_bloc_delegate.dart';
-import 'package:todo_flutter/common/domain/repository/user_repository.dart';
 import 'package:todo_flutter/common/pages/home.dart';
 import 'package:todo_flutter/common/pages/login_page.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
+import 'common/bloc/login/bloc.dart';
 import 'common/services/service_locator.dart';
 
 void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   await setupLocator();
-  final userRepository = UserRepository();
   runApp(
     BlocProvider<AuthenticationBloc>(
       builder: (context) {
-        return AuthenticationBloc(userRepository: userRepository)
-          ..dispatch(AppStarted());
+        return AuthenticationBloc()..dispatch(AppStarted());
       },
-      child: MyApp(userRepository: userRepository,),
-    ),);
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-
-  final UserRepository userRepository;
-
-  MyApp({Key key, @required this.userRepository}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -44,8 +38,11 @@ class MyApp extends StatelessWidget {
               builder: (context) => TodoBloc()..dispatch(Fetch()),
               child: TodoHomePage(),
             );
-          } else  {
-            return LoginPage(userRepository: userRepository);
+          } else {
+            return BlocProvider<LoginBloc>(
+              builder: (context) => LoginBloc(),
+              child: LoginPage(),
+            );
           }
         },
       ),
