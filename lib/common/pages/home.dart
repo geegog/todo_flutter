@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/category/pages/all_categories.dart';
-import 'package:todo_flutter/common/pages/login.dart';
+import 'package:todo_flutter/common/pages/settings.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
@@ -111,22 +111,11 @@ class TodoState extends State<TodoHomePage> {
                     ),
                     trailing: IconButton(
                         icon: Icon(Icons.close),
-                        onPressed: () {
+                        onPressed: ()  {
                           Navigator.pop(context);
                         }),
                   ),
                 ]),
-              ),
-              ListTile(
-                title: Text('Logout'),
-                trailing: Icon(Icons.power_settings_new),
-                onTap: () {
-                  services.get<Auth>().removeUser();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
-                },
               ),
               ListTile(
                 title: Text('Categories'),
@@ -137,7 +126,17 @@ class TodoState extends State<TodoHomePage> {
                     MaterialPageRoute(builder: (context) => CategoryPage()),
                   );
                 },
-              )
+              ),
+              ListTile(
+                title: Text('Settings'),
+                trailing: Icon(Icons.settings),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingsPage()),
+                  );
+                },
+              ),
             ],
           ),
         ),
