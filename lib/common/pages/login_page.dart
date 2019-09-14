@@ -144,7 +144,7 @@ class LoginPageState extends State<LoginPage> {
                 gradient: LinearGradient(
                   colors: [Colors.green, Colors.white],
                   begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                  end: Alignment.bottomRight,
                 ),
               ),
               child: Center(
