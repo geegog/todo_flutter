@@ -29,6 +29,7 @@ dependencies:
   get_it: ^2.0.1
   equatable: ^0.5.1
   flutter_bloc: ^0.21.0
+  meta: ^1.1.6
 
 dev_dependencies:
   flutter_test:

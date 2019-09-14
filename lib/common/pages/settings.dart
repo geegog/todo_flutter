@@ -15,9 +15,12 @@ class SettingsPage extends StatelessWidget {
           ListTile(
             title: Text('Logout'),
             leading: Icon(Icons.power_settings_new),
-            onTap: () => BlocProvider.of<AuthenticationBloc>(context).dispatch(
-              LoggedOut(),
-            ),
+            onTap: () {
+              BlocProvider.of<AuthenticationBloc>(context).dispatch(
+                LoggedOut(),
+              );
+              Navigator.pop(context);
+            }
           ),
         ],
       ),

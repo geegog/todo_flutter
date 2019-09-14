@@ -122,6 +122,7 @@ class TodoState extends State<TodoHomePage> {
                 title: Text('Categories'),
                 trailing: Icon(Icons.category),
                 onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CategoryPage()),
@@ -132,6 +133,7 @@ class TodoState extends State<TodoHomePage> {
                 title: Text('Settings'),
                 trailing: Icon(Icons.settings),
                 onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SettingsPage()),
