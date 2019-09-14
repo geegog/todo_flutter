@@ -32,6 +32,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        condition: (previousState, currentState) {
+          return true;
+        },
         builder: (context, state) {
           if (state is Authenticated) {
             return BlocProvider(

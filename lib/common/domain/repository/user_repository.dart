@@ -21,12 +21,10 @@ class UserRepository {
 
   void signOut() {
     services.get<Auth>().removeUser();
-    return;
   }
 
   Future<void> persistUser(String token) async {
     await services.get<Auth>().saveUser();
-    return;
   }
 
   void persistToken(String token) {

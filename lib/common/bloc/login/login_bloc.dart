@@ -9,7 +9,6 @@ import 'package:todo_flutter/common/domain/repository/user_repository.dart';
 import 'package:todo_flutter/common/utils/validators.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-
   final _userRepository = UserRepository();
 
   @override
@@ -17,9 +16,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> transformEvents(
-      Stream<LoginEvent> events,
-      Stream<LoginState> Function(LoginEvent event) next,
-      ) {
+    Stream<LoginEvent> events,
+    Stream<LoginState> Function(LoginEvent event) next,
+  ) {
     final observableStream = events as Observable<LoginEvent>;
     final nonDebounceStream = observableStream.where((event) {
       return (event is! EmailChanged && event is! PasswordChanged);
@@ -37,7 +36,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield* _mapEmailChangedToState(event.email);
     } else if (event is PasswordChanged) {
       yield* _mapPasswordChangedToState(event.password);
-    }  else if (event is LoginWithCredentialsPressed) {
+    } else if (event is LoginWithCredentialsPressed) {
       yield* _mapLoginWithCredentialsPressedToState(
         email: event.email,
         password: event.password,
@@ -63,17 +62,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }) async* {
     yield LoginState.loading();
     try {
-      final response = await _userRepository.authenticate(email: email, password: password);
+      final response =
+          await _userRepository.authenticate(email: email, password: password);
       Map<String, dynamic> responseObj = json.decode(response);
 
-      if (responseObj['errors'] != null) {
-        yield LoginState.failure();
-      } else if (responseObj['error'] != null) {
-        yield LoginState.failure();
-      } else {
+      if (responseObj['jwt'] != null) {
         _userRepository.persistToken(responseObj['jwt']);
         await _userRepository.persistUser(responseObj['jwt']);
         yield LoginState.success();
+      }
+      if (responseObj['errors'] != null) {
+        yield LoginState.failure();
+      }
+      if (responseObj['error'] != null) {
+        yield LoginState.failure();
       }
     } catch (_) {
       yield LoginState.failure();

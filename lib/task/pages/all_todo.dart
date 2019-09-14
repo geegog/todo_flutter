@@ -179,7 +179,6 @@ class AllTodoState extends State<AllTodoPage> {
               );
             }
             if (state is TodoLoaded) {
-              print(state.todos.length);
               if (state.todos.isEmpty) {
                 return Center(
                   child: Text('no todos'),

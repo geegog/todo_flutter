@@ -123,6 +123,7 @@ class LoginPageState extends State<LoginPage> {
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
+                  duration: Duration(minutes: 5),
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

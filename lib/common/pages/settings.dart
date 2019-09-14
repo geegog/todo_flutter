@@ -19,8 +19,7 @@ class SettingsPage extends StatelessWidget {
               BlocProvider.of<AuthenticationBloc>(context).dispatch(
                 LoggedOut(),
               );
-              Navigator.pop(context);
-            }
+            },
           ),
         ],
       ),
