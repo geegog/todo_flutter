@@ -196,6 +196,7 @@ class LoginPageState extends State<LoginPage> {
                               child: ButtonTheme(
                                 minWidth: double.infinity,
                                 child: RaisedButton(
+                                  elevation: 10.0,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(24),
                                   ),

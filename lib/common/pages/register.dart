@@ -183,7 +183,7 @@ class RegisterState extends State<RegisterPage> {
             minWidth: double.infinity,
             child: Builder(
               builder: (context) => RaisedButton(
-                elevation: 5.0,
+                elevation: 10.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),
                 ),
