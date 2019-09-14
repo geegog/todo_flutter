@@ -111,7 +111,7 @@ class RegisterState extends State<RegisterPage> {
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
           decoration: decoration(
-              'Enter email', new Icon(Icons.email, color: Colors.green)),
+              'Enter email', new Icon(Icons.email, color: Colors.white)),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your email';
@@ -125,7 +125,7 @@ class RegisterState extends State<RegisterPage> {
           keyboardType: TextInputType.text,
           autofocus: false,
           decoration: decoration(
-              'Enter name', new Icon(Icons.person, color: Colors.green)),
+              'Enter name', new Icon(Icons.person, color: Colors.white)),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter your name';
@@ -139,7 +139,7 @@ class RegisterState extends State<RegisterPage> {
           keyboardType: TextInputType.phone,
           autofocus: false,
           decoration: decoration(
-              'Enter phone', new Icon(Icons.phone, color: Colors.green)),
+              'Enter phone', new Icon(Icons.phone, color: Colors.white)),
           validator: (value) {
             if (value.isEmpty && value.length < 11) {
               return 'Please enter a valid phone';
@@ -154,7 +154,7 @@ class RegisterState extends State<RegisterPage> {
           autofocus: false,
           obscureText: true,
           decoration: decoration(
-              'Enter password', new Icon(Icons.lock, color: Colors.green)),
+              'Enter password', new Icon(Icons.lock, color: Colors.white)),
           validator: (value) {
             if (value.isEmpty || value.length < 8) {
               return 'Password must be at least 8 characters';
@@ -169,7 +169,7 @@ class RegisterState extends State<RegisterPage> {
           autofocus: false,
           obscureText: true,
           decoration: decoration(
-              'Confirm password', new Icon(Icons.lock, color: Colors.green)),
+              'Confirm password', new Icon(Icons.lock, color: Colors.white)),
           validator: (value) {
             if (value.isEmpty || value != myControllerPassword.text) {
               return 'Confirmation password does not match';
@@ -206,7 +206,7 @@ class RegisterState extends State<RegisterPage> {
     return FlatButton(
       child: Text(
         'Already have an account',
-        style: TextStyle(color: Colors.blue),
+        style: TextStyle(color: Colors.green),
       ),
       onPressed: () {
         Navigator.pop(context);
@@ -215,22 +215,31 @@ class RegisterState extends State<RegisterPage> {
   }
 
   Widget _registerScreen() {
-    return Center(
-      child: SingleChildScrollView(
-        padding: EdgeInsets.only(left: 24.0, right: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 48.0),
-            logo(),
-            SizedBox(height: 48.0),
-            form(),
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [loginLabel()]),
-            SizedBox(height: 48.0),
-          ],
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.green, Colors.white],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(left: 24.0, right: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: 48.0),
+              logo(),
+              SizedBox(height: 48.0),
+              form(),
+              new Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [loginLabel()]),
+              SizedBox(height: 48.0),
+            ],
+          ),
         ),
       ),
     );

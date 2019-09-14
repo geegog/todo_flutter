@@ -17,18 +17,19 @@ class LoginPageState extends State<LoginPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final Function decoration = (String text, Icon icon) => InputDecoration(
-    prefixIcon: icon,
-    hintText: text,
-    contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-  );
+        prefixIcon: icon,
+        hintText: text,
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+      );
 
   final TextEditingController _myControllerEmail = TextEditingController();
   final TextEditingController _myControllerPassword = TextEditingController();
   LoginBloc _loginBloc;
 
   bool get isPopulated =>
-      _myControllerEmail.text.isNotEmpty && _myControllerPassword.text.isNotEmpty;
+      _myControllerEmail.text.isNotEmpty &&
+      _myControllerPassword.text.isNotEmpty;
 
   bool isLoginButtonEnabled(LoginState state) {
     return state.isFormValid && isPopulated && !state.isSubmitting;
@@ -87,7 +88,7 @@ class LoginPageState extends State<LoginPage> {
     return FlatButton(
       child: Text(
         'Create a new account',
-        style: TextStyle(color: Colors.blue),
+        style: TextStyle(color: Colors.green),
       ),
       onPressed: () {
         Navigator.push(
@@ -100,7 +101,6 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: _scaffoldKey,
       body: BlocListener<LoginBloc, LoginState>(
@@ -139,71 +139,85 @@ class LoginPageState extends State<LoginPage> {
         },
         child: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
-            return Center(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(left: 24.0, right: 24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: 48.0),
-                    logo(),
-                    SizedBox(height: 48.0),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: <Widget>[
-                          TextFormField(
-                            controller: _myControllerEmail,
-                            keyboardType: TextInputType.emailAddress,
-                            autovalidate: true,
-                            autocorrect: false,
-                            autofocus: false,
-                            decoration: decoration("Enter email",
-                                new Icon(Icons.email, color: Colors.green)),
-                            validator: (_) {
-                              return !state.isEmailValid ? 'Invalid Email' : null;
-                            },
-                          ),
-                          SizedBox(height: 8.0),
-                          TextFormField(
-                            controller: _myControllerPassword,
-                            keyboardType: TextInputType.text,
-                            autovalidate: true,
-                            autocorrect: false,
-                            autofocus: false,
-                            obscureText: true,
-                            decoration: decoration('Enter password',
-                                new Icon(Icons.lock, color: Colors.green)),
-                            validator: (_) {
-                              return !state.isPasswordValid ? 'Invalid Password' : null;
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16.0),
-                            child: ButtonTheme(
-                              minWidth: double.infinity,
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(24),
+            return Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.green, Colors.white],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              child: Center(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: 48.0),
+                      logo(),
+                      SizedBox(height: 48.0),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: <Widget>[
+                            TextFormField(
+                              controller: _myControllerEmail,
+                              keyboardType: TextInputType.emailAddress,
+                              autovalidate: true,
+                              autocorrect: false,
+                              autofocus: false,
+                              decoration: decoration("Enter email",
+                                  new Icon(Icons.email, color: Colors.white)),
+                              validator: (_) {
+                                return !state.isEmailValid
+                                    ? 'Invalid Email'
+                                    : null;
+                              },
+                            ),
+                            SizedBox(height: 8.0),
+                            TextFormField(
+                              controller: _myControllerPassword,
+                              keyboardType: TextInputType.text,
+                              autovalidate: true,
+                              autocorrect: false,
+                              autofocus: false,
+                              obscureText: true,
+                              decoration: decoration('Enter password',
+                                  new Icon(Icons.lock, color: Colors.white)),
+                              validator: (_) {
+                                return !state.isPasswordValid
+                                    ? 'Invalid Password'
+                                    : null;
+                              },
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 16.0),
+                              child: ButtonTheme(
+                                minWidth: double.infinity,
+                                child: RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(24),
+                                  ),
+                                  onPressed: isLoginButtonEnabled(state)
+                                      ? _onFormSubmitted
+                                      : null,
+                                  padding: EdgeInsets.all(12),
+                                  color: Colors.green,
+                                  child: Text('Log In',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
-                                onPressed: isLoginButtonEnabled(state)
-                                    ? _onFormSubmitted
-                                    : null,
-                                padding: EdgeInsets.all(12),
-                                color: Colors.green,
-                                child: Text('Log In',
-                                    style: TextStyle(color: Colors.white)),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    new Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [registerLabel()]),
-                    SizedBox(height: 48.0),
-                  ],
+                      new Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [registerLabel()]),
+                      SizedBox(height: 48.0),
+                    ],
+                  ),
                 ),
               ),
             );
