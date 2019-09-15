@@ -25,7 +25,7 @@ class TodoState extends State<TodoHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   String name = services.get<Auth>().getUser()[0];
   String email = services.get<Auth>().getUser()[1];
-  static final _controller = PageController();
+  static final _controller = PageController(initialPage: 1);
   final PageStorageBucket bucket = PageStorageBucket();
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
@@ -67,6 +67,7 @@ class TodoState extends State<TodoHomePage> {
     return PageView(
       controller: _controller,
       children: <Widget>[
+        CategoryPage(),
         AllTodoPage(
           key: PageStorageKey('all-todos'),
           pageController: _controller,
@@ -117,17 +118,6 @@ class TodoState extends State<TodoHomePage> {
                         }),
                   ),
                 ]),
-              ),
-              ListTile(
-                title: Text('Categories'),
-                trailing: Icon(Icons.category),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CategoryPage()),
-                  );
-                },
               ),
               ListTile(
                 title: Text('Settings'),
