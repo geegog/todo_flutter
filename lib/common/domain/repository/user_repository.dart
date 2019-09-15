@@ -5,6 +5,8 @@ import 'package:meta/meta.dart';
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
 import 'package:todo_flutter/common/utils/api.dart';
+import 'package:todo_flutter/user/dto/user.dart';
+import 'package:todo_flutter/user/dto/user_request.dart';
 
 class UserRepository {
   Future<String> authenticate({
@@ -16,6 +18,27 @@ class UserRepository {
       'password': password
     });
     var response = await APIUtil().post('sign_in', loginRequest);
+    return response;
+  }
+
+  Future<String> register({
+    @required String email,
+    @required String password,
+    @required String phone,
+    @required String name,
+    @required String confirmPassword,
+  }) async {
+
+    User user = User(
+        name,
+        email,
+        phone,
+        password,
+        confirmPassword);
+
+    String userRequest = jsonEncode(UserRequest(user));
+
+    var response = await APIUtil().post('sign_up', userRequest);
     return response;
   }
 

@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:todo_flutter/common/bloc/login/login_event.dart';
 import 'package:todo_flutter/common/bloc/login/login_state.dart';
 import 'package:todo_flutter/common/domain/repository/user_repository.dart';
-import 'package:todo_flutter/common/utils/validators.dart';
+import 'package:todo_flutter/common/utils/login_validators.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final _userRepository = UserRepository();
@@ -46,13 +46,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> _mapEmailChangedToState(String email) async* {
     yield currentState.update(
-      isEmailValid: Validators.isValidEmail(email),
+      isEmailValid: LoginValidators.isValidEmail(email),
     );
   }
 
   Stream<LoginState> _mapPasswordChangedToState(String password) async* {
     yield currentState.update(
-      isPasswordValid: Validators.isValidPassword(password),
+      isPasswordValid: LoginValidators.isValidPassword(password),
     );
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_flutter/authentication/authentication_bloc.dart';
 import 'package:todo_flutter/category/pages/all_categories.dart';
 import 'package:todo_flutter/common/pages/settings.dart';
 import 'package:todo_flutter/common/services/auth.dart';
