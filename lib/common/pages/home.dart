@@ -52,7 +52,14 @@ class TodoState extends State<TodoHomePage> {
   }
 
   bool _onWillPop() {
-    if (_controller.page.round() == _controller.initialPage) {
+    if (_controller.page.round() == 0) {
+      _controller.animateToPage(
+        1,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.linear,
+      );
+      return false;
+    } else if (_controller.page.round() == _controller.initialPage) {
       return true;
     } else {
       _controller.previousPage(
@@ -113,7 +120,7 @@ class TodoState extends State<TodoHomePage> {
                     ),
                     trailing: IconButton(
                         icon: Icon(Icons.close),
-                        onPressed: ()  {
+                        onPressed: () {
                           Navigator.pop(context);
                         }),
                   ),
