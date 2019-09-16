@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:todo_flutter/common/utils/date_time.dart';
 import 'package:todo_flutter/task/bloc/addtodo/bloc.dart';
 import 'package:todo_flutter/task/domain/repository/todo_repository.dart';
 import 'package:todo_flutter/task/util/add_todo_validators.dart';
@@ -39,7 +41,8 @@ class AddTodoBloc extends Bloc<AddTodoEvent, AddTodoState> {
       yield* _mapAddTodoButtonPressedToState(
         title: event.title,
         description: event.description,
-        datetime: event.datetime,
+        endDate: event.endDate,
+        endTime: event.endTime
       );
     }
   }
@@ -60,14 +63,17 @@ class AddTodoBloc extends Bloc<AddTodoEvent, AddTodoState> {
   Stream<AddTodoState> _mapAddTodoButtonPressedToState({
     String title,
     String description,
-    String datetime,
+    DateTime endDate,
+    TimeOfDay endTime,
   }) async* {
     yield AddTodoState.loading();
     try {
       final response = await _todoRepository.addTodo(
         title: title,
         description: description,
-        datetime: datetime,
+        endDate: endDate,
+        endTime: endTime,
+        datetime: _dateTime(endDate, endTime)
       );
       Map<String, dynamic> responseObj = json.decode(response);
 
@@ -83,5 +89,20 @@ class AddTodoBloc extends Bloc<AddTodoEvent, AddTodoState> {
     } catch (_) {
       yield AddTodoState.failure(_.toString());
     }
+  }
+
+  String _dateTime(DateTime endDate, TimeOfDay endTime) {
+      print(endDate.toIso8601String());
+      print(endTime.toString());
+
+      String datetime = endDate.toIso8601String().split('T')[0] +
+          ' ' +
+          formatTimeNumber(endTime.hour) +
+          ':' +
+          formatTimeNumber(endTime.minute) +
+          ':00';
+      print(datetime);
+
+      return datetime;
   }
 }

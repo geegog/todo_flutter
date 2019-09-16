@@ -64,9 +64,6 @@ class AddTodoState {
   AddTodoState update({
     bool isTitleValid,
     bool isDescriptionValid,
-    bool isPhoneValid,
-    bool isNameValid,
-    bool isConfirmPasswordValid,
   }) {
     return copyWith(
       isTitleValid: isTitleValid,

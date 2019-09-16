@@ -6,6 +6,7 @@ import 'package:todo_flutter/common/bloc/register/bloc.dart';
 import 'package:todo_flutter/common/bloc/simple_bloc_delegate.dart';
 import 'package:todo_flutter/common/pages/home.dart';
 import 'package:todo_flutter/common/pages/login_page.dart';
+import 'package:todo_flutter/task/bloc/addtodo/add_todo_bloc.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 import 'common/bloc/login/bloc.dart';
 import 'common/services/service_locator.dart';
@@ -21,6 +22,9 @@ void main() async {
         ),
         BlocProvider<RegisterBloc>(
           builder: (context) => RegisterBloc(),
+        ),
+        BlocProvider<AddTodoBloc>(
+          builder: (context) => AddTodoBloc(),
         ),
       ],
       child: MyApp(),

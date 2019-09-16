@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
@@ -27,16 +28,18 @@ class DescriptionChanged extends AddTodoEvent {
 class AddTodoButtonPressed extends AddTodoEvent {
   final String title;
   final String description;
-  final String datetime;
+  final DateTime endDate;
+  final TimeOfDay endTime;
 
   AddTodoButtonPressed(
       {@required this.title,
       @required this.description,
-      @required this.datetime})
-      : super([title, description, datetime]);
+      @required this.endDate,
+      @required this.endTime})
+      : super([title, description, endDate, endTime]);
 
   @override
   String toString() {
-    return 'AddTodoButtonPressed { title: $title, description: $description, datetime: $datetime }';
+    return 'AddTodoButtonPressed { title: $title, description: $description, _endDate: $endDate , endTime: $endTime}';
   }
 }

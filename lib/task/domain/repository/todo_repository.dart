@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 import 'package:todo_flutter/common/services/auth.dart';
@@ -20,6 +21,8 @@ class TodoRepository {
   Future<String> addTodo({
     @required String title,
     @required String description,
+    @required DateTime endDate,
+    @required TimeOfDay endTime,
     @required String datetime,
   }) async {
 
