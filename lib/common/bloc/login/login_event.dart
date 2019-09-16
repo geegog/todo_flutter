@@ -24,19 +24,6 @@ class PasswordChanged extends LoginEvent {
   String toString() => 'PasswordChanged { password: $password }';
 }
 
-class Submitted extends LoginEvent {
-  final String email;
-  final String password;
-
-  Submitted({@required this.email, @required this.password})
-      : super([email, password]);
-
-  @override
-  String toString() {
-    return 'Submitted { email: $email, password: $password }';
-  }
-}
-
 class LoginWithCredentialsPressed extends LoginEvent {
   final String email;
   final String password;

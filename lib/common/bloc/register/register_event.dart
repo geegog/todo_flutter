@@ -55,19 +55,6 @@ class ConfirmPasswordChanged extends RegisterEvent {
       'ConfirmPasswordChanged { confirmPassword: $confirmPassword, password: $password }';
 }
 
-class Submitted extends RegisterEvent {
-  final String email;
-  final String password;
-
-  Submitted({@required this.email, @required this.password})
-      : super([email, password]);
-
-  @override
-  String toString() {
-    return 'Submitted { email: $email, password: $password }';
-  }
-}
-
 class RegisterButtonPressed extends RegisterEvent {
   final String email;
   final String password;
