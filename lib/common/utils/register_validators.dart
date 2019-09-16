@@ -6,7 +6,7 @@ class RegisterValidators {
     r'.*?',
   );
   static final RegExp _phoneRegExp = RegExp(
-    r'.*?',
+    r'^[0-9]',
   );
   static final RegExp _nameRegExp = RegExp(
     r'.*?',
@@ -16,23 +16,26 @@ class RegisterValidators {
   );
 
   static isValidEmail(String email) {
-    return _emailRegExp.hasMatch(email);
+    return _emailRegExp.hasMatch(email) && email.isNotEmpty;
   }
 
   static isValidPassword(String password) {
-    return _passwordRegExp.hasMatch(password);
+    return _passwordRegExp.hasMatch(password) &&
+        password.isNotEmpty &&
+        password.length >= 8;
   }
 
   static isValidPhone(String phone) {
-    return _phoneRegExp.hasMatch(phone);
+    return _phoneRegExp.hasMatch(phone) && phone.isNotEmpty;
   }
 
   static isValidName(String name) {
-    return _nameRegExp.hasMatch(name);
+    return _nameRegExp.hasMatch(name) && name.isNotEmpty;
   }
 
   static isValidConfirmPassword(String password, String confirmPassword) {
-    return _changePasswordRegExp.hasMatch(confirmPassword) && isPasswordEqual(password, confirmPassword);
+    return _changePasswordRegExp.hasMatch(confirmPassword) &&
+        isPasswordEqual(password, confirmPassword);
   }
 
   static isPasswordEqual(String password, String confirmPassword) {

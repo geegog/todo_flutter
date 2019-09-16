@@ -7,10 +7,10 @@ class LoginValidators {
   );
 
   static isValidEmail(String email) {
-    return _emailRegExp.hasMatch(email);
+    return _emailRegExp.hasMatch(email) && email.isNotEmpty;
   }
 
   static isValidPassword(String password) {
-    return _passwordRegExp.hasMatch(password);
+    return _passwordRegExp.hasMatch(password) && password.isNotEmpty;
   }
 }

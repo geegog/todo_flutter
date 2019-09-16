@@ -34,9 +34,10 @@ class PhoneChanged extends RegisterEvent {
 }
 
 class PasswordChanged extends RegisterEvent {
+  final String confirmPassword;
   final String password;
 
-  PasswordChanged({@required this.password}) : super([password]);
+  PasswordChanged({@required this.password, @required this.confirmPassword}) : super([password]);
 
   @override
   String toString() => 'PasswordChanged { password: $password }';

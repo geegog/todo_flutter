@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/authentication/bloc.dart';
+import 'package:todo_flutter/common/bloc/register/bloc.dart';
 import 'package:todo_flutter/common/bloc/simple_bloc_delegate.dart';
 import 'package:todo_flutter/common/pages/home.dart';
 import 'package:todo_flutter/common/pages/login_page.dart';
@@ -13,10 +14,15 @@ void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   await setupLocator();
   runApp(
-    BlocProvider<AuthenticationBloc>(
-      builder: (context) {
-        return AuthenticationBloc()..dispatch(AppStarted());
-      },
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthenticationBloc>(
+          builder: (context) => AuthenticationBloc()..dispatch(AppStarted()),
+        ),
+        BlocProvider<RegisterBloc>(
+          builder: (context) => RegisterBloc(),
+        ),
+      ],
       child: MyApp(),
     ),
   );

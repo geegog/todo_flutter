@@ -49,7 +49,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       yield* _mapNameChangedToState(event.name);
     } else if (event is ConfirmPasswordChanged) {
       yield* _mapConfirmPasswordChangedToState(
-          event.confirmPassword, event.password);
+          event.password, event.confirmPassword);
     } else if (event is RegisterButtonPressed) {
       yield* _mapRegisterButtonPressedToState(
         email: event.email,
@@ -75,20 +75,20 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   Stream<RegisterState> _mapPhoneChangedToState(String phone) async* {
     yield currentState.update(
-      isPasswordValid: RegisterValidators.isValidPhone(phone),
+      isPhoneValid: RegisterValidators.isValidPhone(phone),
     );
   }
 
   Stream<RegisterState> _mapNameChangedToState(String name) async* {
     yield currentState.update(
-      isPasswordValid: RegisterValidators.isValidName(name),
+      isNameValid: RegisterValidators.isValidName(name),
     );
   }
 
   Stream<RegisterState> _mapConfirmPasswordChangedToState(
       String password, String confirmPassword) async* {
     yield currentState.update(
-      isPasswordValid:
+      isConfirmPasswordValid:
           RegisterValidators.isValidConfirmPassword(password, confirmPassword),
     );
   }
@@ -110,17 +110,17 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           name: name);
       Map<String, dynamic> responseObj = json.decode(response);
 
-      if (responseObj['data'] != null) {
+      if (responseObj['jwt'] != null) {
         yield RegisterState.success();
       }
       if (responseObj['errors'] != null) {
-        yield RegisterState.failure();
+        yield RegisterState.failure(responseObj['errors'].toString());
       }
       if (responseObj['error'] != null) {
-        yield RegisterState.failure();
+        yield RegisterState.failure(responseObj['error'].toString());
       }
     } catch (_) {
-      yield RegisterState.failure();
+      yield RegisterState.failure(_.toString());
     }
   }
 }
