@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/common/pages/home.dart';
 import 'package:todo_flutter/common/widgets/date_time_picker.dart';
-import 'package:todo_flutter/common/utils/date_time.dart';
 import 'package:todo_flutter/task/bloc/addtodo/add_todo_bloc.dart';
 import 'package:todo_flutter/task/bloc/addtodo/bloc.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
@@ -151,12 +150,10 @@ class AddTodoPageState extends State<AddTodoPage> {
                 ),
               );
             await Future.delayed(Duration(seconds: 3));
-            MaterialPageRoute(
-              builder: (context) => BlocProvider(
-                builder: (context) => TodoBloc()..dispatch(Fetch()),
-                child: TodoHomePage(),
-              ),
-            );
+
+            widget.pageController.animateToPage(1, duration: Duration(milliseconds: 200), curve: Curves.linear);
+            BlocProvider.of<TodoBloc>(context)..dispatch(Refresh());
+
           }
         },
         child: BlocBuilder<AddTodoBloc, AddTodoState>(
