@@ -126,6 +126,15 @@ class TodoState extends State<TodoHomePage> {
                 ]),
               ),
               ListTile(
+                title: Text('Categories'),
+                trailing: Icon(Icons.category),
+                onTap: () {
+                  Navigator.pop(context);
+                  _controller.animateToPage(0,
+                      duration: Duration(milliseconds: 200), curve: Curves.linear);
+                },
+              ),
+              ListTile(
                 title: Text('Settings'),
                 trailing: Icon(Icons.settings),
                 onTap: () {
