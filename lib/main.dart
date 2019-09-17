@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/authentication/bloc.dart';
+import 'package:todo_flutter/category/bloc/addcategory/add_category_bloc.dart';
 import 'package:todo_flutter/common/bloc/register/bloc.dart';
 import 'package:todo_flutter/common/bloc/simple_bloc_delegate.dart';
 import 'package:todo_flutter/common/pages/home.dart';
@@ -25,6 +26,9 @@ void main() async {
         ),
         BlocProvider<AddTodoBloc>(
           builder: (context) => AddTodoBloc(),
+        ),
+        BlocProvider<AddCategoryBloc>(
+          builder: (context) => AddCategoryBloc(),
         ),
       ],
       child: MyApp(),
