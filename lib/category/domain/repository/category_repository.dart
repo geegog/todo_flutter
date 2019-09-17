@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:todo_flutter/category/domain/model/category_list.dart';
 import 'package:todo_flutter/category/dto/category.dart';
 import 'package:todo_flutter/category/dto/category_request.dart';
 import 'package:todo_flutter/common/utils/api.dart';
@@ -17,6 +18,12 @@ class CategoryRepository {
         categoryRequest);
 
     return response;
+  }
+
+  Future<CategoryList> fetchData(String nextPage) async {
+    final response = await APIUtil().fetch(nextPage);
+    CategoryList categoryList = CategoryList.fromJson(json.decode(response));
+    return categoryList;
   }
 
 }
