@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 
 abstract class TodoEvent extends Equatable {}
 
-class Fetch extends TodoEvent {
+class FetchTodo extends TodoEvent {
   @override
-  String toString() => 'Fetch';
+  String toString() => 'FetchTodo';
 }
 
-class Refresh extends TodoEvent {
+class RefreshTodo extends TodoEvent {
   @override
-  String toString() => 'Refresh';
+  String toString() => 'RefreshTodo';
 }

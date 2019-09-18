@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/authentication/bloc.dart';
 import 'package:todo_flutter/category/bloc/addcategory/add_category_bloc.dart';
+import 'package:todo_flutter/category/bloc/allcategory/bloc.dart';
 import 'package:todo_flutter/common/bloc/register/bloc.dart';
 import 'package:todo_flutter/common/bloc/simple_bloc_delegate.dart';
 import 'package:todo_flutter/common/pages/home.dart';
@@ -30,6 +31,9 @@ void main() async {
         BlocProvider<AddCategoryBloc>(
           builder: (context) => AddCategoryBloc(),
         ),
+        BlocProvider<CategoryBloc>(
+          builder: (context) => CategoryBloc(),
+        ),
       ],
       child: MyApp(),
     ),
@@ -52,7 +56,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           if (state is Authenticated) {
             return BlocProvider(
-              builder: (context) => TodoBloc()..dispatch(Fetch()),
+              builder: (context) => TodoBloc()..dispatch(FetchTodo()),
               child: TodoHomePage(),
             );
           } else {

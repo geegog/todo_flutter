@@ -152,7 +152,7 @@ class AddTodoPageState extends State<AddTodoPage> {
 
             widget.pageController.animateToPage(1,
                 duration: Duration(milliseconds: 200), curve: Curves.linear);
-            BlocProvider.of<TodoBloc>(context)..dispatch(Refresh());
+            BlocProvider.of<TodoBloc>(context)..dispatch(RefreshTodo());
           }
         },
         child: BlocBuilder<AddTodoBloc, AddTodoState>(

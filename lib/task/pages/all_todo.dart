@@ -198,7 +198,7 @@ class AllTodoState extends State<AllTodoPage> {
                   controller: widget.scrollController,
                 ),
                 onRefresh: () {
-                  widget.todoBloc.dispatch(Refresh());
+                  widget.todoBloc.dispatch(RefreshTodo());
                   return _refreshCompleter.future;
                 },
               );

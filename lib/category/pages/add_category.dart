@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/category/bloc/addcategory/bloc.dart';
+import 'package:todo_flutter/category/bloc/allcategory/bloc.dart';
 
 class AddCategoryPage extends StatefulWidget {
   static const String tag = '/add-category-page';
@@ -118,6 +119,7 @@ class AddCategoryPageState extends State<AddCategoryPage> {
                 ),
               );
             await Future.delayed(Duration(seconds: 3));
+            BlocProvider.of<CategoryBloc>(context)..dispatch(RefreshCategory());
             Navigator.of(context).pop();
           }
         },

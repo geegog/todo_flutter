@@ -26,18 +26,17 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   @override
   Stream<CategoryState> mapEventToState(CategoryEvent event) async* {
-    if (event is Fetch && !_hasReachedMax(currentState)) {
+    if (event is FetchCategory && !_hasReachedMax(currentState)) {
       try {
         if (currentState is CategoryUninitialized) {
           final categories = await _categoryRepository.fetchData(nextPage);
           yield CategoryLoaded(categories: categories.data, hasReachedMax: true);
-          return;
         }
       } catch (_) {
         yield CategoryError();
       }
     }
-    if (event is Refresh) {
+    if (event is RefreshCategory) {
       try {
         final categories = await _categoryRepository.fetchData(nextPage);
         yield CategoryLoaded(categories: categories.data, hasReachedMax: true, dateTime: DateTime.now());

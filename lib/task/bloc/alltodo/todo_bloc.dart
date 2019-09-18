@@ -28,7 +28,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
   @override
   Stream<TodoState> mapEventToState(TodoEvent event) async* {
-    if (event is Fetch && !_hasReachedMax(currentState)) {
+    if (event is FetchTodo && !_hasReachedMax(currentState)) {
       try {
         if (currentState is TodoUninitialized) {
           final todos = await _todoRepository.fetchData(nextPage);
@@ -53,7 +53,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         yield TodoError();
       }
     }
-    if (event is Refresh) {
+    if (event is RefreshTodo) {
       try {
         final todos = await _todoRepository.fetchData("todo/all");
         int pageNumber = todos.metadata.pageNumber + 1;

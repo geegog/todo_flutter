@@ -40,5 +40,5 @@ class CategoryLoaded extends CategoryState {
 
   @override
   String toString() =>
-      'TodoLoaded { todos: ${categories.length}, hasReachedMax: $hasReachedMax }';
+      'CategoryLoaded { todos: ${categories.length}, hasReachedMax: $hasReachedMax }';
 }

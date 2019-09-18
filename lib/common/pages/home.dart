@@ -37,7 +37,7 @@ class TodoState extends State<TodoHomePage> {
       final maxScroll = _scrollController.position.maxScrollExtent;
       final currentScroll = _scrollController.position.pixels;
       if (maxScroll - currentScroll <= _scrollThreshold) {
-        _todoBloc.dispatch(Fetch());
+        _todoBloc.dispatch(FetchTodo());
       }
     });
     _todoBloc = BlocProvider.of<TodoBloc>(context);

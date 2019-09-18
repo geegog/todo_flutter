@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 
 abstract class CategoryEvent extends Equatable {}
 
-class Fetch extends CategoryEvent {
+class FetchCategory extends CategoryEvent {
   @override
-  String toString() => 'Fetch';
+  String toString() => 'FetchCategory';
 }
 
-class Refresh extends CategoryEvent {
+class RefreshCategory extends CategoryEvent {
   @override
-  String toString() => 'Refresh';
+  String toString() => 'RefreshCategory';
 }
