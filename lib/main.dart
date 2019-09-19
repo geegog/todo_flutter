@@ -32,7 +32,7 @@ void main() async {
           builder: (context) => AddCategoryBloc(),
         ),
         BlocProvider<CategoryBloc>(
-          builder: (context) => CategoryBloc(),
+          builder: (context) => CategoryBloc()..dispatch(FetchCategory()),
         ),
       ],
       child: MyApp(),

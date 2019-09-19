@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_flutter/category/bloc/allcategory/bloc.dart';
+import 'package:todo_flutter/category/domain/model/category.dart';
 import 'package:todo_flutter/common/widgets/date_time_picker.dart';
 import 'package:todo_flutter/task/bloc/addtodo/add_todo_bloc.dart';
 import 'package:todo_flutter/task/bloc/addtodo/bloc.dart';
@@ -24,6 +26,10 @@ class AddTodoPageState extends State<AddTodoPage> {
   final _myControllerTitle = TextEditingController();
   final _myControllerDesc = TextEditingController();
   AddTodoBloc _addTodoBloc;
+  CategoryBloc _categoryBloc;
+  List<Category> categories;
+  String _currentValue;
+  int _currentId;
 
   DateTime _endDate = DateTime.now();
   TimeOfDay _endTime = const TimeOfDay(hour: 07, minute: 28);
@@ -32,9 +38,13 @@ class AddTodoPageState extends State<AddTodoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _categoryBloc = BlocProvider.of<CategoryBloc>(context);
     _addTodoBloc = BlocProvider.of<AddTodoBloc>(context);
     _myControllerTitle.addListener(_onTitleChanged);
     _myControllerDesc.addListener(_onDescriptionChanged);
+    categories = _categoryBloc.currentState.props.elementAt(0);
+    _currentValue = categories.elementAt(0).name;
+    _currentId = categories.elementAt(0).id;
   }
 
   bool get isPopulated =>
@@ -197,6 +207,22 @@ class AddTodoPageState extends State<AddTodoPage> {
                             return !state.isDescriptionValid
                                 ? 'Invalid Description'
                                 : null;
+                          },
+                        ),
+                        SizedBox(height: 8.0),
+                        new DropdownButton<String>(
+                          isExpanded: true,
+                          value: _currentValue,
+                          items: categories.map((Category value) {
+                            return new DropdownMenuItem<String>(
+                              value: value.name,
+                              child: new Text(value.name),
+                            );
+                          }).toList(),
+                          onChanged: (String newValue) {
+                            setState(() {
+                              this._currentValue = newValue;
+                            });
                           },
                         ),
                         SizedBox(height: 8.0),
