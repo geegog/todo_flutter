@@ -28,8 +28,7 @@ class AddTodoPageState extends State<AddTodoPage> {
   AddTodoBloc _addTodoBloc;
   CategoryBloc _categoryBloc;
   List<Category> categories;
-  String _currentValue;
-  int _currentId;
+  Category _currentValue;
 
   DateTime _endDate = DateTime.now();
   TimeOfDay _endTime = const TimeOfDay(hour: 07, minute: 28);
@@ -43,8 +42,7 @@ class AddTodoPageState extends State<AddTodoPage> {
     _myControllerTitle.addListener(_onTitleChanged);
     _myControllerDesc.addListener(_onDescriptionChanged);
     categories = _categoryBloc.currentState.props.elementAt(0);
-    _currentValue = categories.elementAt(0).name;
-    _currentId = categories.elementAt(0).id;
+    _currentValue = categories.elementAt(0);
   }
 
   bool get isPopulated =>
@@ -72,7 +70,8 @@ class AddTodoPageState extends State<AddTodoPage> {
           title: _myControllerTitle.text,
           description: _myControllerDesc.text,
           endDate: _endDate,
-          endTime: _endTime),
+          endTime: _endTime,
+          category: _currentValue),
     );
   }
 
@@ -210,16 +209,16 @@ class AddTodoPageState extends State<AddTodoPage> {
                           },
                         ),
                         SizedBox(height: 8.0),
-                        new DropdownButton<String>(
+                        new DropdownButton<Category>(
                           isExpanded: true,
                           value: _currentValue,
                           items: categories.map((Category value) {
-                            return new DropdownMenuItem<String>(
-                              value: value.name,
+                            return new DropdownMenuItem<Category>(
+                              value: value,
                               child: new Text(value.name),
                             );
                           }).toList(),
-                          onChanged: (String newValue) {
+                          onChanged: (Category newValue) {
                             setState(() {
                               this._currentValue = newValue;
                             });

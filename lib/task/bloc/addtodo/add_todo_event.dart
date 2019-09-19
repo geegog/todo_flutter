@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
+import 'package:todo_flutter/category/domain/model/category.dart';
 
 @immutable
 abstract class AddTodoEvent extends Equatable {
@@ -30,16 +31,18 @@ class AddTodoButtonPressed extends AddTodoEvent {
   final String description;
   final DateTime endDate;
   final TimeOfDay endTime;
+  final Category category;
 
   AddTodoButtonPressed(
       {@required this.title,
       @required this.description,
       @required this.endDate,
-      @required this.endTime})
-      : super([title, description, endDate, endTime]);
+      @required this.endTime,
+      @required this.category})
+      : super([title, description, endDate, endTime, category]);
 
   @override
   String toString() {
-    return 'AddTodoButtonPressed { title: $title, description: $description, _endDate: $endDate , endTime: $endTime}';
+    return 'AddTodoButtonPressed { title: $title, description: $description, endDate: $endDate, endTime: $endTime, category: $category}';
   }
 }

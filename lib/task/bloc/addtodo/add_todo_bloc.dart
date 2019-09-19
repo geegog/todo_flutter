@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:todo_flutter/category/domain/model/category.dart';
 import 'package:todo_flutter/common/utils/date_time.dart';
 import 'package:todo_flutter/task/bloc/addtodo/bloc.dart';
 import 'package:todo_flutter/task/domain/repository/todo_repository.dart';
@@ -42,7 +43,8 @@ class AddTodoBloc extends Bloc<AddTodoEvent, AddTodoState> {
         title: event.title,
         description: event.description,
         endDate: event.endDate,
-        endTime: event.endTime
+        endTime: event.endTime,
+        category: event.category
       );
     }
   }
@@ -65,6 +67,7 @@ class AddTodoBloc extends Bloc<AddTodoEvent, AddTodoState> {
     String description,
     DateTime endDate,
     TimeOfDay endTime,
+    Category category,
   }) async* {
     yield AddTodoState.loading();
     try {
@@ -73,7 +76,8 @@ class AddTodoBloc extends Bloc<AddTodoEvent, AddTodoState> {
         description: description,
         endDate: endDate,
         endTime: endTime,
-        datetime: _dateTime(endDate, endTime)
+        datetime: _dateTime(endDate, endTime),
+        category: category
       );
       Map<String, dynamic> responseObj = json.decode(response);
 

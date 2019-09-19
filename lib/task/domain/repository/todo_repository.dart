@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:todo_flutter/category/domain/model/category.dart';
 
 import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
@@ -24,6 +25,7 @@ class TodoRepository {
     @required DateTime endDate,
     @required TimeOfDay endTime,
     @required String datetime,
+    @required Category category,
   }) async {
 
     Todo todo = Todo(datetime, description, title);
@@ -31,7 +33,7 @@ class TodoRepository {
     String todoRequest = jsonEncode(TodoRequest(todo));
 
     var response = await APIUtil().post(
-        'todo/user/' + services.get<Auth>().getUserId() + '/create',
+        'todo/user/' + services.get<Auth>().getUserId() + '/category/' + category.id.toString() + '/create',
         todoRequest);
 
     return response;

@@ -9,4 +9,7 @@ class Category extends Equatable  {
 
   Category(this.name, this.id) : super([name, id]);
 
+  @override
+  String toString() => name;
+
 }
