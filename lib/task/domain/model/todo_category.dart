@@ -11,5 +11,7 @@ class TodoCategory extends Equatable {
 
   final int id;
 
-  TodoCategory(this.category, this.todo, this.id) : super([category, todo, id]);
+  final int commentsCount;
+
+  TodoCategory(this.category, this.todo, this.id, this.commentsCount) : super([category, todo, id, commentsCount]);
 }

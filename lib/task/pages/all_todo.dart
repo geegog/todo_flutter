@@ -65,7 +65,9 @@ class AllTodoState extends State<AllTodoPage> {
                           child: Row(
                             children: <Widget>[
                               Icon(Icons.title,
-                                  size: 15.0, color: line.color(todoCategory.todo.deadline)),
+                                  size: 15.0,
+                                  color:
+                                      line.color(todoCategory.todo.deadline)),
                               SizedBox(
                                 width: 8.0,
                               ),
@@ -83,7 +85,8 @@ class AllTodoState extends State<AllTodoPage> {
                           child: Align(
                             alignment: Alignment.topRight,
                             child: Text(
-                              dateTimeUtil.formatDateTime(todoCategory.todo.deadline),
+                              dateTimeUtil
+                                  .formatDateTime(todoCategory.todo.deadline),
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 10.0),
                             ),
@@ -110,13 +113,15 @@ class AllTodoState extends State<AllTodoPage> {
                         SizedBox(
                           width: 40.0,
                         ),
-                        Icon(
-                          Icons.comment,
-                          size: 15.0,
+                        IconButton(
+                          icon: Icon(Icons.chat_bubble, color: Colors.grey,),
+                          onPressed: () {
+
+                          },
                         ),
                         Text(
-                          '0',
-                          style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                          '${todoCategory.commentsCount}',
+                          style: TextStyle(color: Colors.grey, fontSize: 18.0),
                         ),
                       ],
                     ),
@@ -125,9 +130,6 @@ class AllTodoState extends State<AllTodoPage> {
               ),
             ],
           ),
-          onTap: () {
-            print(todoCategory.todo.description);
-          },
         ),
         Divider(
           color: Colors.grey,
