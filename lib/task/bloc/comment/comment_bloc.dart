@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:todo_flutter/task/bloc/comment/bloc.dart';
 import 'package:todo_flutter/task/domain/repository/comment_repository.dart';
 
-class TodoBloc extends Bloc<CommentEvent, CommentState> {
+class CommentBloc extends Bloc<CommentEvent, CommentState> {
   final _commentRepository = CommentRepository();
   String nextPage = "comment/all";
 

@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
-import 'package:todo_flutter/task/domain/model/todo.dart';
 import 'package:todo_flutter/common/utils/date_time.dart' as dateTimeUtil;
+import 'package:todo_flutter/task/bloc/comment/bloc.dart';
 import 'package:todo_flutter/task/domain/model/todo_category.dart';
+import 'package:todo_flutter/task/pages/comment.dart';
 import 'package:todo_flutter/task/widget/side_line.dart' as line;
 
 class AllTodoPage extends StatefulWidget {
@@ -110,13 +111,22 @@ class AllTodoState extends State<AllTodoPage> {
                     ]),
                     Row(
                       children: <Widget>[
-                        SizedBox(
-                          width: 40.0,
-                        ),
                         IconButton(
-                          icon: Icon(Icons.chat_bubble, color: Colors.grey,),
+                          icon: Icon(
+                            Icons.chat_bubble,
+                            color: Colors.grey,
+                          ),
                           onPressed: () {
-
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                  builder: (context) =>
+                                      CommentBloc()..dispatch(FetchComment()),
+                                  child: CommentPage(),
+                                ),
+                              ),
+                            );
                           },
                         ),
                         Text(
