@@ -12,8 +12,6 @@ class Todo extends Equatable  {
 
   final int id;
 
-  final User user;
-
-  Todo(this.title, this.description, this.deadline, this.id, this.user) : super([deadline, description, title, id, user]);
+  Todo(this.title, this.description, this.deadline, this.id) : super([deadline, description, title, id]);
 
 }

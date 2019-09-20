@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 import 'package:todo_flutter/task/domain/model/todo.dart';
 import 'package:todo_flutter/common/utils/date_time.dart' as dateTimeUtil;
+import 'package:todo_flutter/task/domain/model/todo_category.dart';
 import 'package:todo_flutter/task/widget/side_line.dart' as line;
 
 class AllTodoPage extends StatefulWidget {
@@ -41,14 +42,14 @@ class AllTodoState extends State<AllTodoPage> {
     super.dispose();
   }
 
-  Widget _buildList(Todo todo) {
+  Widget _buildList(TodoCategory todoCategory) {
     return Column(
       children: <Widget>[
         ListTile(
           title: Row(
             children: <Widget>[
               Container(
-                color: line.color(todo.deadline),
+                color: line.color(todoCategory.todo.deadline),
                 height: 60.0,
                 child: VerticalDivider(
                   width: 2.0,
@@ -64,13 +65,13 @@ class AllTodoState extends State<AllTodoPage> {
                           child: Row(
                             children: <Widget>[
                               Icon(Icons.title,
-                                  size: 15.0, color: line.color(todo.deadline)),
+                                  size: 15.0, color: line.color(todoCategory.todo.deadline)),
                               SizedBox(
                                 width: 8.0,
                               ),
                               Expanded(
                                 child: Text(
-                                  todo.title,
+                                  todoCategory.todo.title,
                                   style: TextStyle(
                                       color: Colors.black, fontSize: 20.0),
                                 ),
@@ -82,7 +83,7 @@ class AllTodoState extends State<AllTodoPage> {
                           child: Align(
                             alignment: Alignment.topRight,
                             child: Text(
-                              dateTimeUtil.formatDateTime(todo.deadline),
+                              dateTimeUtil.formatDateTime(todoCategory.todo.deadline),
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 10.0),
                             ),
@@ -99,7 +100,7 @@ class AllTodoState extends State<AllTodoPage> {
                       ),
                       Expanded(
                         child: Text(
-                          todo.description,
+                          todoCategory.todo.description,
                           style: TextStyle(color: Colors.grey, fontSize: 15.0),
                         ),
                       ),
@@ -125,7 +126,7 @@ class AllTodoState extends State<AllTodoPage> {
             ],
           ),
           onTap: () {
-            print(todo.description);
+            print(todoCategory.todo.description);
           },
         ),
         Divider(

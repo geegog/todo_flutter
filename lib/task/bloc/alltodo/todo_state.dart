@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:todo_flutter/task/domain/model/todo.dart';
+import 'package:todo_flutter/task/domain/model/todo_category.dart';
 
 abstract class TodoState extends Equatable {
   TodoState([List props = const []]) : super(props);
@@ -16,7 +16,7 @@ class TodoError extends TodoState {
 }
 
 class TodoLoaded extends TodoState {
-  final List<Todo> todos;
+  final List<TodoCategory> todos;
   final bool hasReachedMax;
   final DateTime dateTime;
 
@@ -27,7 +27,7 @@ class TodoLoaded extends TodoState {
   }) : super([todos, hasReachedMax, dateTime]);
 
   TodoLoaded copyWith({
-    List<Todo> todos,
+    List<TodoCategory> todos,
     bool hasReachedMax,
     DateTime dateTime,
   }) {

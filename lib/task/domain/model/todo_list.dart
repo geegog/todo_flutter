@@ -1,10 +1,12 @@
+import 'package:todo_flutter/category/domain/model/category.dart';
 import 'package:todo_flutter/task/domain/model/todo.dart';
+import 'package:todo_flutter/task/domain/model/todo_category.dart';
 import 'package:todo_flutter/user/domain/model/user.dart';
 
 import 'metadata.dart';
 
 class TodoList {
-  List<Todo> data;
+  List<TodoCategory> data;
 
   MetaData metadata;
 
@@ -15,13 +17,12 @@ class TodoList {
         parsedJson['metadata']['page_size'],
         parsedJson['metadata']['total_entries'],
         parsedJson['metadata']['total_pages']);
-    List<Todo> temp = [];
+    List<TodoCategory> temp = [];
     for (int i = 0; i < parsedJson['data'].length; i++) {
       Map<String, dynamic> jsonData = parsedJson['data'][i];
-      User user = User(jsonData['user']['id'], jsonData['user']['email'],
-          jsonData['user']['name'], jsonData['user']['phone']);
-      Todo result = Todo(jsonData['title'], jsonData['description'],
-          jsonData['deadline'], jsonData['id'], user);
+      Category category = Category(jsonData['category']['name'], jsonData['category']['id'],);
+      Todo todo = Todo(jsonData['todo']['title'], jsonData['todo']['description'], jsonData['todo']['deadline'], jsonData['todo']['id'],);
+      TodoCategory result = TodoCategory(category, todo, jsonData['id']);
       temp.add(result);
     }
     data = temp;

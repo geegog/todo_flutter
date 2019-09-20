@@ -8,7 +8,7 @@ import 'package:todo_flutter/task/domain/repository/todo_repository.dart';
 
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   final _todoRepository = TodoRepository();
-  String nextPage = "todo/all";
+  String nextPage = "todo_category/all";
 
   @override
   Stream<TodoState> transformEvents(
@@ -33,15 +33,20 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         if (currentState is TodoUninitialized) {
           final todos = await _todoRepository.fetchData(nextPage);
           int pageNumber = todos.metadata.pageNumber + 1;
-          nextPage = "todo/all?page=$pageNumber";
+          nextPage = "todo_category/all?page=$pageNumber";
           //print(nextPage);
-          yield TodoLoaded(todos: todos.data, hasReachedMax: false);
+          yield TodoLoaded(
+              todos: todos.data,
+              hasReachedMax:
+                  todos.metadata.pageNumber == todos.metadata.totalPages
+                      ? true
+                      : false);
           return;
         }
         if (currentState is TodoLoaded) {
           final todos = await _todoRepository.fetchData(nextPage);
           int pageNumber = todos.metadata.pageNumber + 1;
-          nextPage = "todo/all?page=$pageNumber";
+          nextPage = "todo_category/all?page=$pageNumber";
           yield TodoLoaded(
             todos: (currentState as TodoLoaded).todos + todos.data,
             hasReachedMax:
@@ -49,18 +54,19 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
           );
         }
       } catch (_) {
-        //print(_);
+        print(_);
         yield TodoError();
       }
     }
     if (event is RefreshTodo) {
       try {
-        final todos = await _todoRepository.fetchData("todo/all");
+        final todos = await _todoRepository.fetchData("todo_category/all");
         int pageNumber = todos.metadata.pageNumber + 1;
-        nextPage = "todo/all?page=$pageNumber";
-        yield TodoLoaded(todos: todos.data, hasReachedMax: false, dateTime: DateTime.now());
+        nextPage = "todo_category/all?page=$pageNumber";
+        yield TodoLoaded(
+            todos: todos.data, hasReachedMax: false, dateTime: DateTime.now());
       } catch (_) {
-        //print(_);
+        print(_);
         yield currentState;
       }
     }
