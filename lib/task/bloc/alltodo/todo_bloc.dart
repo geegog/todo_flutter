@@ -64,7 +64,9 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         int pageNumber = todos.metadata.pageNumber + 1;
         nextPage = "todo_category/all?page=$pageNumber";
         yield TodoLoaded(
-            todos: todos.data, hasReachedMax: false, dateTime: DateTime.now());
+            todos: todos.data, hasReachedMax: todos.metadata.pageNumber == todos.metadata.totalPages
+            ? true
+            : false, dateTime: DateTime.now());
       } catch (_) {
         print(_);
         yield currentState;
