@@ -12,9 +12,10 @@ import 'package:todo_flutter/task/pages/all_todo.dart';
 class TodoHomePage extends StatefulWidget {
   static const String tag = '/home-page';
 
-  TodoHomePage({Key key, this.newTodo}) : super(key: key);
+  TodoHomePage({Key key, this.newTodo, this.categories}) : super(key: key);
 
   final newTodo;
+  final categories;
 
   @override
   TodoState createState() => TodoState();
@@ -83,6 +84,7 @@ class TodoState extends State<TodoHomePage> {
         AddTodoPage(
           key: PageStorageKey('add-todo'),
           pageController: _controller,
+          categories: widget.categories,
         ),
       ],
     );

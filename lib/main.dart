@@ -10,12 +10,18 @@ import 'package:todo_flutter/common/pages/home.dart';
 import 'package:todo_flutter/common/pages/login_page.dart';
 import 'package:todo_flutter/task/bloc/addtodo/add_todo_bloc.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
+import 'category/domain/model/category.dart';
+import 'category/services/category_service.dart';
 import 'common/bloc/login/bloc.dart';
 import 'common/services/service_locator.dart';
 
 void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   await setupLocator();
+
+  List<Category> categories = await CategoryService().getCategories();
+  print(categories.first);
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -32,15 +38,23 @@ void main() async {
           builder: (context) => AddCategoryBloc(),
         ),
         BlocProvider<CategoryBloc>(
-          builder: (context) => CategoryBloc()..dispatch(FetchCategory()),
+          builder: (context) => CategoryBloc(),
         ),
       ],
-      child: MyApp(),
+      child: MyApp(categories: categories,),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+
+  final List<Category> _categories;
+
+  MyApp({Key key, @required List<Category> categories})
+      : assert(categories != null),
+        _categories = categories,
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,7 +71,7 @@ class MyApp extends StatelessWidget {
           if (state is Authenticated) {
             return BlocProvider(
               builder: (context) => TodoBloc()..dispatch(FetchTodo()),
-              child: TodoHomePage(),
+              child: TodoHomePage(categories: this._categories,),
             );
           } else {
             return BlocProvider<LoginBloc>(

@@ -10,9 +10,10 @@ import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 class AddTodoPage extends StatefulWidget {
   static const String tag = '/add-todo';
 
-  const AddTodoPage({Key key, this.pageController}) : super(key: key);
+  const AddTodoPage({Key key, this.pageController, this.categories}) : super(key: key);
 
   final PageController pageController;
+  final List<Category> categories;
 
   @override
   AddTodoPageState createState() => new AddTodoPageState();
@@ -41,8 +42,12 @@ class AddTodoPageState extends State<AddTodoPage> {
     _addTodoBloc = BlocProvider.of<AddTodoBloc>(context);
     _myControllerTitle.addListener(_onTitleChanged);
     _myControllerDesc.addListener(_onDescriptionChanged);
-    categories = _categoryBloc.currentState.props.elementAt(0);
-    _currentValue = categories.elementAt(0);
+    if (_categoryBloc.currentState is CategoryLoaded) {
+      categories = _categoryBloc.currentState.props.first;
+    } else {
+      categories = widget.categories;
+    }
+    _currentValue = categories.first;
   }
 
   bool get isPopulated =>
@@ -212,12 +217,12 @@ class AddTodoPageState extends State<AddTodoPage> {
                         new DropdownButton<Category>(
                           isExpanded: true,
                           value: _currentValue,
-                          items: categories.map((Category value) {
+                          items: categories != null ? categories.map((Category value) {
                             return new DropdownMenuItem<Category>(
                               value: value,
                               child: new Text(value.name),
                             );
-                          }).toList(),
+                          }).toList() : null,
                           onChanged: (Category newValue) {
                             setState(() {
                               this._currentValue = newValue;
