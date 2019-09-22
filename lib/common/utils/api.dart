@@ -7,7 +7,7 @@ import '../services/auth.dart';
 
 class APIUtil {
   static final String developmentHost =
-      'https://gentle-bayou-12059.herokuapp.com/api/v1/';
+      'http://gentle-bayou-12059.herokuapp.com/api/v1/';
   static get jwt => services.get<Auth>().getToken();
   static Map<String, String> _headers;
 
@@ -23,6 +23,7 @@ class APIUtil {
       final response = await http.get(developmentHost + uri, headers: _headers);
       return (response.statusCode == 200) ? response.body : response.body;
     } catch (exception) {
+      print(exception.toString());
       return exception.toString().contains('SocketException')
           ? '{"error": "Network Error"}'
           : '{"error": "Something unexpected happened"}';
