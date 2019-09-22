@@ -4,13 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_flutter/task/bloc/comment/bloc.dart';
 import 'package:todo_flutter/task/domain/model/comment.dart';
+import 'package:todo_flutter/task/domain/model/todo_category.dart';
+import 'package:todo_flutter/task/widget/side_line.dart' as line;
+import 'package:todo_flutter/common/utils/date_time.dart' as dateTimeUtil;
 
 class CommentPage extends StatefulWidget {
   static const String tag = '/todo-comments';
 
   CommentPage({
     Key key,
+    this.todoCategory
   }) : super(key: key);
+
+  final TodoCategory todoCategory;
 
   @override
   CommentPageState createState() => new CommentPageState();
@@ -82,7 +88,87 @@ class CommentPageState extends State<CommentPage> {
         child: Column(
           children: <Widget>[
             ListTile(
-              title: Text('info goes here ....'),
+              title: Row(
+                children: <Widget>[
+                  Container(
+                    color: line.color(widget.todoCategory.todo.deadline),
+                    height: 60.0,
+                    child: VerticalDivider(
+                      width: 2.0,
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            LimitedBox(
+                              maxWidth: 200.0,
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.title,
+                                      size: 15.0,
+                                      color:
+                                      line.color(widget.todoCategory.todo.deadline)),
+                                  SizedBox(
+                                    width: 8.0,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      widget.todoCategory.todo.title,
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 20.0),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: Text(
+                                  dateTimeUtil
+                                      .formatDateTime(widget.todoCategory.todo.deadline),
+                                  style:
+                                  TextStyle(color: Colors.grey, fontSize: 10.0),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.0,
+                        ),
+                        Row(children: <Widget>[
+                          SizedBox(
+                            width: 40.0,
+                          ),
+                          Expanded(
+                            child: Text(
+                              widget.todoCategory.todo.description,
+                              style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                            ),
+                          ),
+                        ]),
+                        Row(
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(
+                                Icons.chat_bubble,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Text(
+                              '${widget.todoCategory.commentsCount}',
+                              style: TextStyle(color: Colors.grey, fontSize: 18.0),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             Expanded(
               child: BlocBuilder<CommentBloc, CommentState>(

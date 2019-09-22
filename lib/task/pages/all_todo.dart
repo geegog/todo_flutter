@@ -123,7 +123,7 @@ class AllTodoState extends State<AllTodoPage> {
                                 builder: (context) => BlocProvider(
                                   builder: (context) =>
                                       CommentBloc()..dispatch(FetchComment()),
-                                  child: CommentPage(),
+                                  child: CommentPage(todoCategory: todoCategory,),
                                 ),
                               ),
                             );
