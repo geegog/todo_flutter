@@ -22,7 +22,7 @@ class CategoryRepository {
 
   Future<CategoryList> fetchData(String nextPage) async {
     final response = await APIUtil().fetch(nextPage);
-    print(response);
+    //print(response);
     CategoryList categoryList = CategoryList.fromJson(json.decode(response));
     return categoryList;
   }

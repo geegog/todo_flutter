@@ -23,7 +23,7 @@ class APIUtil {
       final response = await http.get(developmentHost + uri, headers: _headers);
       return (response.statusCode == 200) ? response.body : response.body;
     } catch (exception) {
-      print(exception.toString());
+      //print(exception.toString());
       return exception.toString().contains('SocketException')
           ? '{"error": "Network Error"}'
           : '{"error": "Something unexpected happened"}';
