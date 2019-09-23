@@ -6,7 +6,7 @@ import 'package:todo_flutter/task/domain/repository/comment_repository.dart';
 
 class CommentBloc extends Bloc<CommentEvent, CommentState> {
   final _commentRepository = CommentRepository();
-  String nextPage = "comment/all";
+  String nextPage = '';
 
   @override
   Stream<CommentState> transformEvents(
@@ -27,11 +27,13 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
   @override
   Stream<CommentState> mapEventToState(CommentEvent event) async* {
     if (event is FetchComment && !_hasReachedMax(currentState)) {
+      int todoId = event.todoId;
       try {
         if (currentState is CommentUninitialized) {
+          nextPage = "comment/todo/$todoId/all";
           final comments = await _commentRepository.fetchData(nextPage);
           int pageNumber = comments.metadata.pageNumber + 1;
-          nextPage = "comment/all?page=$pageNumber";
+          nextPage = "comment/todo/$todoId/all?page=$pageNumber";
           yield CommentLoaded(
               comments: comments.data,
               hasReachedMax:
@@ -43,7 +45,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         if (currentState is CommentLoaded) {
           final comments = await _commentRepository.fetchData(nextPage);
           int pageNumber = comments.metadata.pageNumber + 1;
-          nextPage = "comment/all?page=$pageNumber";
+          nextPage = "comment/todo/$todoId/all?page=$pageNumber";
           yield CommentLoaded(
             comments: (currentState as CommentLoaded).comments + comments.data,
             hasReachedMax:
@@ -55,7 +57,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         yield CommentError();
       }
     }
-    if (event is RefreshComment) {
+    /*if (event is RefreshComment) {
       try {
         final comments =
             await _commentRepository.fetchData("todo_category/all");
@@ -72,7 +74,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         print(_);
         yield currentState;
       }
-    }
+    }*/
   }
 
   bool _hasReachedMax(CommentState state) =>

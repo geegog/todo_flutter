@@ -122,7 +122,7 @@ class AllTodoState extends State<AllTodoPage> {
                               MaterialPageRoute(
                                 builder: (context) => BlocProvider(
                                   builder: (context) =>
-                                      CommentBloc()..dispatch(FetchComment()),
+                                      CommentBloc()..dispatch(FetchComment(todoId: todoCategory.todo.id)),
                                   child: CommentPage(todoCategory: todoCategory,),
                                 ),
                               ),

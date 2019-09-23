@@ -11,10 +11,7 @@ import 'package:todo_flutter/common/utils/date_time.dart' as dateTimeUtil;
 class CommentPage extends StatefulWidget {
   static const String tag = '/todo-comments';
 
-  CommentPage({
-    Key key,
-    this.todoCategory
-  }) : super(key: key);
+  CommentPage({Key key, this.todoCategory}) : super(key: key);
 
   final TodoCategory todoCategory;
 
@@ -33,11 +30,10 @@ class CommentPageState extends State<CommentPage> {
   CommentBloc _commentBloc;
 
   final Function decoration = (String text, Icon icon) => InputDecoration(
-    prefixIcon: icon,
-    hintText: text,
-    contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(0.0)),
-  );
+        prefixIcon: icon,
+        hintText: text,
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+      );
 
   @override
   void initState() {
@@ -108,8 +104,8 @@ class CommentPageState extends State<CommentPage> {
                                 children: <Widget>[
                                   Icon(Icons.title,
                                       size: 15.0,
-                                      color:
-                                      line.color(widget.todoCategory.todo.deadline)),
+                                      color: line.color(
+                                          widget.todoCategory.todo.deadline)),
                                   SizedBox(
                                     width: 8.0,
                                   ),
@@ -127,10 +123,10 @@ class CommentPageState extends State<CommentPage> {
                               child: Align(
                                 alignment: Alignment.topRight,
                                 child: Text(
-                                  dateTimeUtil
-                                      .formatDateTime(widget.todoCategory.todo.deadline),
-                                  style:
-                                  TextStyle(color: Colors.grey, fontSize: 10.0),
+                                  dateTimeUtil.formatDateTime(
+                                      widget.todoCategory.todo.deadline),
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 10.0),
                                 ),
                               ),
                             ),
@@ -146,7 +142,8 @@ class CommentPageState extends State<CommentPage> {
                           Expanded(
                             child: Text(
                               widget.todoCategory.todo.description,
-                              style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 15.0),
                             ),
                           ),
                         ]),
@@ -157,10 +154,12 @@ class CommentPageState extends State<CommentPage> {
                                 Icons.chat_bubble,
                                 color: Colors.grey,
                               ),
+                              onPressed: () {},
                             ),
                             Text(
                               '${widget.todoCategory.commentsCount}',
-                              style: TextStyle(color: Colors.grey, fontSize: 18.0),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 18.0),
                             ),
                           ],
                         ),
@@ -184,23 +183,16 @@ class CommentPageState extends State<CommentPage> {
                         child: Text('no comments'),
                       );
                     }
-                    return RefreshIndicator(
-                      key: _refreshIndicatorKey,
-                      child: ListView.builder(
-                        itemBuilder: (BuildContext context, int index) {
-                          return index >= state.comments.length
-                              ? BottomLoader()
-                              : _buildList(state.comments[index]);
-                        },
-                        itemCount: state.hasReachedMax
-                            ? state.comments.length
-                            : state.comments.length + 1,
-                        controller: _scrollController,
-                      ),
-                      onRefresh: () {
-                        _commentBloc.dispatch(RefreshComment());
-                        return _refreshCompleter.future;
+                    return ListView.builder(
+                      itemBuilder: (BuildContext context, int index) {
+                        return index >= state.comments.length
+                            ? BottomLoader()
+                            : _buildList(state.comments[index]);
                       },
+                      itemCount: state.hasReachedMax
+                          ? state.comments.length
+                          : state.comments.length + 1,
+                      controller: _scrollController,
                     );
                   }
                   return Center(
@@ -209,19 +201,31 @@ class CommentPageState extends State<CommentPage> {
                 },
               ),
             ),
-            TextFormField(
-              controller: _myControllerText,
-              keyboardType: TextInputType.text,
-              autovalidate: true,
-              autocorrect: false,
-              autofocus: false,
-              decoration: decoration("Enter comment",
-                  new Icon(Icons.comment, color: Colors.grey)),
-              /*validator: (_) {
+            Form(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextFormField(
+                      controller: _myControllerText,
+                      keyboardType: TextInputType.text,
+                      autovalidate: true,
+                      autocorrect: false,
+                      autofocus: false,
+                      decoration: decoration("Enter comment",
+                          new Icon(Icons.comment, color: Colors.grey)),
+                      /*validator: (_) {
                 return !state.isEmailValid
                     ? 'Invalid Email'
                     : null;
               },*/
+                    ),
+                  ),
+                  LimitedBox(
+                    maxWidth: 50.0,
+                    child: IconButton(icon: Icon(Icons.send), onPressed: null),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
