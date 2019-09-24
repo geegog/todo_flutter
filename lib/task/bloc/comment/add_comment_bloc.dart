@@ -57,6 +57,7 @@ class AddCommentBloc extends Bloc<AddCommentEvent, AddCommentState> {
         text: text,
         todoId: todoId,
       );
+      print(response);
       Map<String, dynamic> responseObj = json.decode(response);
 
       if (responseObj['data'] != null) {
