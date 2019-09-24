@@ -40,7 +40,9 @@ class CommentPageState extends State<CommentPage> {
     _scrollController.addListener(() {
       final maxScroll = _scrollController.position.maxScrollExtent;
       final currentScroll = _scrollController.position.pixels;
-      if (maxScroll - currentScroll <= _scrollThreshold) {}
+      if (maxScroll - currentScroll <= _scrollThreshold) {
+        _commentBloc.dispatch(FetchComment());
+      }
     });
     _refreshCompleter = Completer<void>();
     _commentBloc = BlocProvider.of<CommentBloc>(context);
@@ -77,22 +79,22 @@ class CommentPageState extends State<CommentPage> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: Row(
+          title: Column(
             children: <Widget>[
-              Column(
+              Row(
                 children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      comment.user.name,
-                      style: TextStyle(color: Colors.black, fontSize: 20.0),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      comment.text,
-                      style: TextStyle(color: Colors.grey, fontSize: 15.0),
-                    ),
-                  ),
+                  Expanded(child: Text(
+                    comment.user.name,
+                    style: TextStyle(color: Colors.black, fontSize: 20.0),
+                  ),),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(child: Text(
+                    comment.text,
+                    style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                  ),),
                 ],
               ),
             ],
@@ -113,7 +115,7 @@ class CommentPageState extends State<CommentPage> {
         child: Padding(
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: BlocListener<AddCommentBloc, AddCommentState>(
+          child:  BlocListener<AddCommentBloc, AddCommentState>(
             listener: (context, state) async {
               if (state.isFailure) {
                 Scaffold.of(context)
@@ -208,91 +210,108 @@ class CommentPageState extends State<CommentPage> {
             _refreshCompleter = Completer();
           }
         },
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  ListTile(
-                    title: Row(
-                      children: <Widget>[
-                        Container(
-                          color: line.color(widget.todoCategory.todo.deadline),
-                          height: 60.0,
-                          child: VerticalDivider(
-                            width: 2.0,
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
+        child: BlocBuilder<CommentBloc, CommentState>(
+          builder: (context, state) {
+            if (state is CommentError) {
+              return Center(
+                child: Text('failed to fetch comments'),
+              );
+            }
+            if (state is CommentLoaded) {
+              if (state.comments.isEmpty) {
+                return Center(
+                  child: Text('no comments'),
+                );
+              }
+              return CustomScrollView(
+                controller: _scrollController,
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        ListTile(
+                          title: Row(
                             children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  LimitedBox(
-                                    maxWidth: 200.0,
-                                    child: Row(
+                              Container(
+                                color: line.color(widget.todoCategory.todo.deadline),
+                                height: 60.0,
+                                child: VerticalDivider(
+                                  width: 2.0,
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
                                       children: <Widget>[
-                                        Icon(Icons.title,
-                                            size: 15.0,
-                                            color: line.color(widget
-                                                .todoCategory.todo.deadline)),
-                                        SizedBox(
-                                          width: 8.0,
+                                        LimitedBox(
+                                          maxWidth: 200.0,
+                                          child: Row(
+                                            children: <Widget>[
+                                              Icon(Icons.title,
+                                                  size: 15.0,
+                                                  color: line.color(widget
+                                                      .todoCategory.todo.deadline)),
+                                              SizedBox(
+                                                width: 8.0,
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  widget.todoCategory.todo.title,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20.0),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         Expanded(
-                                          child: Text(
-                                            widget.todoCategory.todo.title,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20.0),
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Text(
+                                              dateTimeUtil.formatDateTime(
+                                                  widget.todoCategory.todo.deadline),
+                                              style: TextStyle(
+                                                  color: Colors.grey, fontSize: 10.0),
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Align(
-                                      alignment: Alignment.topRight,
-                                      child: Text(
-                                        dateTimeUtil.formatDateTime(
-                                            widget.todoCategory.todo.deadline),
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 10.0),
+                                    SizedBox(
+                                      height: 8.0,
+                                    ),
+                                    Row(children: <Widget>[
+                                      SizedBox(
+                                        width: 40.0,
                                       ),
+                                      Expanded(
+                                        child: Text(
+                                          widget.todoCategory.todo.description,
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 15.0),
+                                        ),
+                                      ),
+                                    ]),
+                                    Row(
+                                      children: <Widget>[
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.chat_bubble,
+                                            color: Colors.grey,
+                                          ),
+                                          onPressed: () {},
+                                        ),
+                                        Text(
+                                          '${widget.todoCategory.commentsCount}',
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 18.0),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 8.0,
-                              ),
-                              Row(children: <Widget>[
-                                SizedBox(
-                                  width: 40.0,
+                                  ],
                                 ),
-                                Expanded(
-                                  child: Text(
-                                    widget.todoCategory.todo.description,
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 15.0),
-                                  ),
-                                ),
-                              ]),
-                              Row(
-                                children: <Widget>[
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.chat_bubble,
-                                      color: Colors.grey,
-                                    ),
-                                    onPressed: () {},
-                                  ),
-                                  Text(
-                                    '${widget.todoCategory.commentsCount}',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 18.0),
-                                  ),
-                                ],
                               ),
                             ],
                           ),
@@ -300,40 +319,25 @@ class CommentPageState extends State<CommentPage> {
                       ],
                     ),
                   ),
-                  BlocBuilder<CommentBloc, CommentState>(
-                    builder: (context, state) {
-                      if (state is CommentError) {
-                        return Center(
-                          child: Text('failed to fetch comments'),
-                        );
-                      }
-                      if (state is CommentLoaded) {
-                        if (state.comments.isEmpty) {
-                          return Center(
-                            child: Text('no comments'),
-                          );
-                        }
-                        return ListView.builder(
-                          itemBuilder: (BuildContext context, int index) {
-                            return index >= state.comments.length
-                                ? BottomLoader()
-                                : _buildList(state.comments[index]);
-                          },
-                          itemCount: state.hasReachedMax
-                              ? state.comments.length
-                              : state.comments.length + 1,
-                          controller: _scrollController,
-                        );
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                        return index >= state.comments.length
+                            ? BottomLoader()
+                            : _buildList(state.comments[index]);
+                      },
+                      childCount: state.hasReachedMax
+                          ? state.comments.length
+                          : state.comments.length + 1,
+                    ),
                   ),
                 ],
-              ),
-            ),
-          ],
+              );
+            }
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          },
         ),
       ),
     );
