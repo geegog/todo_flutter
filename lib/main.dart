@@ -10,6 +10,7 @@ import 'package:todo_flutter/common/pages/home.dart';
 import 'package:todo_flutter/common/pages/login_page.dart';
 import 'package:todo_flutter/task/bloc/addtodo/add_todo_bloc.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
+import 'package:todo_flutter/task/bloc/comment/add_comment_bloc.dart';
 import 'category/domain/model/category.dart';
 import 'category/services/category_service.dart';
 import 'common/bloc/login/bloc.dart';
@@ -39,6 +40,9 @@ void main() async {
         ),
         BlocProvider<CategoryBloc>(
           builder: (context) => CategoryBloc(),
+        ),
+        BlocProvider<AddCommentBloc>(
+          builder: (context) => AddCommentBloc(),
         ),
       ],
       child: MyApp(categories: categories,),

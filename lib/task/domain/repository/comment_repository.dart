@@ -9,6 +9,7 @@ import 'package:todo_flutter/common/services/auth.dart';
 import 'package:todo_flutter/common/services/service_locator.dart';
 import 'package:todo_flutter/common/utils/api.dart';
 import 'package:todo_flutter/task/domain/model/todo_comments.dart';
+import 'package:todo_flutter/task/dto/comment.dart';
 
 class CommentRepository {
   Future<TodoComments> fetchData(String nextPage) async {
@@ -17,20 +18,20 @@ class CommentRepository {
     return todoComments;
   }
 
-/*  Future<String> addComment({
+  Future<String> addComment({
     @required String text,
-    @required String todoId,
+    @required int todoId,
   }) async {
 
-    Comment comment = Comment(text, userId);
+    Comment comment = Comment(text);
 
-    String todoRequest = jsonEncode(comment);
+    String commentRequest = jsonEncode(comment);
 
     var response = await APIUtil().post(
-        'comment/user/' + services.get<Auth>().getUserId() + '/todo/' + todoId + '/create',
-        todoRequest);
+        'comment/user/' + services.get<Auth>().getUserId() + '/todo/' + todoId.toString() + '/create',
+        commentRequest);
 
     return response;
 
-  }*/
+  }
 }

@@ -1,6 +1,5 @@
 
 import 'package:equatable/equatable.dart';
-import 'package:todo_flutter/user/domain/model/user.dart';
 
 class Todo extends Equatable  {
 
