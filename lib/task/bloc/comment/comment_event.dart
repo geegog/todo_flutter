@@ -14,6 +14,9 @@ class FetchComment extends CommentEvent {
 }
 
 class RefreshComment extends CommentEvent {
+  RefreshComment({this.todoId}) : super();
+
+  final int todoId;
   @override
   String toString() => 'RefreshComment';
 }

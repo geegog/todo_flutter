@@ -21,6 +21,8 @@ class CommentPage extends StatefulWidget {
 
 class CommentPageState extends State<CommentPage> {
   Completer<void> _refreshCompleter;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  new GlobalKey<RefreshIndicatorState>();
 
   final TextEditingController _myControllerText = TextEditingController();
   final _scrollController = ScrollController();
@@ -41,7 +43,7 @@ class CommentPageState extends State<CommentPage> {
       final maxScroll = _scrollController.position.maxScrollExtent;
       final currentScroll = _scrollController.position.pixels;
       if (maxScroll - currentScroll <= _scrollThreshold) {
-        _commentBloc.dispatch(FetchComment());
+        _commentBloc.dispatch(FetchComment(todoId: widget.todoCategory.todo.id));
       }
     });
     _refreshCompleter = Completer<void>();
@@ -144,7 +146,7 @@ class CommentPageState extends State<CommentPage> {
                       content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Adding Todo...'),
+                          Text('Adding Comment...'),
                           CircularProgressIndicator(),
                         ],
                       ),
@@ -166,6 +168,10 @@ class CommentPageState extends State<CommentPage> {
                       ),
                     ),
                   );
+
+                _myControllerText.clear();
+                _commentBloc.dispatch(RefreshComment(todoId: widget.todoCategory.todo.id));
+
               }
             },
             child: BlocBuilder<AddCommentBloc, AddCommentState>(
@@ -223,7 +229,7 @@ class CommentPageState extends State<CommentPage> {
                   child: Text('no comments'),
                 );
               }
-              return CustomScrollView(
+              return RefreshIndicator(child: CustomScrollView(
                 controller: _scrollController,
                 slivers: [
                   SliverList(
@@ -332,7 +338,10 @@ class CommentPageState extends State<CommentPage> {
                     ),
                   ),
                 ],
-              );
+              ), onRefresh: () {
+                _commentBloc.dispatch(RefreshComment(todoId: widget.todoCategory.todo.id));
+                return _refreshCompleter.future;
+              });
             }
             return Center(
               child: CircularProgressIndicator(),

@@ -59,12 +59,13 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         yield CommentError();
       }
     }
-    /*if (event is RefreshComment) {
+    if (event is RefreshComment) {
+      int todoId = event.todoId;
       try {
         final comments =
-            await _commentRepository.fetchData("todo_category/all");
+            await _commentRepository.fetchData("comment/todo/$todoId/all");
         int pageNumber = comments.metadata.pageNumber + 1;
-        nextPage = "comment/all?page=$pageNumber";
+        nextPage = "comment/todo/$todoId/all?page=$pageNumber";
         yield CommentLoaded(
             comments: comments.data,
             hasReachedMax:
@@ -76,7 +77,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
         print(_);
         yield currentState;
       }
-    }*/
+    }
   }
 
   bool _hasReachedMax(CommentState state) =>
