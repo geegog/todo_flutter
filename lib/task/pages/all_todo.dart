@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_flutter/common/widgets/bottom_loader.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 import 'package:todo_flutter/common/utils/date_time.dart' as dateTimeUtil;
 import 'package:todo_flutter/task/bloc/comment/bloc.dart';
@@ -220,24 +221,6 @@ class AllTodoState extends State<AllTodoPage> {
               child: CircularProgressIndicator(),
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-class BottomLoader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Center(
-        child: SizedBox(
-          width: 33,
-          height: 33,
-          child: CircularProgressIndicator(
-            strokeWidth: 1.5,
-          ),
         ),
       ),
     );

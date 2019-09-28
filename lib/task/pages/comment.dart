@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_flutter/common/widgets/bottom_loader.dart';
 import 'package:todo_flutter/task/bloc/comment/bloc.dart';
 import 'package:todo_flutter/task/domain/model/comment.dart';
 import 'package:todo_flutter/task/domain/model/todo_category.dart';
@@ -347,24 +348,6 @@ class CommentPageState extends State<CommentPage> {
               child: CircularProgressIndicator(),
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-class BottomLoader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Center(
-        child: SizedBox(
-          width: 33,
-          height: 33,
-          child: CircularProgressIndicator(
-            strokeWidth: 1.5,
-          ),
         ),
       ),
     );
