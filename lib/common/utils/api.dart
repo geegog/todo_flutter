@@ -7,7 +7,7 @@ import '../services/auth.dart';
 
 class APIUtil {
   static final String developmentHost =
-      'http://gentle-bayou-12059.herokuapp.com/api/v1/';
+      'https://fathomless-retreat-52535.herokuapp.com/api/v1/';
   static get jwt => services.get<Auth>().getToken();
   static Map<String, String> _headers;
 
