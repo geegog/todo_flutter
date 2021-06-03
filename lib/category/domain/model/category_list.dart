@@ -6,7 +6,7 @@ class CategoryList {
 
 
   CategoryList.fromJson(Map<String, dynamic> parsedJson) {
-    print(parsedJson['data'].length);
+    //print(parsedJson['data'].length);
     List<Category> temp = [];
     for (int i = 0; i < parsedJson['data'].length; i++) {
       Map<String, dynamic> jsonData = parsedJson['data'][i];

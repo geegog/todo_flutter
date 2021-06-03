@@ -5,7 +5,7 @@ import 'package:todo_flutter/user/domain/model/user.dart';
 
 class Comment extends Equatable {
 
-  Comment(this.text, this.id, this.todo, this.user) : super([text, id, todo, user]);
+  const Comment(this.text, this.id, this.todo, this.user);
 
   final String text;
 
@@ -14,5 +14,8 @@ class Comment extends Equatable {
   final Todo todo;
 
   final User user;
+
+  @override
+  List<Object> get props => [text, id, todo, user];
 
 }

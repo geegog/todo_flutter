@@ -25,7 +25,7 @@ class CategoryPageState extends State<CategoryPage> {
     super.initState();
     _refreshCompleter = Completer<void>();
     _categoryBloc = BlocProvider.of<CategoryBloc>(context);
-    _categoryBloc..dispatch(FetchCategory());
+    _categoryBloc..add(FetchCategory());
   }
 
   @override
@@ -93,7 +93,7 @@ class CategoryPageState extends State<CategoryPage> {
                   }),
                 ),
                 onRefresh: () {
-                  _categoryBloc.dispatch(RefreshCategory());
+                  _categoryBloc.add(RefreshCategory());
                   return _refreshCompleter.future;
                 },
               );

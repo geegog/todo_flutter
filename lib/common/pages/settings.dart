@@ -17,7 +17,7 @@ class SettingsPage extends StatelessWidget {
             leading: Icon(Icons.power_settings_new),
             onTap: () {
               Navigator.of(context).pop();
-              BlocProvider.of<AuthenticationBloc>(context).dispatch(
+              BlocProvider.of<AuthenticationBloc>(context).add(
                 LoggedOut(),
               );
             },

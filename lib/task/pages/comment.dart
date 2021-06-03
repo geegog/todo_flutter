@@ -44,7 +44,7 @@ class CommentPageState extends State<CommentPage> {
       final maxScroll = _scrollController.position.maxScrollExtent;
       final currentScroll = _scrollController.position.pixels;
       if (maxScroll - currentScroll <= _scrollThreshold) {
-        _commentBloc.dispatch(FetchComment(todoId: widget.todoCategory.todo.id));
+        _commentBloc.add(FetchComment(todoId: widget.todoCategory.todo.id));
       }
     });
     _refreshCompleter = Completer<void>();
@@ -54,7 +54,7 @@ class CommentPageState extends State<CommentPage> {
   }
 
   void _onTextChanged() {
-    _addCommentBloc.dispatch(
+    _addCommentBloc.add(
       TextChanged(text: _myControllerText.text),
     );
   }
@@ -66,7 +66,7 @@ class CommentPageState extends State<CommentPage> {
   }
 
   void _onFormSubmitted() {
-    _addCommentBloc.dispatch(
+    _addCommentBloc.add(
       AddCommentButtonPressed(
           text: _myControllerText.text, todoId: widget.todoCategory.todo.id),
     );
@@ -171,7 +171,7 @@ class CommentPageState extends State<CommentPage> {
                   );
 
                 _myControllerText.clear();
-                _commentBloc.dispatch(RefreshComment(todoId: widget.todoCategory.todo.id));
+                _commentBloc.add(RefreshComment(todoId: widget.todoCategory.todo.id));
 
               }
             },
@@ -340,7 +340,7 @@ class CommentPageState extends State<CommentPage> {
                   ),
                 ],
               ), onRefresh: () {
-                _commentBloc.dispatch(RefreshComment(todoId: widget.todoCategory.todo.id));
+                _commentBloc.add(RefreshComment(todoId: widget.todoCategory.todo.id));
                 return _refreshCompleter.future;
               });
             }

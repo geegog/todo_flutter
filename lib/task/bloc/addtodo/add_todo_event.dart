@@ -5,7 +5,7 @@ import 'package:todo_flutter/category/domain/model/category.dart';
 
 @immutable
 abstract class AddTodoEvent extends Equatable {
-  AddTodoEvent([List props = const []]) : super(props);
+  AddTodoEvent([List props = const []]) : super();
 }
 
 class TitleChanged extends AddTodoEvent {
@@ -15,6 +15,9 @@ class TitleChanged extends AddTodoEvent {
 
   @override
   String toString() => 'TitleChanged { title :$title }';
+
+  @override
+  List<Object> get props => [];
 }
 
 class DescriptionChanged extends AddTodoEvent {
@@ -24,6 +27,9 @@ class DescriptionChanged extends AddTodoEvent {
 
   @override
   String toString() => 'DescriptionChanged { description :$description }';
+
+  @override
+  List<Object> get props => [];
 }
 
 class AddTodoButtonPressed extends AddTodoEvent {
@@ -45,4 +51,7 @@ class AddTodoButtonPressed extends AddTodoEvent {
   String toString() {
     return 'AddTodoButtonPressed { title: $title, description: $description, endDate: $endDate, endTime: $endTime, category: $category}';
   }
+
+  @override
+  List<Object> get props => [];
 }

@@ -11,6 +11,9 @@ class Todo extends Equatable  {
 
   final int id;
 
-  Todo(this.title, this.description, this.deadline, this.id) : super([deadline, description, title, id]);
+  const Todo(this.title, this.description, this.deadline, this.id);
+
+  @override
+  List<Object> get props => [title, description, deadline, id];
 
 }

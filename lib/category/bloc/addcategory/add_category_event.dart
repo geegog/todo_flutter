@@ -4,7 +4,10 @@ import 'package:equatable/equatable.dart';
 
 @immutable
 abstract class AddCategoryEvent extends Equatable {
-  AddCategoryEvent([List props = const []]) : super(props);
+  AddCategoryEvent([List props = const []]) : super();
+
+  @override
+  List<Object> get props => [];
 }
 
 class NameChanged extends AddCategoryEvent {

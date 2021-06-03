@@ -122,8 +122,8 @@ class AllTodoState extends State<AllTodoPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => BlocProvider(
-                                  builder: (context) =>
-                                      CommentBloc()..dispatch(FetchComment(todoId: todoCategory.todo.id)),
+                                  create: (context) =>
+                                      CommentBloc(CommentUninitialized())..add(FetchComment(todoId: todoCategory.todo.id)),
                                   child: CommentPage(todoCategory: todoCategory,),
                                 ),
                               ),
@@ -212,7 +212,7 @@ class AllTodoState extends State<AllTodoPage> {
                   controller: widget.scrollController,
                 ),
                 onRefresh: () {
-                  widget.todoBloc.dispatch(RefreshTodo());
+                  widget.todoBloc.add(RefreshTodo());
                   return _refreshCompleter.future;
                 },
               );

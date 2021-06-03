@@ -11,15 +11,14 @@ import 'package:todo_flutter/common/utils/login_validators.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final _userRepository = UserRepository();
 
-  @override
-  LoginState get initialState => LoginState.empty();
+  LoginBloc(LoginState initialState) : super(initialState);
 
   @override
-  Stream<LoginState> transformEvents(
+  Stream<Transition<LoginEvent, LoginState>> transformEvents(
     Stream<LoginEvent> events,
-    Stream<LoginState> Function(LoginEvent event) next,
+    TransitionFunction<LoginEvent, LoginState> next,
   ) {
-    final observableStream = events as Observable<LoginEvent>;
+    final observableStream = events;
     final nonDebounceStream = observableStream.where((event) {
       return (event is! EmailChanged && event is! PasswordChanged);
     });
@@ -45,13 +44,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapEmailChangedToState(String email) async* {
-    yield currentState.update(
+    yield state.update(
       isEmailValid: LoginValidators.isValidEmail(email),
     );
   }
 
   Stream<LoginState> _mapPasswordChangedToState(String password) async* {
-    yield currentState.update(
+    yield state.update(
       isPasswordValid: LoginValidators.isValidPassword(password),
     );
   }

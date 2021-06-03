@@ -10,15 +10,14 @@ import 'package:todo_flutter/task/util/add_comment_validators.dart';
 class AddCommentBloc extends Bloc<AddCommentEvent, AddCommentState> {
   final _commentRepository = CommentRepository();
 
-  @override
-  AddCommentState get initialState => AddCommentState.empty();
+  AddCommentBloc() : super(AddCommentState.empty());
 
   @override
-  Stream<AddCommentState> transformEvents(
+  Stream<Transition<AddCommentEvent, AddCommentState>> transformEvents(
     Stream<AddCommentEvent> events,
-    Stream<AddCommentState> Function(AddCommentEvent event) next,
+    TransitionFunction<AddCommentEvent, AddCommentState> next,
   ) {
-    final observableStream = events as Observable<AddCommentEvent>;
+    final observableStream = events;
     final nonDebounceStream = observableStream.where((event) {
       return (event is! TextChanged);
     });
@@ -42,7 +41,7 @@ class AddCommentBloc extends Bloc<AddCommentEvent, AddCommentState> {
   }
 
   Stream<AddCommentState> _mapTextChangedToState(String text) async* {
-    yield currentState.update(
+    yield state.update(
       isTextValid: AddCommentValidators.isValidText(text),
     );
   }

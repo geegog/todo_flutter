@@ -13,5 +13,9 @@ class TodoCategory extends Equatable {
 
   final int commentsCount;
 
-  TodoCategory(this.category, this.todo, this.id, this.commentsCount) : super([category, todo, id, commentsCount]);
+  const TodoCategory(this.category, this.todo, this.id, this.commentsCount);
+
+  @override
+  List<Object> get props => [category, todo, id, commentsCount];
+
 }

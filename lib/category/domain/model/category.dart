@@ -7,9 +7,12 @@ class Category extends Equatable  {
 
   final int id;
 
-  Category(this.name, this.id) : super([name, id]);
+  const Category(this.name, this.id);
 
   @override
   String toString() => name;
+
+  @override
+  List<Object> get props => [name, id];
 
 }

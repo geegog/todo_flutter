@@ -3,7 +3,10 @@ import 'package:equatable/equatable.dart';
 
 @immutable
 abstract class RegisterEvent extends Equatable {
-  RegisterEvent([List props = const []]) : super(props);
+  RegisterEvent([List props = const []]) : super();
+
+  @override
+  List<Object> get props => [];
 }
 
 class EmailChanged extends RegisterEvent {

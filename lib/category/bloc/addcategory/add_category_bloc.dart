@@ -10,15 +10,14 @@ import 'package:todo_flutter/category/util/add_category_validators.dart';
 class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
   final _categoryRepository = CategoryRepository();
 
-  @override
-  AddCategoryState get initialState => AddCategoryState.empty();
+  AddCategoryBloc() : super(AddCategoryState.empty());
 
   @override
-  Stream<AddCategoryState> transformEvents(
+  Stream<Transition<AddCategoryEvent, AddCategoryState>> transformEvents(
     Stream<AddCategoryEvent> events,
-    Stream<AddCategoryState> Function(AddCategoryEvent event) next,
+    TransitionFunction<AddCategoryEvent, AddCategoryState> next,
   ) {
-    final observableStream = events as Observable<AddCategoryEvent>;
+    final observableStream = events;
     final nonDebounceStream = observableStream.where((event) {
       return (event is! NameChanged );
     });
@@ -41,7 +40,7 @@ class AddCategoryBloc extends Bloc<AddCategoryEvent, AddCategoryState> {
   }
 
   Stream<AddCategoryState> _mapNameChangedToState(String name) async* {
-    yield currentState.update(
+    yield state.update(
       isNameValid: AddCategoryValidators.isValidName(name),
     );
   }

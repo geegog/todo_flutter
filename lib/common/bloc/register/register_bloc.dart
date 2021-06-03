@@ -10,15 +10,14 @@ import 'package:todo_flutter/common/utils/register_validators.dart';
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final _userRepository = UserRepository();
 
-  @override
-  RegisterState get initialState => RegisterState.empty();
+  RegisterBloc() : super(RegisterState.empty());
 
   @override
-  Stream<RegisterState> transformEvents(
+  Stream<Transition<RegisterEvent, RegisterState>> transformEvents(
     Stream<RegisterEvent> events,
-    Stream<RegisterState> Function(RegisterEvent event) next,
+    TransitionFunction<RegisterEvent, RegisterState> next,
   ) {
-    final observableStream = events as Observable<RegisterEvent>;
+    final observableStream = events;
     final nonDebounceStream = observableStream.where((event) {
       return (event is! EmailChanged &&
           event is! PasswordChanged &&
@@ -62,32 +61,32 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   Stream<RegisterState> _mapEmailChangedToState(String email) async* {
-    yield currentState.update(
+    yield state.update(
       isEmailValid: RegisterValidators.isValidEmail(email),
     );
   }
 
   Stream<RegisterState> _mapPasswordChangedToState(String password) async* {
-    yield currentState.update(
+    yield state.update(
       isPasswordValid: RegisterValidators.isValidPassword(password),
     );
   }
 
   Stream<RegisterState> _mapPhoneChangedToState(String phone) async* {
-    yield currentState.update(
+    yield state.update(
       isPhoneValid: RegisterValidators.isValidPhone(phone),
     );
   }
 
   Stream<RegisterState> _mapNameChangedToState(String name) async* {
-    yield currentState.update(
+    yield state.update(
       isNameValid: RegisterValidators.isValidName(name),
     );
   }
 
   Stream<RegisterState> _mapConfirmPasswordChangedToState(
       String password, String confirmPassword) async* {
-    yield currentState.update(
+    yield state.update(
       isConfirmPasswordValid:
           RegisterValidators.isValidConfirmPassword(password, confirmPassword),
     );

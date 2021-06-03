@@ -53,19 +53,19 @@ class LoginPageState extends State<LoginPage> {
   }
 
   void _onEmailChanged() {
-    _loginBloc.dispatch(
+    _loginBloc.add(
       EmailChanged(email: _myControllerEmail.text),
     );
   }
 
   void _onPasswordChanged() {
-    _loginBloc.dispatch(
+    _loginBloc.add(
       PasswordChanged(password: _myControllerPassword.text),
     );
   }
 
   void _onFormSubmitted() {
-    _loginBloc.dispatch(
+    _loginBloc.add(
       LoginWithCredentialsPressed(
         email: _myControllerEmail.text,
         password: _myControllerPassword.text,
@@ -135,7 +135,7 @@ class LoginPageState extends State<LoginPage> {
               );
           }
           if (state.isSuccess) {
-            BlocProvider.of<AuthenticationBloc>(context).dispatch(LoggedIn());
+            BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
           }
         },
         child: BlocBuilder<LoginBloc, LoginState>(

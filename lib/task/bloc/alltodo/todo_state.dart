@@ -2,7 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:todo_flutter/task/domain/model/todo_category.dart';
 
 abstract class TodoState extends Equatable {
-  TodoState([List props = const []]) : super(props);
+  TodoState([List props = const []]) : super();
+
+  @override
+  List<Object> get props => [];
 }
 
 class TodoUninitialized extends TodoState {
@@ -41,4 +44,7 @@ class TodoLoaded extends TodoState {
   @override
   String toString() =>
       'TodoLoaded { todos: ${todos.length}, hasReachedMax: $hasReachedMax }';
+
+  @override
+  List<Object> get props => [todos, hasReachedMax, dateTime];
 }

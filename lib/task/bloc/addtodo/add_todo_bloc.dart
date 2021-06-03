@@ -13,15 +13,14 @@ import 'package:todo_flutter/task/util/add_todo_validators.dart';
 class AddTodoBloc extends Bloc<AddTodoEvent, AddTodoState> {
   final _todoRepository = TodoRepository();
 
-  @override
-  AddTodoState get initialState => AddTodoState.empty();
+  AddTodoBloc() : super(AddTodoState.empty());
 
   @override
-  Stream<AddTodoState> transformEvents(
+  Stream<Transition<AddTodoEvent, AddTodoState>> transformEvents(
     Stream<AddTodoEvent> events,
-    Stream<AddTodoState> Function(AddTodoEvent event) next,
+    TransitionFunction<AddTodoEvent, AddTodoState>  next,
   ) {
-    final observableStream = events as Observable<AddTodoEvent>;
+    final observableStream = events;
     final nonDebounceStream = observableStream.where((event) {
       return (event is! TitleChanged && event is! DescriptionChanged);
     });
@@ -50,14 +49,14 @@ class AddTodoBloc extends Bloc<AddTodoEvent, AddTodoState> {
   }
 
   Stream<AddTodoState> _mapTitleChangedToState(String title) async* {
-    yield currentState.update(
+    yield state.update(
       isTitleValid: AddTodoValidators.isValidTitle(title),
     );
   }
 
   Stream<AddTodoState> _mapDescriptionChangedToState(
       String description) async* {
-    yield currentState.update(
+    yield state.update(
       isDescriptionValid: AddTodoValidators.isValidDescription(description),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 abstract class CommentEvent extends Equatable {
-  CommentEvent([List props = const []]) : super(props);
+  CommentEvent([List props = const []]) : super();
 }
 
 class FetchComment extends CommentEvent {
@@ -11,6 +11,9 @@ class FetchComment extends CommentEvent {
 
   @override
   String toString() => 'FetchComment';
+
+  @override
+  List<Object> get props => [];
 }
 
 class RefreshComment extends CommentEvent {
@@ -19,4 +22,7 @@ class RefreshComment extends CommentEvent {
   final int todoId;
   @override
   String toString() => 'RefreshComment';
+
+  @override
+  List<Object> get props => [];
 }

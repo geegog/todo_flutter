@@ -5,7 +5,7 @@ import 'package:todo_flutter/category/domain/model/category.dart';
 
 @immutable
 abstract class AddCommentEvent extends Equatable {
-  AddCommentEvent([List props = const []]) : super(props);
+  AddCommentEvent([List props = const []]) : super();
 }
 
 class TextChanged extends AddCommentEvent {
@@ -15,6 +15,9 @@ class TextChanged extends AddCommentEvent {
 
   @override
   String toString() => 'TextChanged { text :$text }';
+
+  @override
+  List<Object> get props => [];
 }
 
 class AddCommentButtonPressed extends AddCommentEvent {
@@ -30,4 +33,7 @@ class AddCommentButtonPressed extends AddCommentEvent {
   String toString() {
     return 'AddCommentButtonPressed { text: $text, todoId: $todoId }';
   }
+
+  @override
+  List<Object> get props => [];
 }

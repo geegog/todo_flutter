@@ -8,13 +8,15 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final _categoryRepository = CategoryRepository();
   String nextPage = "category/all";
 
+  CategoryBloc() : super(CategoryUninitialized());
+
   @override
-  Stream<CategoryState> transformEvents(
+  Stream<Transition<CategoryEvent, CategoryState>> transformEvents(
     Stream<CategoryEvent> events,
-    Stream<CategoryState> Function(CategoryEvent event) next,
+    TransitionFunction<CategoryEvent, CategoryState> next,
   ) {
     return super.transformEvents(
-      (events as Observable<CategoryEvent>).debounceTime(
+      events.debounceTime(
         Duration(milliseconds: 500),
       ),
       next,
@@ -22,13 +24,10 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   }
 
   @override
-  get initialState => CategoryUninitialized();
-
-  @override
   Stream<CategoryState> mapEventToState(CategoryEvent event) async* {
-    if (event is FetchCategory && !_hasReachedMax(currentState)) {
+    if (event is FetchCategory && !_hasReachedMax(state)) {
       try {
-        if (currentState is CategoryUninitialized) {
+        if (state is CategoryUninitialized) {
           final categories = await _categoryRepository.fetchData(nextPage);
           yield CategoryLoaded(categories: categories.data, hasReachedMax: true);
         }
@@ -41,7 +40,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         final categories = await _categoryRepository.fetchData(nextPage);
         yield CategoryLoaded(categories: categories.data, hasReachedMax: true, dateTime: DateTime.now());
       } catch (_) {
-        yield currentState;
+        yield state;
       }
     }
   }

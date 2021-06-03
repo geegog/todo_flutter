@@ -2,7 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:todo_flutter/category/domain/model/category.dart';
 
 abstract class CategoryState extends Equatable {
-  CategoryState([List props = const []]) : super(props);
+  CategoryState([List props = const []]) : super();
+
+  @override
+  List<Object> get props => [];
 }
 
 class CategoryUninitialized extends CategoryState {
@@ -41,4 +44,7 @@ class CategoryLoaded extends CategoryState {
   @override
   String toString() =>
       'CategoryLoaded { todos: ${categories.length}, hasReachedMax: $hasReachedMax }';
+
+  @override
+  List<Object> get props => [categories, hasReachedMax, dateTime];
 }

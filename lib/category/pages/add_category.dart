@@ -41,13 +41,13 @@ class AddCategoryPageState extends State<AddCategoryPage> {
   }
 
   void _onNameChanged() {
-    _addCategoryBloc.dispatch(
+    _addCategoryBloc.add(
       NameChanged(name: _myControllerName.text),
     );
   }
 
   void _onFormSubmitted() {
-    _addCategoryBloc.dispatch(
+    _addCategoryBloc.add(
       AddCategoryButtonPressed(
           name: _myControllerName.text,),
     );
@@ -119,7 +119,7 @@ class AddCategoryPageState extends State<AddCategoryPage> {
                 ),
               );
             await Future.delayed(Duration(seconds: 3));
-            BlocProvider.of<CategoryBloc>(context)..dispatch(RefreshCategory());
+            BlocProvider.of<CategoryBloc>(context)..add(RefreshCategory());
             Navigator.of(context).pop();
           }
         },

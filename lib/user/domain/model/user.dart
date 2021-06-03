@@ -11,6 +11,9 @@ class User extends Equatable {
 
   final int id;
 
-  User(this.id, this.email, this.name, this.phone) : super([id, email, name, phone]);
+  const User(this.id, this.email, this.name, this.phone);
+
+  @override
+  List<Object> get props => [id, email, name, phone];
 
 }

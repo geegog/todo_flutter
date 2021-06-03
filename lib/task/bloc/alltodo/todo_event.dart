@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-abstract class TodoEvent extends Equatable {}
+abstract class TodoEvent extends Equatable {
+  @override
+  List<Object> get props => [];
+}
 
 class FetchTodo extends TodoEvent {
   @override

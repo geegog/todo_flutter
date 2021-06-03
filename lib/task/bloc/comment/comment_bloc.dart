@@ -10,13 +10,15 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
   final _commentRepository = CommentRepository();
   String nextPage = '';
 
+  CommentBloc(CommentState initialState) : super(initialState);
+
   @override
-  Stream<CommentState> transformEvents(
+  Stream<Transition<CommentEvent, CommentState>> transformEvents(
     Stream<CommentEvent> events,
-    Stream<CommentState> Function(CommentEvent event) next,
+    TransitionFunction<CommentEvent, CommentState> next,
   ) {
     return super.transformEvents(
-      (events as Observable<CommentEvent>).debounceTime(
+      events.debounceTime(
         Duration(milliseconds: 500),
       ),
       next,
@@ -24,14 +26,11 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
   }
 
   @override
-  get initialState => CommentUninitialized();
-
-  @override
   Stream<CommentState> mapEventToState(CommentEvent event) async* {
-    if (event is FetchComment && !_hasReachedMax(currentState)) {
+    if (event is FetchComment && !_hasReachedMax(state)) {
       int todoId = event.todoId;
       try {
-        if (currentState is CommentUninitialized) {
+        if (state is CommentUninitialized) {
           nextPage = "comment/todo/$todoId/all";
           final comments = await _commentRepository.fetchData(nextPage);
           int pageNumber = comments.metadata.pageNumber + 1;
@@ -44,12 +43,12 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
                       : false);
           return;
         }
-        if (currentState is CommentLoaded) {
+        if (state is CommentLoaded) {
           final comments = await _commentRepository.fetchData(nextPage);
           int pageNumber = comments.metadata.pageNumber + 1;
           nextPage = "comment/todo/$todoId/all?page=$pageNumber";
           yield CommentLoaded(
-            comments: (currentState as CommentLoaded).comments + comments.data,
+            comments: (state as CommentLoaded).comments + comments.data,
             hasReachedMax:
                 pageNumber > comments.metadata.totalPages ? true : false,
           );
@@ -75,7 +74,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
             dateTime: DateTime.now());
       } catch (_) {
         print(_);
-        yield currentState;
+        yield state;
       }
     }
   }

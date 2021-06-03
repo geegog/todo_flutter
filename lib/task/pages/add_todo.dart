@@ -42,8 +42,8 @@ class AddTodoPageState extends State<AddTodoPage> {
     _addTodoBloc = BlocProvider.of<AddTodoBloc>(context);
     _myControllerTitle.addListener(_onTitleChanged);
     _myControllerDesc.addListener(_onDescriptionChanged);
-    if (_categoryBloc.currentState is CategoryLoaded) {
-      categories = _categoryBloc.currentState.props.first;
+    if (_categoryBloc.state is CategoryLoaded) {
+      categories = _categoryBloc.state.props.first;
     } else {
       categories = widget.categories;
     }
@@ -58,19 +58,19 @@ class AddTodoPageState extends State<AddTodoPage> {
   }
 
   void _onTitleChanged() {
-    _addTodoBloc.dispatch(
+    _addTodoBloc.add(
       TitleChanged(title: _myControllerTitle.text),
     );
   }
 
   void _onDescriptionChanged() {
-    _addTodoBloc.dispatch(
+    _addTodoBloc.add(
       DescriptionChanged(description: _myControllerDesc.text),
     );
   }
 
   void _onFormSubmitted() {
-    _addTodoBloc.dispatch(
+    _addTodoBloc.add(
       AddTodoButtonPressed(
           title: _myControllerTitle.text,
           description: _myControllerDesc.text,
@@ -166,7 +166,7 @@ class AddTodoPageState extends State<AddTodoPage> {
 
             widget.pageController.animateToPage(1,
                 duration: Duration(milliseconds: 200), curve: Curves.linear);
-            BlocProvider.of<TodoBloc>(context)..dispatch(RefreshTodo());
+            BlocProvider.of<TodoBloc>(context)..add(RefreshTodo());
           }
         },
         child: BlocBuilder<AddTodoBloc, AddTodoState>(

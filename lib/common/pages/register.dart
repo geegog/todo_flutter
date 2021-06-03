@@ -62,13 +62,13 @@ class RegisterPageState extends State<RegisterPage> {
   }
 
   void _onEmailChanged() {
-    _registerBloc.dispatch(
+    _registerBloc.add(
       EmailChanged(email: _myControllerEmail.text),
     );
   }
 
   void _onPasswordChanged() {
-    _registerBloc.dispatch(
+    _registerBloc.add(
       PasswordChanged(
           password: _myControllerPassword.text,
           confirmPassword: _myControllerConfirmPassword.text),
@@ -76,7 +76,7 @@ class RegisterPageState extends State<RegisterPage> {
   }
 
   void _onConfirmPasswordChanged() {
-    _registerBloc.dispatch(
+    _registerBloc.add(
       ConfirmPasswordChanged(
           password: _myControllerPassword.text,
           confirmPassword: _myControllerConfirmPassword.text),
@@ -84,19 +84,19 @@ class RegisterPageState extends State<RegisterPage> {
   }
 
   void _onPhoneChanged() {
-    _registerBloc.dispatch(
+    _registerBloc.add(
       PhoneChanged(phone: _myControllerPhone.text),
     );
   }
 
   void _onNameChanged() {
-    _registerBloc.dispatch(
+    _registerBloc.add(
       NameChanged(name: _myControllerName.text),
     );
   }
 
   void _onFormSubmitted() {
-    _registerBloc.dispatch(
+    _registerBloc.add(
       RegisterButtonPressed(
           email: _myControllerEmail.text,
           password: _myControllerPassword.text,

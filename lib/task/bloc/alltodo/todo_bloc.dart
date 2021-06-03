@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:todo_flutter/authentication/authentication_state.dart';
 import 'package:todo_flutter/task/bloc/alltodo/bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:todo_flutter/task/bloc/alltodo/todo_event.dart';
@@ -10,13 +11,15 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   final _todoRepository = TodoRepository();
   String nextPage = "todo_category/all";
 
+  TodoBloc() : super(TodoUninitialized());
+
   @override
-  Stream<TodoState> transformEvents(
+  Stream<Transition<TodoEvent, TodoState>> transformEvents(
     Stream<TodoEvent> events,
-    Stream<TodoState> Function(TodoEvent event) next,
+    TransitionFunction<TodoEvent, TodoState> next,
   ) {
     return super.transformEvents(
-      (events as Observable<TodoEvent>).debounceTime(
+      events.debounceTime(
         Duration(milliseconds: 500),
       ),
       next,
@@ -24,13 +27,10 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   @override
-  get initialState => TodoUninitialized();
-
-  @override
   Stream<TodoState> mapEventToState(TodoEvent event) async* {
-    if (event is FetchTodo && !_hasReachedMax(currentState)) {
+    if (event is FetchTodo && !_hasReachedMax(state)) {
       try {
-        if (currentState is TodoUninitialized) {
+        if (state is TodoUninitialized) {
           final todos = await _todoRepository.fetchData(nextPage);
           int pageNumber = todos.metadata.pageNumber + 1;
           nextPage = "todo_category/all?page=$pageNumber";
@@ -43,12 +43,12 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
                       : false);
           return;
         }
-        if (currentState is TodoLoaded) {
+        if (state is TodoLoaded) {
           final todos = await _todoRepository.fetchData(nextPage);
           int pageNumber = todos.metadata.pageNumber + 1;
           nextPage = "todo_category/all?page=$pageNumber";
           yield TodoLoaded(
-            todos: (currentState as TodoLoaded).todos + todos.data,
+            todos: (state as TodoLoaded).todos + todos.data,
             hasReachedMax:
                 pageNumber > todos.metadata.totalPages ? true : false,
           );
@@ -69,7 +69,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
             : false, dateTime: DateTime.now());
       } catch (_) {
         print(_);
-        yield currentState;
+        yield state;
       }
     }
   }
